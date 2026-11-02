@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@test/*": ["./test/*"],
+      "@schema/*": ["./packages/schema/src/*"],
+      "@kanso/schema": ["./packages/schema/src/index.ts"]
+    },
+    "types": ["node"],
+    "declaration": false
+  },
+  "include": ["test", "vitest.config.ts"]
+}

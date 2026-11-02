@@ -1,0 +1,15 @@
+packages:
+  - client
+  - server
+  - packages/*
+
+allowBuilds:
+  esbuild: true
+  cargo-near: true
+  near-sandbox: false
+  near-workspaces: false
+  bufferutil: false
+  mongodb-memory-server: false
+  msgpackr-extract: false
+  secp256k1: false
+  utf-8-validate: false
