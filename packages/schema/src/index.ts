@@ -1,5 +1,6 @@
 export * from '@schema/account';
 export * from '@schema/amount';
+export * from '@schema/encoding';
 export * from '@schema/loan';
 export * from '@schema/offer';
 export * from '@schema/pool';
