@@ -24,7 +24,9 @@
     "test:evm": "forge test --root contracts/evm",
     "build:solana": "cargo build-sbf --manifest-path contracts/solana/Cargo.toml --sbf-out-dir contracts/solana/target/deploy -- --locked",
     "test:solana": "pnpm build:solana && cargo test --locked --manifest-path contracts/solana/Cargo.toml",
-    "check:solana": "cargo fmt --manifest-path contracts/solana/Cargo.toml --check && cargo clippy --locked --manifest-path contracts/solana/Cargo.toml --all-targets -- -D warnings"
+    "check:solana": "cargo fmt --manifest-path contracts/solana/Cargo.toml --check && cargo clippy --locked --manifest-path contracts/solana/Cargo.toml --all-targets -- -D warnings",
+    "build:sui": "sui move build --path contracts/sui --warnings-are-errors",
+    "test:sui": "sui move test --path contracts/sui --warnings-are-errors"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

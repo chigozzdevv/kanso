@@ -1,0 +1,10 @@
+[package]
+name = "kanso"
+edition = "2024"
+license = "MIT"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "718ae563a42fb4ba0d055588f81c704dcef58c25" }
+
+[addresses]
+kanso = "0x0"
