@@ -31,10 +31,13 @@
     "test:starknet": "scarb --manifest-path contracts/starknet/Scarb.toml test",
     "test:contracts": "pnpm test:near && pnpm test:evm && pnpm test:solana && pnpm test:sui && pnpm test:starknet",
     "build:contracts": "pnpm build:near && pnpm build:evm && pnpm build:solana && pnpm build:sui && pnpm build:starknet",
-    "check:contracts": "pnpm check:near && pnpm check:solana && forge fmt --root contracts/evm --check && scarb --manifest-path contracts/starknet/Scarb.toml fmt --check"
+    "check:contracts": "pnpm check:near && pnpm check:solana && forge fmt --root contracts/evm --check && scarb --manifest-path contracts/starknet/Scarb.toml fmt --check",
+    "codegen": "pnpm --filter @kanso/bindings codegen",
+    "codegen:check": "pnpm --filter @kanso/bindings codegen:check"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@kanso/bindings": "workspace:*",
     "@kanso/schema": "workspace:*",
     "@types/node": "26.6.5",
     "cargo-near": "0.22.0",

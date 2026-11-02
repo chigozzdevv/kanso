@@ -6,7 +6,9 @@
     "paths": {
       "@test/*": ["./test/*"],
       "@schema/*": ["./packages/schema/src/*"],
-      "@kanso/schema": ["./packages/schema/src/index.ts"]
+      "@kanso/schema": ["./packages/schema/src/index.ts"],
+      "@bindings/*": ["./packages/bindings/src/*"],
+      "@kanso/bindings": ["./packages/bindings/src/index.ts"]
     },
     "types": ["node"],
     "declaration": false

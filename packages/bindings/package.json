@@ -1,0 +1,25 @@
+{
+  "name": "@kanso/bindings",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "codegen": "node --import tsx codegen.ts",
+    "codegen:check": "node --import tsx codegen.ts --check"
+  },
+  "dependencies": {
+    "@kanso/schema": "workspace:*",
+    "zod": "4.6.7"
+  }
+}
