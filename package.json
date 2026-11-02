@@ -26,7 +26,12 @@
     "test:solana": "pnpm build:solana && cargo test --locked --manifest-path contracts/solana/Cargo.toml",
     "check:solana": "cargo fmt --manifest-path contracts/solana/Cargo.toml --check && cargo clippy --locked --manifest-path contracts/solana/Cargo.toml --all-targets -- -D warnings",
     "build:sui": "sui move build --path contracts/sui --warnings-are-errors",
-    "test:sui": "sui move test --path contracts/sui --warnings-are-errors"
+    "test:sui": "sui move test --path contracts/sui --warnings-are-errors",
+    "build:starknet": "scarb --manifest-path contracts/starknet/Scarb.toml build",
+    "test:starknet": "scarb --manifest-path contracts/starknet/Scarb.toml test",
+    "test:contracts": "pnpm test:near && pnpm test:evm && pnpm test:solana && pnpm test:sui && pnpm test:starknet",
+    "build:contracts": "pnpm build:near && pnpm build:evm && pnpm build:solana && pnpm build:sui && pnpm build:starknet",
+    "check:contracts": "pnpm check:near && pnpm check:solana && forge fmt --root contracts/evm --check && scarb --manifest-path contracts/starknet/Scarb.toml fmt --check"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
