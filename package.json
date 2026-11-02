@@ -13,12 +13,18 @@
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "vitest run --project unit"
+    "test": "vitest run --project unit",
+    "build:coordinator": "cargo near build non-reproducible-wasm --manifest-path contracts/near/Cargo.toml --locked --no-abi --out-dir contracts/near/target/near",
+    "build:test-token": "cargo near build non-reproducible-wasm --manifest-path contracts/near/tests/settlement-token/Cargo.toml --locked --no-abi --out-dir contracts/near/target/near",
+    "build:near": "pnpm build:coordinator",
+    "test:near": "cargo test --locked --manifest-path contracts/near/Cargo.toml",
+    "check:near": "cargo fmt --manifest-path contracts/near/Cargo.toml --check && cargo clippy --locked --manifest-path contracts/near/Cargo.toml --all-targets -- -D warnings"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@kanso/schema": "workspace:*",
     "@types/node": "26.6.5",
+    "cargo-near": "0.22.0",
     "eslint": "10.13.0",
     "prettier": "3.9.10",
     "tsup": "8.5.1",
