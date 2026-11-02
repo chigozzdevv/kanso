@@ -1,0 +1,32 @@
+{
+  "name": "@kanso/sdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@kanso/schema": "workspace:*",
+    "@kanso/bindings": "workspace:*",
+    "zod": "4.6.7",
+    "@noble/hashes": "1.8.0",
+    "@solana/web3.js": "1.99.0",
+    "@mysten/sui": "2.37.0",
+    "viem": "2.56.3",
+    "starknet": "10.8.0",
+    "bitcoinjs-lib": "7.0.4",
+    "bs58": "6.0.0",
+    "buffer": "6.0.3"
+  }
+}

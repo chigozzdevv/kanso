@@ -39,6 +39,7 @@
     "@eslint/js": "10.0.1",
     "@kanso/bindings": "workspace:*",
     "@kanso/schema": "workspace:*",
+    "@kanso/sdk": "workspace:*",
     "@types/node": "26.6.5",
     "cargo-near": "0.22.0",
     "eslint": "10.13.0",

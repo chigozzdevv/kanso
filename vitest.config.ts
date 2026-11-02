@@ -4,6 +4,10 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   resolve: {
     alias: {
+      '@sdk': fileURLToPath(new URL('./packages/sdk/src', import.meta.url)),
+      '@kanso/sdk': fileURLToPath(
+        new URL('./packages/sdk/src/index.ts', import.meta.url),
+      ),
       '@bindings': fileURLToPath(
         new URL('./packages/bindings/src', import.meta.url),
       ),

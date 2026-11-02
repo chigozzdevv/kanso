@@ -8,7 +8,9 @@
       "@schema/*": ["./packages/schema/src/*"],
       "@kanso/schema": ["./packages/schema/src/index.ts"],
       "@bindings/*": ["./packages/bindings/src/*"],
-      "@kanso/bindings": ["./packages/bindings/src/index.ts"]
+      "@kanso/bindings": ["./packages/bindings/src/index.ts"],
+      "@sdk/*": ["./packages/sdk/src/*"],
+      "@kanso/sdk": ["./packages/sdk/src/index.ts"]
     },
     "types": ["node"],
     "declaration": false
