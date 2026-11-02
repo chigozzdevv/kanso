@@ -21,7 +21,10 @@
     "check:near": "cargo fmt --manifest-path contracts/near/Cargo.toml --check && cargo clippy --locked --manifest-path contracts/near/Cargo.toml --all-targets -- -D warnings",
     "setup:evm": "forge install foundry-rs/forge-std@v1.12.0 --no-git --root contracts/evm",
     "build:evm": "forge build --root contracts/evm",
-    "test:evm": "forge test --root contracts/evm"
+    "test:evm": "forge test --root contracts/evm",
+    "build:solana": "cargo build-sbf --manifest-path contracts/solana/Cargo.toml --sbf-out-dir contracts/solana/target/deploy -- --locked",
+    "test:solana": "pnpm build:solana && cargo test --locked --manifest-path contracts/solana/Cargo.toml",
+    "check:solana": "cargo fmt --manifest-path contracts/solana/Cargo.toml --check && cargo clippy --locked --manifest-path contracts/solana/Cargo.toml --all-targets -- -D warnings"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
