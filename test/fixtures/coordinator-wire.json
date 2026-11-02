@@ -1,0 +1,357 @@
+{
+  "k256_signature": {
+    "big_r": {
+      "affine_point": "029d0bad576719d32ae76bedb34c774866673cbde3f4e12951555c9408e6ce774b"
+    },
+    "s": {
+      "scalar": "2876e7102f204f6bfee26c967c3926ce702cf97d4b010062e193f763190f6776"
+    },
+    "recovery_id": 0
+  },
+  "mpc_signature": {
+    "scheme": "Secp256k1",
+    "big_r": {
+      "affine_point": "029d0bad576719d32ae76bedb34c774866673cbde3f4e12951555c9408e6ce774b"
+    },
+    "s": {
+      "scalar": "2876e7102f204f6bfee26c967c3926ce702cf97d4b010062e193f763190f6776"
+    },
+    "recovery_id": 0
+  },
+  "ed25519_signature": {
+    "scheme": "Ed25519",
+    "signature": [
+      42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42,
+      42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42,
+      42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42,
+      42, 42, 42, 42, 42, 42, 42, 42, 42, 42
+    ]
+  },
+  "read_proof": {
+    "payload": {
+      "V1": {
+        "request": {
+          "Base": {
+            "tx_id": "0909090909090909090909090909090909090909090909090909090909090909",
+            "extractors": [
+              {
+                "Log": {
+                  "log_index": 0
+                }
+              }
+            ],
+            "finality": "Finalized"
+          }
+        },
+        "values": [
+          {
+            "EvmExtractedValue": {
+              "Log": {
+                "removed": false,
+                "log_index": 0,
+                "transaction_index": 0,
+                "transaction_hash": "0909090909090909090909090909090909090909090909090909090909090909",
+                "block_hash": "0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a",
+                "block_number": 100,
+                "address": "0707070707070707070707070707070707070707",
+                "data": "0x7144ef07b8619cbc487d6d077c436d13121c3a6c2990e229b139b3292aff70b8cae662172fd450bb0cd710a769079c05bfc5d8e35efa6576edc7d0377afdd4a20000000000000000000000000c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0000000000000000000000000c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000000000000000000000",
+                "topics": [
+                  "f43793a96e97a81876094d1fe5bf210865985b1d9d7d4337f6c630b5046fe0a4",
+                  "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+                  "c8496c6ae46df85394c68e3b1f0665a64528d6781d0122789d6125a649d94693",
+                  "fdce843ba1cced769df4de490444730150ac6d053dd07cdcbe8fb87488c90f56"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "signature": {
+      "big_r": {
+        "affine_point": "03f7d7eaca0193f9f990170b8cafbb77a3d9bab53efeb992f41e880acbcfdb0b16"
+      },
+      "s": {
+        "scalar": "5fa03e0043f0838579663782c8faa73bea7f28db361a52ceae1e5f90ff6cffa9"
+      },
+      "recovery_id": 1
+    }
+  },
+  "manifest": {
+    "chain_id": "base",
+    "version": 1,
+    "family": "evm",
+    "network_fingerprint": "84532",
+    "vault": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+    "controller": [
+      51, 37, 167, 132, 37, 241, 122, 126, 72, 126, 181, 102, 107, 43, 253, 147,
+      171, 176, 108, 112
+    ],
+    "controller_public_key": [
+      83, 31, 230, 6, 129, 52, 80, 61, 39, 35, 19, 50, 39, 200, 103, 172, 143,
+      166, 200, 60, 83, 126, 154, 68, 195, 197, 189, 189, 203, 31, 227, 55, 158,
+      146, 194, 101, 231, 30, 72, 27, 168, 42, 132, 103, 90, 71, 172, 112, 90,
+      32, 15, 205, 82, 78, 146, 217, 59, 14, 115, 134, 242, 106, 84, 88
+    ],
+    "asset_id": "base",
+    "asset_address": [],
+    "decimals": 18,
+    "max_collateral_atomic": "1000000000000000000000000",
+    "ltv_bps": 5000,
+    "liquidation_threshold_bps": 7000,
+    "mpc_account": "mpc.near",
+    "read_domain": 2,
+    "read_public_key": [
+      77, 75, 108, 209, 54, 16, 50, 202, 155, 210, 174, 185, 217, 0, 170, 77,
+      69, 217, 234, 216, 10, 201, 66, 51, 116, 196, 81, 167, 37, 77, 7, 102, 42,
+      62, 173, 162, 208, 254, 32, 139, 109, 37, 124, 235, 15, 6, 66, 132, 102,
+      46, 133, 127, 87, 182, 107, 84, 193, 152, 189, 49, 13, 237, 54, 208
+    ],
+    "sign_domain": 0,
+    "derivation_path": "kanso/test/base",
+    "minimum_confirmations": 1,
+    "initial_account_nonce": 0,
+    "max_gas": 500000,
+    "max_fee_per_gas": "1000000000000",
+    "max_network_cost_atomic": "1000000000000000000",
+    "capability_evidence_hash": [
+      8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+      8, 8, 8, 8, 8, 8, 8
+    ],
+    "new_locks_enabled": true,
+    "signing_enabled": true
+  },
+  "loan": {
+    "loan_id": "loan",
+    "offer_hash": [
+      200, 73, 108, 106, 228, 109, 248, 83, 148, 198, 142, 59, 31, 6, 101, 166,
+      69, 40, 214, 120, 29, 1, 34, 120, 157, 97, 37, 166, 73, 217, 70, 147
+    ],
+    "offer": {
+      "deployment_id": "sandbox_tests",
+      "network": "sandbox",
+      "offer_id": "loan",
+      "pool_id": "pool",
+      "borrower": "borrower.near",
+      "payout_account": "borrower.near",
+      "policy_version": 1,
+      "principal_atomic": "100000000",
+      "apr_bps": 1000,
+      "duration_seconds": 31536000,
+      "origination_fee_atomic": "0",
+      "expires_at": 1700000060,
+      "setup_deadline": 1700000600,
+      "min_price_atomic": "4000000",
+      "max_price_atomic": "6000000",
+      "legs": [
+        {
+          "asset_id": "near",
+          "custody": {
+            "family": "near"
+          },
+          "leg_id": "near",
+          "owner": "borrower.near",
+          "amount_atomic": "100000000000000000000000000",
+          "release_recipient": "borrower.near"
+        }
+      ]
+    },
+    "policy": {
+      "version": 1,
+      "apr_bps": 1000,
+      "origination_fee_atomic": "0",
+      "min_principal_atomic": "1",
+      "max_principal_atomic": "1000000000",
+      "max_duration_seconds": 31536000,
+      "setup_duration_seconds": 600,
+      "grace_seconds": 60,
+      "interest_buffer_seconds": 86400,
+      "ltv_bps": 5000,
+      "liquidation_threshold_bps": 7000,
+      "min_liquidity_atomic": "0",
+      "withdrawal_health_ppm": 1200000,
+      "min_conditional_trigger_health_ppm": 1100000,
+      "max_liquidation_surplus_atomic": "1000000",
+      "recovery_health_ppm": 1300000,
+      "max_execution_cost_bps": 500,
+      "max_slippage_bps": 500,
+      "max_execution_cost_atomic": "10000000",
+      "eligible_assets": ["near"],
+      "asset_caps": [
+        {
+          "asset_id": "near",
+          "max_collateral_value_atomic": "1000000000000"
+        }
+      ],
+      "max_outstanding_principal_atomic": "10000000000"
+    },
+    "state": "active",
+    "setup_state": "funded",
+    "locks": [
+      {
+        "purpose": {
+          "kind": "collateral"
+        },
+        "agreement": [
+          200, 73, 108, 106, 228, 109, 248, 83, 148, 198, 142, 59, 31, 6, 101,
+          166, 69, 40, 214, 120, 29, 1, 34, 120, 157, 97, 37, 166, 73, 217, 70,
+          147
+        ],
+        "leg": {
+          "asset_id": "near",
+          "custody": {
+            "family": "near"
+          },
+          "leg_id": "near",
+          "owner": "borrower.near",
+          "amount_atomic": "100000000000000000000000000",
+          "release_recipient": "borrower.near"
+        },
+        "locked_atomic": "100000000000000000000000000",
+        "reserved_atomic": "0",
+        "accepted": true,
+        "receipt_verified": true,
+        "remote_nonce": 0
+      },
+      {
+        "purpose": {
+          "kind": "collateral"
+        },
+        "agreement": [
+          200, 73, 108, 106, 228, 109, 248, 83, 148, 198, 142, 59, 31, 6, 101,
+          166, 69, 40, 214, 120, 29, 1, 34, 120, 157, 97, 37, 166, 73, 217, 70,
+          147
+        ],
+        "leg": {
+          "asset_id": "near",
+          "custody": {
+            "family": "near"
+          },
+          "leg_id": "incoming",
+          "owner": "borrower.near",
+          "amount_atomic": "100000000000000000000000000",
+          "release_recipient": "borrower.near"
+        },
+        "locked_atomic": "0",
+        "reserved_atomic": "0",
+        "accepted": false,
+        "receipt_verified": false,
+        "remote_nonce": 0
+      }
+    ],
+    "principal_outstanding_atomic": "100000000",
+    "interest_atomic": "0",
+    "interest_remainder": 0,
+    "fees_due_atomic": "0",
+    "started_at": 1700000000,
+    "last_accrued_at": 1700000000,
+    "matures_at": 1731536000,
+    "active_outflow": null,
+    "recovery_outflows": [],
+    "written_off_atomic": "0",
+    "revision": "5"
+  },
+  "authorization": {
+    "version": 1,
+    "initial_terms": {
+      "enabled": true,
+      "trigger_health_ppm": 1200000,
+      "target_health_ppm": 1300000,
+      "max_total_repayment_atomic": "100000000",
+      "max_collateral_spend": [
+        {
+          "asset_id": "near",
+          "max_total_atomic": "20000000000000000000000000"
+        }
+      ],
+      "max_execution_cost_bps": 100,
+      "max_execution_cost_atomic": "1000000",
+      "expires_at": 1700000600
+    },
+    "terms": {
+      "enabled": true,
+      "trigger_health_ppm": 1200000,
+      "target_health_ppm": 1300000,
+      "max_total_repayment_atomic": "100000000",
+      "max_collateral_spend": [
+        {
+          "asset_id": "near",
+          "max_total_atomic": "20000000000000000000000000"
+        }
+      ],
+      "max_execution_cost_bps": 100,
+      "max_execution_cost_atomic": "1000000",
+      "expires_at": 1700000600
+    },
+    "spend": [
+      {
+        "asset_id": "near",
+        "consumed_atomic": "0",
+        "reserved_atomic": "0"
+      }
+    ],
+    "consumed_repayment_atomic": "0",
+    "reserved_repayment_atomic": "0",
+    "consumed_cost_atomic": "0",
+    "reserved_cost_atomic": "0"
+  },
+  "topup": {
+    "operation_id": "topup",
+    "loan_id": "loan",
+    "leg": {
+      "asset_id": "near",
+      "custody": {
+        "family": "near"
+      },
+      "leg_id": "incoming",
+      "owner": "borrower.near",
+      "amount_atomic": "100000000000000000000000000",
+      "release_recipient": "borrower.near"
+    },
+    "accepted": false
+  },
+  "replacement": {
+    "operation_id": "replace",
+    "loan_id": "loan",
+    "incoming_topup_id": "topup",
+    "outgoing_leg_id": "near",
+    "outgoing_amount_atomic": "1000000000000000000000000",
+    "transfer_id": null
+  },
+  "settlement": {
+    "plan": {
+      "operation_id": "sale",
+      "loan_id": "loan",
+      "expected_revision": "5",
+      "leg_id": "near",
+      "input_atomic": "1000000000000000000000000",
+      "net_output_atomic": "5000000",
+      "execution_cost_atomic": "0",
+      "max_source_fee_atomic": "0",
+      "solver": "payer.near",
+      "source_recipient": "payer.near",
+      "remote_recipient": [],
+      "expires_at": 1700000300,
+      "kind": "repayment",
+      "conditional_version": 0
+    },
+    "state": "quoted",
+    "escrow_atomic": "0",
+    "applied_atomic": "0",
+    "refund_id": null,
+    "source_spent_atomic": "0",
+    "actual_cost_atomic": "0",
+    "reserved_source_fee_value_atomic": "0",
+    "transfer_id": null,
+    "revision": 1
+  },
+  "risk": {
+    "debt_atomic": "100000000",
+    "borrowing_capacity_atomic": "250000000",
+    "secured_recovery_atomic": "0",
+    "liquidation_value_atomic": "350000000",
+    "health_ppm": "3500000",
+    "defaulted": false,
+    "revision": "5"
+  }
+}

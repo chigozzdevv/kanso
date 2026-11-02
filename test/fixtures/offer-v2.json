@@ -1,0 +1,33 @@
+{
+  "offer": {
+    "deployment_id": "encoding_fixture",
+    "network": "sandbox",
+    "offer_id": "offer_01",
+    "pool_id": "pool_01",
+    "borrower": "borrower.near",
+    "payout_account": "borrower.near",
+    "policy_version": 1,
+    "principal_atomic": "100000000",
+    "apr_bps": 1000,
+    "duration_seconds": 2592000,
+    "origination_fee_atomic": "1000000",
+    "expires_at": 1700000060,
+    "setup_deadline": 1700000600,
+    "min_price_atomic": "4000000",
+    "max_price_atomic": "6000000",
+    "legs": [
+      {
+        "leg_id": "near_01",
+        "owner": "borrower.near",
+        "amount_atomic": "100000000000000000000000000",
+        "release_recipient": "borrower.near",
+        "asset_id": "near",
+        "custody": {
+          "family": "near"
+        }
+      }
+    ]
+  },
+  "encoded_hex": "0b0000006b616e736f3a6f66666572020010000000656e636f64696e675f6669787475726500080000006f666665725f303107000000706f6f6c5f30310d000000626f72726f7765722e6e6561720d000000626f72726f7765722e6e6561720100000000e1f505000000000000000000000000e803008d27000000000040420f000000000000000000000000003cf153650000000058f353650000000000093d00000000000000000000000000808d5b0000000000000000000000000001000000040000006e65617200070000006e6561725f30310d000000626f72726f7765722e6e656172000000e4d20cc8dcd2b75200000000000d000000626f72726f7765722e6e656172",
+  "sha256": "43232efbab43a33130627f24457f3bb0542b8a5defe6ddabdc1fff5c386f38a4"
+}
