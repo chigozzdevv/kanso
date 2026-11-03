@@ -4,6 +4,9 @@
     "noEmit": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "paths": {
+      "@/*": ["./client/src/*"],
+      "@deployment": ["./deployments/testnet.json"],
+      "@client/*": ["./client/src/*"],
       "@test/*": ["./test/*"],
       "@testnet/*": ["./server/scripts/testnet/*"],
       "@schema/*": ["./packages/schema/src/*"],

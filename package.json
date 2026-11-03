@@ -39,6 +39,7 @@
     "test:integration": "vitest run --project integration",
     "dev:api": "pnpm --filter @kanso/server dev",
     "dev:worker": "pnpm --filter @kanso/server dev:worker",
+    "dev:client": "pnpm --filter @kanso/client dev",
     "verify:backend": "pnpm codegen:check && pnpm build && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm test:sandbox && pnpm test:integration",
     "testnet:keys": "pnpm --filter @kanso/server testnet keys",
     "testnet:faucet": "pnpm --filter @kanso/server testnet faucet",

@@ -4,6 +4,11 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   resolve: {
     alias: {
+      '@': fileURLToPath(new URL('./client/src', import.meta.url)),
+      '@deployment': fileURLToPath(
+        new URL('./deployments/testnet.json', import.meta.url),
+      ),
+      '@client': fileURLToPath(new URL('./client/src', import.meta.url)),
       '@bindings': fileURLToPath(
         new URL('./packages/bindings/src', import.meta.url),
       ),
