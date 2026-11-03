@@ -1,5 +1,4 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { parse } from 'dotenv';
 import { join } from 'node:path';
 import { format, resolveConfig } from 'prettier';
 import { chain_manifest, deployment } from '@kanso/schema';
@@ -17,8 +16,15 @@ import { canonical_json, scoped_id } from '@kanso/sdk';
 import { NEAR_TESTNET_USDC } from '@kanso/bindings';
 import { near_send, near_signer, near_view, call } from '@testnet/deploy-near';
 import { read_json } from '@testnet/store';
-import { refresh_prices, value_of } from '@testnet/live-loans';
+import { refresh_prices } from '@testnet/oracle';
 import { Queues } from '@server/shared/queue/queue.client';
+
+const value_of = <T>(effect: { result?: unknown }): T => {
+  const result = effect.result as { status: { SuccessValue: string } };
+  return JSON.parse(
+    Buffer.from(result.status.SuccessValue, 'base64').toString(),
+  ) as T;
+};
 
 async function json_file(path: string, value: unknown) {
   await writeFile(
@@ -443,7 +449,11 @@ export async function activate_lending(release: Release) {
     throw new Error(
       'Verify Circle USDC LP withdrawals and solver refunds before activation',
     );
-  const settings = parse(await readFile(join(release.folder, 'server.env')));
+  const settings = process.env;
+  if (!settings.PORT || !settings.REDIS_URL)
+    throw new Error(
+      'PORT and REDIS_URL are required for activation readiness checks',
+    );
   const api_url = `http://127.0.0.1:${settings.PORT}`;
   const response = await fetch(api_url + '/health/ready', {
     signal: AbortSignal.timeout(20000),

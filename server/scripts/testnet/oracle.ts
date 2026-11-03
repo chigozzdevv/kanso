@@ -62,7 +62,7 @@ export async function reference_prices() {
     }),
   );
 }
-export async function publish_live_prices(release: Release) {
+export async function publish_prices(release: Release) {
   const coordinator = (await near_signer(release, 'coordinator')).accountId;
   const oracle = await near_signer(release, 'oracle');
   for (const [id, effect] of Object.entries(release.journal.effects)) {
@@ -124,7 +124,7 @@ export async function publish_live_prices(release: Release) {
   return prices;
 }
 
-export async function watch_live_prices() {
+export async function watch_prices() {
   let stopping = false;
   process.once('SIGINT', () => {
     stopping = true;
@@ -135,12 +135,36 @@ export async function watch_live_prices() {
   while (!stopping) {
     try {
       const release = await Release.load('deployment-oracle.json');
-      await release.lock(() => publish_live_prices(release));
+      await release.lock(() => publish_prices(release));
     } catch (error) {
       console.error(
         `${new Date().toISOString()}: oracle refresh failed: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
     if (!stopping) await pause(90000);
+  }
+}
+
+export async function refresh_prices() {
+  const oracle = await Release.load('deployment-oracle.json');
+  const coordinator = (await near_signer(oracle, 'coordinator')).accountId;
+  const price = await near_view<{ published_at: number }>(
+    coordinator,
+    'get_asset_price',
+    { asset_id: 'near' },
+  );
+  if (price && Date.now() / 1000 - price.published_at < 90) return;
+  try {
+    await oracle.lock(() => publish_prices(oracle));
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      'code' in error &&
+      error.code === 'EEXIST' &&
+      price &&
+      Date.now() / 1000 - price.published_at < 180
+    )
+      return;
+    throw error;
   }
 }

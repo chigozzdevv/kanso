@@ -1,3 +1,6 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { deployment } from '@kanso/schema';
 import {
   SystemProgram,
   PublicKey,
@@ -9,14 +12,33 @@ import type { Hex } from 'viem';
 import { digest } from '@testnet/deployment';
 import type { Release } from '@testnet/deployment';
 import { read_json } from '@testnet/store';
-import { live_plan } from '@testnet/live-setup';
-import { send_evm, send_solana } from '@testnet/live-wallets';
+import { send_evm, send_solana } from '@testnet/controller-transfers';
 import { execute_sui } from '@testnet/deploy-sui';
 import { starknet_invoke } from '@testnet/deploy-starknet';
 import { STRK } from '@testnet/network';
 
-export async function fund_controllers(release: Release) {
-  const plan = await live_plan(release);
+export async function fund_controllers(
+  release: Release,
+  run: string,
+  chain_id?: string,
+) {
+  if (!/^[a-zA-Z0-9_-]{1,64}$/.test(run))
+    throw new Error(
+      'A run ID of 1-64 letters, digits, underscores or hyphens is required',
+    );
+  const configured = deployment.parse(
+    JSON.parse(
+      await readFile(
+        join(release.folder, '..', 'deployments/testnet.json'),
+        'utf8',
+      ),
+    ),
+  );
+  if (
+    chain_id &&
+    !configured.chains.some((chain) => chain.manifest.chain_id === chain_id)
+  )
+    throw new Error(`Unknown controller chain: ${chain_id}`);
   const amounts: Record<string, bigint> = {
     base: 500_000_000_000_000n,
     arbitrum: 500_000_000_000_000n,
@@ -25,11 +47,10 @@ export async function fund_controllers(release: Release) {
     avalanche: 10_000_000_000_000_000n,
     hyperevm: 500_000_000_000_000n,
   };
-  for (const c of plan.deployment.chains) {
+  for (const c of configured.chains) {
     const m = c.manifest;
-    if (process.env.LIVE_CHAIN && process.env.LIVE_CHAIN !== m.chain_id)
-      continue;
-    const id = `gas-${m.chain_id}-v1`;
+    if (chain_id && chain_id !== m.chain_id) continue;
+    const id = `gas-${m.chain_id}-${run}`;
     if (release.journal.effects[id]?.state === 'confirmed') continue;
     const address = ('0x' + Buffer.from(m.controller).toString('hex')) as Hex;
     if (m.family === 'evm')
