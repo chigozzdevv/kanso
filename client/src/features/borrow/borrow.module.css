@@ -1,0 +1,173 @@
+.principal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 14px;
+  border: 1px solid #d7e5da;
+  border-radius: 14px;
+}
+.principal:focus-within {
+  outline: 2px solid #60bc7b;
+  outline-offset: 1px;
+}
+.principal input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  outline: none;
+  font-size: 28px;
+  letter-spacing: -0.045em;
+  color: #14271c;
+  background: transparent;
+}
+.principal input::placeholder {
+  color: #a5b4a9;
+}
+.principal > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 550;
+}
+.select {
+  position: relative;
+}
+.select select {
+  appearance: none;
+  padding-right: 34px;
+}
+.select > svg {
+  position: absolute;
+  top: 16px;
+  right: 14px;
+  pointer-events: none;
+}
+.review {
+  margin-top: 26px;
+  min-height: 50px;
+  font-size: 13px;
+}
+.offers {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+.offer {
+  padding: 22px;
+  border: 1px solid #cce5d3;
+  border-radius: 18px;
+  background: #fbfefb;
+}
+.offerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.offerHeader span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.offerTerms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-block: 20px;
+}
+.offerTerms dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+.offerTerms dd {
+  margin: 6px 0 0;
+  font-size: 17px;
+  font-weight: 550;
+}
+.offerFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.costs {
+  display: grid;
+  gap: 12px;
+  padding-top: 16px;
+  margin-block: 0 16px;
+  border-top: 1px solid #dcebe0;
+  font-size: 12px;
+}
+.costs > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.costs dt {
+  color: var(--muted);
+}
+.costs dd {
+  margin: 0;
+}
+.risk {
+  margin-bottom: 18px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.offerFooter p {
+  max-width: 300px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.progress {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+}
+.progress li {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e2ece4;
+}
+.progress li > svg {
+  color: var(--green);
+  margin-top: 2px;
+}
+.progress strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 550;
+}
+.progress p {
+  font-size: 11px;
+  margin-top: 5px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.operationId {
+  display: block;
+  font-size: 10px;
+  margin-top: 10px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .offer {
+    padding: 18px;
+  }
+  .offerFooter {
+    align-items: start;
+    flex-direction: column;
+  }
+  .offerFooter button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,44 @@
+.dialog {
+  width: min(520px, calc(100% - 32px));
+  max-height: min(760px, calc(100svh - 48px));
+  padding: 0;
+  border: 1px solid #dceade;
+  border-radius: 28px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 24px 80px #173c2b24;
+}
+.dialog::backdrop {
+  background: #0d281c66;
+  backdrop-filter: blur(5px);
+}
+.surface {
+  padding: 28px;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.heading h2 {
+  font-size: 25px;
+  letter-spacing: -0.04em;
+  color: #111;
+}
+.close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #f1f6f1;
+}
+@media (max-width: 600px) {
+  .surface {
+    padding: 22px;
+  }
+}

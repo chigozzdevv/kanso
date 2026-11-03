@@ -1,0 +1,5 @@
+/* Native selects can retain :focus-visible after a pointer-opened menu closes. */
+.control[data-pointer-focus]:focus {
+  outline: none;
+  box-shadow: none;
+}
