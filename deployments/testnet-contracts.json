@@ -1,0 +1,1399 @@
+{
+  "version": 1,
+  "deployment_id": "kanso-testnet-9774b8b352-v1",
+  "network": "testnet",
+  "recorded_at": "2026-10-26T11:10:07.862Z",
+  "origination_enabled": true,
+  "remote_integrations_enabled": true,
+  "enabled_chains": [
+    "near",
+    "base",
+    "arbitrum",
+    "bnb",
+    "polygon",
+    "avalanche",
+    "hyperevm",
+    "solana",
+    "sui",
+    "starknet",
+    "bitcoin"
+  ],
+  "settlement_verification": [
+    {
+      "loan_id": "1a58c78d58471e3c9d0160d6ef1834cfd8b96a823c9bf4e99f6bca439153989b",
+      "collateral_chains": ["bnb", "near", "sui"],
+      "verified_at": "2026-10-26T11:08:04.361Z"
+    }
+  ],
+  "settlement_asset": {
+    "account": "3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520d03d4afcb8af",
+    "symbol": "USDC",
+    "decimals": 6,
+    "description": "Circle-issued USDC on NEAR Testnet"
+  },
+  "contracts": {
+    "near": {
+      "coordinator": "kanso-coordinator-9774b8b352.testnet",
+      "settlement_token": "3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520d03d4afcb8af",
+      "config": {
+        "deployment_id": "kanso-testnet-9774b8b352-v1",
+        "network": "testnet",
+        "owner": "kanso-owner-9774b8b352.testnet",
+        "oracle_account": "kanso-oracle-9774b8b352.testnet",
+        "settlement_token": "3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520d03d4afcb8af",
+        "settlement_decimals": 6,
+        "max_price_age_seconds": 300,
+        "max_confidence_bps": 100,
+        "max_ltv_bps": 6000,
+        "max_liquidation_threshold_bps": 8000,
+        "operational_reserve_atomic": "100000000000000000000000"
+      },
+      "code_sha256": "e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8",
+      "paused": {
+        "origination": false,
+        "collateral_withdrawals": false,
+        "settlements": false
+      },
+      "recovery": {
+        "public_keys": [
+          [
+            197, 115, 184, 90, 80, 122, 255, 152, 47, 180, 119, 193, 214, 245,
+            245, 32, 102, 111, 61, 26, 170, 223, 54, 80, 115, 142, 244, 146,
+            225, 244, 36, 151
+          ],
+          [
+            93, 162, 214, 147, 79, 194, 177, 204, 121, 220, 194, 116, 248, 21,
+            2, 207, 25, 192, 115, 236, 56, 23, 145, 138, 102, 8, 196, 254, 87,
+            102, 77, 255
+          ],
+          [
+            82, 87, 65, 15, 163, 161, 173, 202, 82, 214, 78, 18, 180, 253, 20,
+            71, 24, 242, 234, 17, 25, 197, 243, 104, 122, 120, 133, 12, 32, 229,
+            82, 228
+          ]
+        ],
+        "threshold": 2
+      },
+      "upgrade": {
+        "state_version": 1,
+        "minimum_delay_seconds": 60,
+        "governance": {
+          "pending_owner": null,
+          "pending_upgrade": null,
+          "last_upgrade_hash": [
+            229, 161, 209, 147, 177, 118, 72, 233, 160, 254, 94, 243, 150, 214,
+            205, 40, 182, 147, 47, 75, 189, 176, 107, 41, 43, 183, 72, 183, 130,
+            92, 47, 216
+          ],
+          "revision": 6
+        },
+        "staged_bytes": 0
+      },
+      "verified_at": "2026-10-26T11:10:07.623Z",
+      "pool": {
+        "pool_id": "usdc",
+        "manager": "kanso-manager-9774b8b352.testnet",
+        "policy": {
+          "version": 1,
+          "apr_bps": 1000,
+          "origination_fee_atomic": "0",
+          "min_principal_atomic": "1000000",
+          "max_principal_atomic": "1000000000",
+          "max_duration_seconds": 2592000,
+          "setup_duration_seconds": 3600,
+          "grace_seconds": 60,
+          "interest_buffer_seconds": 86400,
+          "ltv_bps": 5000,
+          "liquidation_threshold_bps": 7000,
+          "min_liquidity_atomic": "0",
+          "withdrawal_health_ppm": 1200000,
+          "min_conditional_trigger_health_ppm": 1100000,
+          "max_liquidation_surplus_atomic": "1000000",
+          "recovery_health_ppm": 1300000,
+          "max_execution_cost_bps": 500,
+          "max_slippage_bps": 500,
+          "max_execution_cost_atomic": "10000000",
+          "eligible_assets": [
+            "near",
+            "base_eth",
+            "arbitrum_eth",
+            "bnb",
+            "pol",
+            "avax",
+            "hype",
+            "sol",
+            "sui",
+            "strk",
+            "btc"
+          ],
+          "asset_caps": [
+            {
+              "asset_id": "near",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "base_eth",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "arbitrum_eth",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "bnb",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "pol",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "avax",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "hype",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "sol",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "sui",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "strk",
+              "max_collateral_value_atomic": "1000000000000"
+            },
+            {
+              "asset_id": "btc",
+              "max_collateral_value_atomic": "1000000000000"
+            }
+          ],
+          "max_outstanding_principal_atomic": "10000000000"
+        },
+        "cash_atomic": "20000001",
+        "reserved_atomic": "0",
+        "in_flight_atomic": "0",
+        "total_shares": "19999999",
+        "pending_withdrawal": false,
+        "recognized_loss_atomic": "0",
+        "loan_ids": [],
+        "revision": "9"
+      },
+      "account_keys_removed": true,
+      "coordinator_upgrades": "owner-controlled, minimum one-minute testnet contract timelock",
+      "recovery_trust": "2 of 3 keys on one development machine"
+    },
+    "base": {
+      "family": "evm",
+      "chain_id": 84532,
+      "address": "0xa1005bcd2589ad639527534892caba28e410f19b",
+      "controller": {
+        "path": "kanso-testnet-9774b8b352-v1:base:custody:v1",
+        "domain": 0,
+        "public_key": "d7fd874684253b1ceb9de0c6417be06a15a1f63054a75d7b271057ba5fce8015bb73ec2470c6c6ab040e406f48ab667fe200c0e79992d2ae2c68daab544ea779",
+        "address": "0x50C72Fa0F0c81e825f5b57ec91E154FF726dcA47"
+      },
+      "deployment": "0xa45718ff3ddcd6edbc8f04d4da974dd8b8bfb2a627a5dff84901137930578959",
+      "asset": "0x0000000000000000000000000000000000000000",
+      "artifact_sha256": "15235089884b30157c0facdcf8e1249fd582f2875856e7a24f749b381a9a4d45",
+      "runtime_keccak256": "0x28ff5b683cd07c40981316fafa0300e6a69196c4954913cc31d7b335f4e5ebe0",
+      "transaction": "0x72bfe8ac01cf54f21a8b32afee45df2b07855189bb318b849fa4fd6703656c6c",
+      "block_number": "49865335",
+      "immutable": true,
+      "enabled": false,
+      "verified_at": "2026-10-25T02:26:34.675Z"
+    },
+    "arbitrum": {
+      "family": "evm",
+      "chain_id": 421614,
+      "address": "0xa1005bcd2589ad639527534892caba28e410f19b",
+      "controller": {
+        "path": "kanso-testnet-9774b8b352-v1:arbitrum:custody:v1",
+        "domain": 0,
+        "public_key": "e8996c002df178dfda0f31907c3379e6e66bf24072e44519db494149d5d25b0ccfce3256bb0eb6e56b2c948b53c29e760da8c2be1f22c77107abb700512acda0",
+        "address": "0x1c648bE26b66B85172a3a6732f0182799d88f25D"
+      },
+      "deployment": "0xa45718ff3ddcd6edbc8f04d4da974dd8b8bfb2a627a5dff84901137930578959",
+      "asset": "0x0000000000000000000000000000000000000000",
+      "artifact_sha256": "15235089884b30157c0facdcf8e1249fd582f2875856e7a24f749b381a9a4d45",
+      "runtime_keccak256": "0xb8e016df1d14ca1224fe7d1f7aa74d3df22c92bcdb6222989335a741fb214fa7",
+      "transaction": "0x9d9dcb895bac1b2b7500601656ca8474a8cb92060c61c7d83e86096d30f829fa",
+      "block_number": "322559698",
+      "immutable": true,
+      "enabled": false,
+      "verified_at": "2026-10-25T02:26:38.696Z"
+    },
+    "bnb": {
+      "family": "evm",
+      "chain_id": 97,
+      "address": "0xa1005bcd2589ad639527534892caba28e410f19b",
+      "controller": {
+        "path": "kanso-testnet-9774b8b352-v1:bnb:custody:v1",
+        "domain": 0,
+        "public_key": "8c0f8671ca77169db2a032638a0535c8ec090bba9784071f8fadad03d09f15e308f791131b1c1342c730f37424497194df49a99081b7d4709ed4673e4905fe46",
+        "address": "0x2D51Ae76f866C3E895A3242341885AD10Ad47A2C"
+      },
+      "deployment": "0xa45718ff3ddcd6edbc8f04d4da974dd8b8bfb2a627a5dff84901137930578959",
+      "asset": "0x0000000000000000000000000000000000000000",
+      "artifact_sha256": "15235089884b30157c0facdcf8e1249fd582f2875856e7a24f749b381a9a4d45",
+      "runtime_keccak256": "0x5ee467f9378d932119bb4875b8ade8bf8bbe9d2817a340c4c9214eca1d9992d9",
+      "transaction": "0x0259175de8c66516b7107964d89c51c3b1e4d18b41ff3e548afeb152fc03abcf",
+      "block_number": "138765240",
+      "immutable": true,
+      "enabled": false,
+      "verified_at": "2026-10-25T02:26:43.560Z"
+    },
+    "polygon": {
+      "family": "evm",
+      "chain_id": 80002,
+      "address": "0xa1005bcd2589ad639527534892caba28e410f19b",
+      "controller": {
+        "path": "kanso-testnet-9774b8b352-v1:polygon:custody:v1",
+        "domain": 0,
+        "public_key": "11a5a07101d92524f43d2fbff15ac420e093f00372bda21a0e2d120ed9466b39a0cfd214fff0dae2077a60f07637dd3c0eb1b8e6335185b88e60c7293968e461",
+        "address": "0x41CdC107caa41e37A5904cA7203909b239a1D08c"
+      },
+      "deployment": "0xa45718ff3ddcd6edbc8f04d4da974dd8b8bfb2a627a5dff84901137930578959",
+      "asset": "0x0000000000000000000000000000000000000000",
+      "artifact_sha256": "15235089884b30157c0facdcf8e1249fd582f2875856e7a24f749b381a9a4d45",
+      "runtime_keccak256": "0xccce2b9df3e48b5f4f1b25409c6bbace897a5d117d903c97023eb32ea146e8b8",
+      "transaction": "0x6c6403b7fe5c3b0fba9dcdf3ae721b76bdbb11b80e98db763a6085db880359e9",
+      "block_number": "51072645",
+      "immutable": true,
+      "enabled": false,
+      "verified_at": "2026-10-25T02:26:56.461Z"
+    },
+    "avalanche": {
+      "family": "evm",
+      "chain_id": 43113,
+      "address": "0xa1005bcd2589ad639527534892caba28e410f19b",
+      "controller": {
+        "path": "kanso-testnet-9774b8b352-v1:avalanche:custody:v1",
+        "domain": 0,
+        "public_key": "462ce84fe43f9a406c46ea84e961f5c838ce84473f50012535e05144a2b502aa7ef98a77062badbd8f64d08b8944f2b4a24b0ec369374a2316049345a2e3e1c1",
+        "address": "0xd0b216647dFaF9242be7D237F5D22d15A952C444"
+      },
+      "deployment": "0xa45718ff3ddcd6edbc8f04d4da974dd8b8bfb2a627a5dff84901137930578959",
+      "asset": "0x0000000000000000000000000000000000000000",
+      "artifact_sha256": "15235089884b30157c0facdcf8e1249fd582f2875856e7a24f749b381a9a4d45",
+      "runtime_keccak256": "0xf9eae9e7cafd9cfa5838950e140d8108a7a18ca7e20e00e3cd64129aa8147fac",
+      "transaction": "0xd61214d3b14e2de00f45d936fa43fc2e19caed80bcfe2919e41143be9e644f22",
+      "block_number": "59981977",
+      "immutable": true,
+      "enabled": false,
+      "verified_at": "2026-10-25T02:27:13.324Z"
+    },
+    "hyperevm": {
+      "family": "evm",
+      "chain_id": 998,
+      "address": "0xa1005bcd2589ad639527534892caba28e410f19b",
+      "controller": {
+        "path": "kanso-testnet-9774b8b352-v1:hyperevm:custody:v1",
+        "domain": 0,
+        "public_key": "445ef7ff4d98849d186b1e7c4d9231440953ddbc00104aeff40b39d557f834591a79c5ea176cbf8c2cdd6d9e91f029a64c9806bd7c806bf9e34b3cd40489d588",
+        "address": "0x53b73eFb20a9Eb6303F9f248E6cbD4764456716a"
+      },
+      "deployment": "0xa45718ff3ddcd6edbc8f04d4da974dd8b8bfb2a627a5dff84901137930578959",
+      "asset": "0x0000000000000000000000000000000000000000",
+      "artifact_sha256": "15235089884b30157c0facdcf8e1249fd582f2875856e7a24f749b381a9a4d45",
+      "runtime_keccak256": "0x9411008dde045ccffb302cce7ea61fdac2ee7a016efffa1f86068d78b043e6b8",
+      "transaction": "0x2349daf24565b98449e8ef231241ddae7f8a42331230edc32146bc0a8daf3474",
+      "block_number": "67810854",
+      "immutable": true,
+      "enabled": false,
+      "verified_at": "2026-10-25T02:27:27.059Z"
+    },
+    "coordinator_upgrade": {
+      "state": "staged",
+      "code_hash": "e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8",
+      "execute_after": 1793011478,
+      "staged_bytes": 1284844
+    },
+    "bitcoin_verifier": {
+      "account_id": "btc-client-v4.testnet",
+      "network_fingerprint": "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943",
+      "max_tip_age_seconds": 21600,
+      "code_hash": "GoMf83WAKXNL1y4ApPtzm2Q88oJvEp3hmR3Ps6tjaG6W",
+      "manifest_versions": 6
+    },
+    "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-storage-0": [
+      { "role": "owner", "amount": "450235049745072799999830" },
+      { "role": "manager", "amount": "8743821658935965299999992" },
+      { "role": "solver", "amount": "3271033291318961900000178" }
+    ],
+    "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-gas-0": "1798498875188315700000000",
+    "solana": {
+      "family": "solana",
+      "program": "8VWqLqwyJ9SaPjoo6B7pFFhdcGNtE3ohzXWmRFL6uaNS",
+      "programdata": "8S4E31dYTTtdDwLxfLmN6MAHb3tsi1CwBPKmLWeKy7MU",
+      "config": "BcmFyBRMYMPqeGGXitK4j5Ti8NPtp6wgihbv5rQHLd3j",
+      "controller": {
+        "path": "kanso-testnet-9774b8b352-v1:solana:custody:v1",
+        "domain": 1,
+        "public_key": "211a56a56c1130072de285d07ccb507fbf710c063bfa8264f5e4d63dbfcd6b61",
+        "address": "3EDkNvK6Y2c9Wnu3McqaWf6zyQdo7vMo2DDeyC8wYbFN"
+      },
+      "network_fingerprint": "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+      "artifact_sha256": "fea77088a55592ac45ee52e8fce05272f358670ba494ecce672cd5c2e85ea4a7",
+      "deployment_slot": "514821895",
+      "immutable": true,
+      "enabled": false,
+      "verified_at": "2026-10-25T02:38:52.991Z"
+    },
+    "sui": {
+      "family": "sui",
+      "package": "0x9cd94dd730b5937f466c90f6b7dc60c1f49bb0a33814d1e9b07cf3ba4193cb08",
+      "vault": "0x8b842149403ca16f56cc900048957970f5430693733c3261e2fe91f18e701b8d",
+      "initial_shared_version": "1",
+      "controller": {
+        "path": "kanso-testnet-9774b8b352-v1:sui:custody:v1",
+        "domain": 1,
+        "public_key": "82b70ea20007e17ceec422a00cbc59c30a7c5cffc671b8dbb17b60439ad863dd",
+        "address": "0x9bdc9c6cd815cbce88d151ea605b68fba9bd6e3c9898d01d892814658a9bdfdc"
+      },
+      "network_fingerprint": "69WiPg3DAQiwdxfncX6wYQ2siKwAe6L9BZthQea3JNMD",
+      "network_word": "0x4c78adacf2a2f5ad80f27ed7d54aa69d3a78f1ca67fdef9ecf5754f5b8bb77b0",
+      "deployment": "0xa45718ff3ddcd6edbc8f04d4da974dd8b8bfb2a627a5dff84901137930578959",
+      "artifact_sha256": "e29c4571c0f72758c844b34642142fadc98213658794d5dbc0828d03d972e4cb",
+      "publish_transaction": "5K5u6Cq73jiWTWJpizN63DnNDRGu6EDxpA3Xhzti3KUr",
+      "create_transaction": "E34xzauWfQLL9YFVbwYQjfnRHbwjhn6Y25wX71xVvNAh",
+      "immutable": true,
+      "enabled": false,
+      "verified_at": "2026-10-25T02:28:38.898Z"
+    },
+    "starknet": {
+      "family": "starknet",
+      "controller": "0x6ca209a54f28287769d3f1c1225b42f427eec4fd2e20550b7ede5106ad81d3a",
+      "vault": "0x7902239424780d8fad898941a3f527bf70fa215a229dcca6abdb3d44b90f55d",
+      "custody_public_key": "ab97704f74aa9970218410df8c2c85af75dc46ebcc62ff2a87bfb6932dd13f2220d399bad04f3e933c992148f031bc49fcaaf3d7f0eda2843d210dbe6a8ed81f",
+      "derivation_path": "kanso-testnet-9774b8b352-v1:starknet:custody:v1",
+      "sign_domain": 0,
+      "deployment": "153888217849340453090475461733046242774725589529966199017630389095412238681",
+      "token": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "classes": {
+        "CollateralVault": "0x706e5829e43cf33caaa3e5518d1f9f012eff1efe33fd6dc7e3c0a55d5652194",
+        "ControllerAccount": "0x55d9b2823dd30e7e6d63e27c3f40ab20267991201b45123704598f2565b23ff"
+      },
+      "artifacts": {
+        "CollateralVault": "7ac135b764e34bba096167e9bf937fd6ba671c45cb26809866568f4e4aa77d8b",
+        "ControllerAccount": "6309d3e765487a0e5cb90a2609458f1630a5432d36a1ca53beeb84505bfc9883"
+      },
+      "immutable": true,
+      "enabled": false,
+      "verified_at": "2026-10-25T02:51:06.201Z"
+    }
+  },
+  "transactions": [
+    {
+      "step": "near-storage-topup",
+      "state": "confirmed",
+      "transaction_id": "4MrGr4fgWqw7XbaJa77Xe4AKZaov7DhB6Nn9UnC3pgL1"
+    },
+    {
+      "step": "near-token-deploy",
+      "state": "confirmed",
+      "transaction_id": "CYFVUHpsriDCZsQ1REjZx6vN4z6ym1FWDZgbUfi14GoA"
+    },
+    {
+      "step": "near-coordinator-deploy",
+      "state": "confirmed",
+      "transaction_id": "5VLoRHLFGEog9VrxfsivyJoxq8Qkc3d1rVEBZQUuw547"
+    },
+    {
+      "step": "near-bootstrap-storage",
+      "state": "confirmed",
+      "transaction_id": "2ACpSHuybM2RyKFdP1dUjVzYWBMoQhQreMu8dhc3yKhz"
+    },
+    {
+      "step": "near-owner-propose",
+      "state": "confirmed",
+      "transaction_id": "3KCDMY7a6oj4KBUTXy5j5pFFVe1ijf1tE5LK5ZUsxjdh"
+    },
+    {
+      "step": "near-owner-accept",
+      "state": "confirmed",
+      "transaction_id": "2fbtbn98jcQwe8oKruQ7gEwVDYajeKs3jdELhoKXqK1M"
+    },
+    {
+      "step": "near-owner-storage",
+      "state": "confirmed",
+      "transaction_id": "BM2qZ37k8we5W9K8SKzHLhAePjMxjEf3XNDfUJo7Yg9w"
+    },
+    {
+      "step": "near-recovery-configure",
+      "state": "confirmed",
+      "transaction_id": "JepRMF4mT2Q55bG7nhfaqu46Ey5Pbd19Hjs5XVjwGfV"
+    },
+    {
+      "step": "near-token-register-coordinator",
+      "state": "confirmed",
+      "transaction_id": "BZbe9TS3cPnjGj9cZjPHDRsCucXhiZbndiPTi4FRyGxQ"
+    },
+    {
+      "step": "near-token-register-lp",
+      "state": "confirmed",
+      "transaction_id": "GXTNDtVA4YSG6NGYjEQcTvLYAE8pEueTfC7XtW3ckNKL"
+    },
+    {
+      "step": "near-token-register-borrower",
+      "state": "confirmed",
+      "transaction_id": "EygY43cuXHEiVU22bwVFk3ZJVsKCWJMugMddGidUsyeT"
+    },
+    {
+      "step": "near-token-register-solver",
+      "state": "confirmed",
+      "transaction_id": "2FPtP2vhuk8zN7c64fksihwcpwrRRFFzKRan4WaNExn1"
+    },
+    {
+      "step": "evm-base-deploy",
+      "state": "confirmed",
+      "transaction_id": "0x72bfe8ac01cf54f21a8b32afee45df2b07855189bb318b849fa4fd6703656c6c"
+    },
+    {
+      "step": "evm-arbitrum-deploy",
+      "state": "confirmed",
+      "transaction_id": "0x9d9dcb895bac1b2b7500601656ca8474a8cb92060c61c7d83e86096d30f829fa"
+    },
+    {
+      "step": "evm-bnb-deploy",
+      "state": "confirmed",
+      "transaction_id": "0x0259175de8c66516b7107964d89c51c3b1e4d18b41ff3e548afeb152fc03abcf"
+    },
+    {
+      "step": "evm-polygon-deploy",
+      "state": "confirmed",
+      "transaction_id": "0x6c6403b7fe5c3b0fba9dcdf3ae721b76bdbb11b80e98db763a6085db880359e9"
+    },
+    {
+      "step": "evm-avalanche-deploy",
+      "state": "confirmed",
+      "transaction_id": "0xd61214d3b14e2de00f45d936fa43fc2e19caed80bcfe2919e41143be9e644f22"
+    },
+    {
+      "step": "evm-hyperevm-deploy",
+      "state": "confirmed",
+      "transaction_id": "0x2349daf24565b98449e8ef231241ddae7f8a42331230edc32146bc0a8daf3474"
+    },
+    {
+      "step": "near-manager-storage",
+      "state": "confirmed",
+      "transaction_id": "GHwMxS1WZkNpBSDcy7DAtr1P6VBAQ3gWpBPFhPFn2vLu"
+    },
+    {
+      "step": "near-pool-create",
+      "state": "confirmed",
+      "transaction_id": "BwM36TgaFvqnJb7GQBzgAhbXWd6qbuJvUiZF7uxsRTgR"
+    },
+    {
+      "step": "near-lp-storage",
+      "state": "confirmed",
+      "transaction_id": "BwVTBMWpWd1TqLTKq5ThMgwPDgoA1vTVx2vihdq5x7tp"
+    },
+    {
+      "step": "near-test-token-fund-lp",
+      "state": "confirmed",
+      "transaction_id": "6MrwFj4usVPLjgigcUoX6hEt3pfj3pKA9D6ghh9pcAyw"
+    },
+    {
+      "step": "near-borrower-storage",
+      "state": "confirmed",
+      "transaction_id": "AFu1f9497ojhDrJgqkWY5gSHLrbnRjeJ2LUcGLnVsfqm"
+    },
+    {
+      "step": "near-test-token-fund-borrower",
+      "state": "confirmed",
+      "transaction_id": "HiJAnQqyfo6h7KDsKAjpAEnchkVSuhxR6sdv2sVB2kSA"
+    },
+    {
+      "step": "near-solver-storage",
+      "state": "confirmed",
+      "transaction_id": "5pWpRuQREs22xngxU16r997nGb9S3CGDafdmrK8ea5EV"
+    },
+    {
+      "step": "near-test-token-fund-solver",
+      "state": "confirmed",
+      "transaction_id": "hz4hrcKeGRsWkJn58gw1tVo7gWeqeiNjPDJuX7DHzZK"
+    },
+    {
+      "step": "near-remove-coordinator-key",
+      "state": "confirmed",
+      "transaction_id": "A3rt18nBWKrs79FDW8UCGKjRVgv47SAoJg9rRjycYDvu"
+    },
+    {
+      "step": "near-remove-settlement-key",
+      "state": "confirmed",
+      "transaction_id": "8PFBNLqT9wXL1JoQBS2uGgfckSLQMVRqNtbRkugxLYSi"
+    },
+    {
+      "step": "bitcoin-upgrade-storage-funding",
+      "state": "confirmed",
+      "transaction_id": "FYyjssKhT2pahCz3FMma3xb1UxvrWeeYd2g4XBeYAYtS"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-schedule",
+      "state": "confirmed",
+      "transaction_id": "CetzuAuvPjqDaNZTw9MJh2JRvoRNVPztPgPVxk8aDet"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-storage",
+      "state": "confirmed",
+      "transaction_id": "DPuzTzfJcbLdZhESASMhsaj9B9ppDakcFNU2UpgweEC7"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-0",
+      "state": "confirmed",
+      "transaction_id": "6TuFzJNeGxBkqCpw2FTSMiBKsRX9Btbo9cMBCUGhqEi1"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-120000",
+      "state": "confirmed",
+      "transaction_id": "8ZLYVzqnvvYheZF17qEqgtmttCCFVujxnxbSBwirNC41"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-240000",
+      "state": "confirmed",
+      "transaction_id": "2aUEowkcP31S5vS4VjxbS2naVCgkjkJRWit8o5subzjb"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-360000",
+      "state": "confirmed",
+      "transaction_id": "4TZuLP7ynexVZL7etMDVwkbV5yP2nfBJxksek5UYYf9B"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-480000",
+      "state": "confirmed",
+      "transaction_id": "8SwCJFQLzxyTSq2vd8LDUX2uW3RNthxGZBvtJPSSkE3n"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-600000",
+      "state": "confirmed",
+      "transaction_id": "33Q2UJEi9DpCTBobBcDWpFME54Z3s8R9jkJdCffTJSpi"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-720000",
+      "state": "confirmed",
+      "transaction_id": "5uNqZnMfgdpyqNpBkmeB9rdeYVwff8RTaFzjN7rh5XRj"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-840000",
+      "state": "confirmed",
+      "transaction_id": "5xZSJ2b1C7L4u9CgrXg2DwDWcAc1bzMVt5dYFYhegGGn"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-960000",
+      "state": "confirmed",
+      "transaction_id": "4FKyoMsBFGFpGadNup2LhzJWkEEHUHA91uuybJr1CYWe"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-1080000",
+      "state": "failed",
+      "transaction_id": "Cm5fBVqcgkvPrAKhv26ZrtYBFmk5UySgKidYkwotxinb"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-storage-1080000-620000000000000000000",
+      "state": "confirmed",
+      "transaction_id": "31tugXhh8eMqBTcqrSpdiYwWZ3E5u8d1gPYDxLnkZmBK"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-1080000-gas300",
+      "state": "confirmed",
+      "transaction_id": "GN971UKY8kYWruWv6GNMb171PTNRx9nNYLL9bHGueECK"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-chunk-1200000-gas300",
+      "state": "confirmed",
+      "transaction_id": "EozVy3keMmALH7NCJwTUWM7P4mrmcbhRZN6ueEmHfSMA"
+    },
+    {
+      "step": "upgrade-e883071389726e92e260b2277d643d09c6818b62c92bd4ad1ac0956ccd992d3d-execute",
+      "state": "confirmed",
+      "transaction_id": "9E7HoY3tEceU66MuQ5bZAEReStfxKhYfwgckG42fxNj4"
+    },
+    {
+      "step": "bitcoin-verifier-1",
+      "state": "confirmed",
+      "transaction_id": "8XHUJycAtWpbPcKL3c14MFXrYww9uFBVaZFcj6s4Tr6x"
+    },
+    {
+      "step": "bitcoin-verifier-2",
+      "state": "confirmed",
+      "transaction_id": "CHJU97fDkzAA87n6HNLWqZm3jXG4aompGsotiT7wKwrY"
+    },
+    {
+      "step": "bitcoin-verifier-3",
+      "state": "confirmed",
+      "transaction_id": "EMusngUtVAhG4G6o7wPZD9PEnvpZZDFYHjX1FE6NJiTC"
+    },
+    {
+      "step": "bitcoin-verifier-4",
+      "state": "confirmed",
+      "transaction_id": "DjF2vUFnPHz97ePPMPpv6mr32z8gmhgv6c6uJ5RrvhsA"
+    },
+    {
+      "step": "bitcoin-verifier-5",
+      "state": "confirmed",
+      "transaction_id": "Fuxg5DQjAVvKBfBdYaQHALMRDTxFDfRGB5aZmjoyXQZD"
+    },
+    {
+      "step": "bitcoin-verifier-6",
+      "state": "confirmed",
+      "transaction_id": "2nXRyH9jNRDtqcWMHw9RqhYrHK9a814a22XqizCPVuza"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-schedule",
+      "state": "confirmed",
+      "transaction_id": "58djMrrLPwZcRCJqGRZQoB4V4WtQtD34inLvD5GCq8tk"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-storage-0-owner",
+      "state": "confirmed",
+      "transaction_id": "7sD5rULGhWwZgYDqGYKnQYezNFvCUkYqB5TBMUMBjyLJ"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-storage-0-manager",
+      "state": "confirmed",
+      "transaction_id": "28SepFrspoBdXXLeHLPEtqby9hnpiH5atqq28ch5L5Na"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-storage-0-solver",
+      "state": "confirmed",
+      "transaction_id": "D7eLuYZ6CeERbane29L1YWjJ1b9hfvSoNJivJuvHFfEg"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-0-gas300",
+      "state": "confirmed",
+      "transaction_id": "4zJr4GMdmVm4raYPBNdJqsFoUJMnouaL2CdsdJkAmZV2"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-gas-0",
+      "state": "confirmed",
+      "transaction_id": "xswBmeoGSmewfHAcnYgkRKcFjT87gGXtwzyP11B6VZe"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-120000-gas300",
+      "state": "confirmed",
+      "transaction_id": "4SjSBhaQ3nyxfESE2Fc8LPD5fdUquu9yTtzGAcdAD7tW"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-240000-gas300",
+      "state": "confirmed",
+      "transaction_id": "CxLn6cAhZdZrj9KNfaghwwn1GZYT9tJ9pm7rXDaA6Zoc"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-360000-gas300",
+      "state": "confirmed",
+      "transaction_id": "6RuGhNg8wdxvUGVBmTkWfcvg6Urjxgq7ZfP3jiLGvEw2"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-480000-gas300",
+      "state": "confirmed",
+      "transaction_id": "GxWC7X2oB3Gy6aJnPr9QV55B2xA1eHAy6DcUKRHXU549"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-600000-gas300",
+      "state": "confirmed",
+      "transaction_id": "Gg2smbrUnWT6zKWL5G3M54DNqcV8Gt5XVdqk21Vcqo9Y"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-720000-gas300",
+      "state": "confirmed",
+      "transaction_id": "3iiSmBNCsGzu4ppngdzrRHXEsmBPkkPpto7uuZWABkdq"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-840000-gas300",
+      "state": "confirmed",
+      "transaction_id": "8vfMfzpJFYVaKGMj2EHxi8hFiRN7wnAaawXiunALJoE1"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-960000-gas300",
+      "state": "confirmed",
+      "transaction_id": "JAcLu1me5JBfTF9QFqGzGwt4P47iGxW6jZ5vnvyYGXDq"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-1080000-gas300",
+      "state": "confirmed",
+      "transaction_id": "61QuEzJ1XPTrDVADECYzgVrm6URSgQTn9F9yFT5ae2Yn"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-chunk-1200000-gas300",
+      "state": "confirmed",
+      "transaction_id": "4X43ka316qGYDHqJBYJkX5NYYekykBrFU1tKUxGznJUm"
+    },
+    {
+      "step": "solana-write-33300",
+      "state": "confirmed",
+      "transaction_id": "2APMDizgQL2PpiTDvTExDVFNt23RysMK5emiizjK2eo3kzGwfi9HtxkL8ot9vLmih14MGnU6AMzPtpdbqFnKtoDV"
+    },
+    {
+      "step": "solana-write-34200",
+      "state": "confirmed",
+      "transaction_id": "yoxPieiMXAiPbPSiXLhcaEECF16C76Zt6jjQr1EDiZNXf6yHFnxMTQU6593LNxLrsyZAtRvRTgcH6Y9KEsK9Kot"
+    },
+    {
+      "step": "solana-write-36000",
+      "state": "confirmed",
+      "transaction_id": "5dKZsD2P2DauieutJgmBJhViTY7sWyNpBcfruUxnEh5GK8QP4LgNiJyAhTuFaH4E7e9d9oNzZpY8Nbjbej9SBSM"
+    },
+    {
+      "step": "solana-write-36900",
+      "state": "confirmed",
+      "transaction_id": "4obQxpTrcJyoAk1HMna8sBMhFpZuWMFi7pg8DyQPEAsbe1DR1rWe7zXoRGgjFDEiLY2dTX12GkpFS7feeYBfSd1h"
+    },
+    {
+      "step": "solana-write-37800",
+      "state": "confirmed",
+      "transaction_id": "3NqBennMrX1e4yBSe5obXxXiooL4zhgimrDLWaim5frZ32pggz6FWf7LmX5eCwph1vArAHBzbpN9W3wPfbpZ5cf2"
+    },
+    {
+      "step": "solana-write-38700",
+      "state": "confirmed",
+      "transaction_id": "5YzM587kV2zKx6z57WExiAkZCPMzjvXH5wi7jT7Wqr3RCgQLWRdsUtt1PsJhej5CGX6yEQM5ynhFUTN5dFK75Bbe"
+    },
+    {
+      "step": "solana-write-39600",
+      "state": "confirmed",
+      "transaction_id": "fx395xbZGj1B2c44ykUR6cDkQZq9u1SSjbChFg3Z3ce1t33aaYSzkT4Y2oPtDcwzvwSbEWFiBpNpCe7knSYuAs3"
+    },
+    {
+      "step": "solana-write-40500",
+      "state": "confirmed",
+      "transaction_id": "3USKm7yWgS23k84LKtiUNt6iZ5QbqpjqcP6sP9QqZs99dynQ6NpKPp7TqKnyfu8reRM4PNNuf4PhxKmFqdtmixnB"
+    },
+    {
+      "step": "solana-write-41400",
+      "state": "confirmed",
+      "transaction_id": "4qTj5gvXfSyLZN4eJhU86T9jCN7yXpwH5H94rQtjjGKKjsPLHtiFFJ949UzGRsop1bx3MsNf2AWPgYbM9oCJkCi7"
+    },
+    {
+      "step": "solana-write-42300",
+      "state": "confirmed",
+      "transaction_id": "54jCBGERZuYxgrKhrhQcRa5XKKk9mmdpbzTGhcofGHwJrLhkYsRAyUicUHRPxkASLqichPipPBinh7BxGbKDkaas"
+    },
+    {
+      "step": "solana-write-43200",
+      "state": "confirmed",
+      "transaction_id": "VLHKmGRmSnTcifGutd1pMoqkQ8o5HzNW1SSrk8y85htWUdZUtyX6P6u3i3ZVHmzpy3ucdYhtTJz35EzTGifvjPY"
+    },
+    {
+      "step": "solana-write-44100",
+      "state": "confirmed",
+      "transaction_id": "5WkBTJU9zmtwRAo9iiL9rbgRbqkgAzMKyEjiVjrExLsjHqnCKQmzh9MHD8BT68HzcouRwGuoeSbweEk78RWsYb8N"
+    },
+    {
+      "step": "solana-write-45000",
+      "state": "confirmed",
+      "transaction_id": "Pw4bfTBeniiSXXAvhgi7KHiDiFugwEMHhA9p5U8HmTmTiurBbkh6hYA8fQd1GbbwDwexh9TkJAXy18c59D9H4zz"
+    },
+    {
+      "step": "solana-write-45900",
+      "state": "confirmed",
+      "transaction_id": "3jfxzmZHptgrYcLfM3wsQc1wLXik7xveveYPF5ame4cByiaTTU9argY2jQTUY1GRHYowJzzUp8p2maFf65DS4pBg"
+    },
+    {
+      "step": "solana-write-46800",
+      "state": "confirmed",
+      "transaction_id": "2be6fS88AnnikCPxyCdUW1r16VTkXGCZTuCzSpFyaAmdtP7RWX9RV23uwcCbAqmCHLYPh8ACpXi41Lox8wF1QJhu"
+    },
+    {
+      "step": "solana-write-47700",
+      "state": "confirmed",
+      "transaction_id": "YqdmsVSZFJMA36MHFt76wge8UtAVDuUNF3KwzNgV4VXs9Kx1YT5UMLx68xRmRZt6Li2RskMBfWkD8BBvkUYSrPu"
+    },
+    {
+      "step": "solana-write-48600",
+      "state": "confirmed",
+      "transaction_id": "txdLAomTGW4LxMhU3Qn3hoEiw5uwmBJEkYHBAZjLQjNoT5dNoejyEKY6gY79bMM8dY33My6od7W9kAC1LEo1sKd"
+    },
+    {
+      "step": "solana-write-49500",
+      "state": "confirmed",
+      "transaction_id": "3nd6qtGE3wcySeE2vJ6q9eA9LmH4jSVXPUtHSDtqrS9eV4Kwd9cgVCNYJaXsDuja2t6WYXowHzmdZCpF3XRFN6Mj"
+    },
+    {
+      "step": "solana-write-50400",
+      "state": "confirmed",
+      "transaction_id": "4wdJxfyoj6zCv2nz21GPjL99hiAzWNYcpT4aXBDaW2vdSNLPp97dBhahwr9CVzoDe54iDRu8sEfYzFvHTSSgbvNp"
+    },
+    {
+      "step": "solana-write-51300",
+      "state": "confirmed",
+      "transaction_id": "5C2cxRJ7X9zL2RjH4yi9ZgUzDCmRSeaivPJbL3V8dcBdqSC59VCMQCzJtkhCkqxkaXLQDsuKNtrwDrknfV6R3JfW"
+    },
+    {
+      "step": "solana-write-52200",
+      "state": "confirmed",
+      "transaction_id": "4wgJ2Be5p89RAuqt73gAmH23GgXn76jWW62G1ikbXq6XDB4CnE7r7vfW5UBG8cabnH9whVvja97wcSDKpzzgJaXb"
+    },
+    {
+      "step": "solana-write-53100",
+      "state": "confirmed",
+      "transaction_id": "4w9p2TQ6mEEYDah26Ucb4DpbT6UxtpvbCjFQBNzLJ2AbyzJDvcYE3bbBth2pkaeC1srwpWnbVs6a2JfwJ7ggkBzj"
+    },
+    {
+      "step": "solana-write-54000",
+      "state": "confirmed",
+      "transaction_id": "3Z37ye1vPP3EhezsPyUWLxjLWQD6mi8BCtiWSZZqPTVcKnaYgZnPVuvfNT8vnJJE7k64AwUCphMH7QfKwP1EqbVH"
+    },
+    {
+      "step": "solana-write-54900",
+      "state": "confirmed",
+      "transaction_id": "5vPdpbaWYHpziBxAwerbEqmVffYZnzqMo88vov9iSwv4PTqUK3KhHRzjhdTPxuQg4PCFLWmWgo5gFRKtXzLwdUqv"
+    },
+    {
+      "step": "solana-write-55800",
+      "state": "confirmed",
+      "transaction_id": "3epiBaS5jP1jgumqPoM5UM1rXKaQF6dQF45ErnJRWBKDh7FcQNzZDjcZhmQqBPEasrjSRJV7crEUyJti2KfRnS6P"
+    },
+    {
+      "step": "solana-write-56700",
+      "state": "confirmed",
+      "transaction_id": "52skAngJtYE9H6NpynF7ag2tcePMFmFQrrpFLB1NdJeU2eyUSsGpA1bjf7LVFyGW5Lc79AbCwV3fcPDtte1kpbeH"
+    },
+    {
+      "step": "solana-write-57600",
+      "state": "confirmed",
+      "transaction_id": "4etATcrBWB3CvU6rbrHQ92pcRwMvhoMUn3EJBfE2AAxF7dVSnvtwv3Qa6nVNF7x9pzhNWwbLate7q9zSAgvqEsRa"
+    },
+    {
+      "step": "solana-write-58500",
+      "state": "confirmed",
+      "transaction_id": "4myt6pEone2SeuADEDaFsQsHxqFZPkuyQq7aESQaVvb5QrrRrYs65GZWs37CT6p5VpxW63FMBqfDGDTbxsLYsQPu"
+    },
+    {
+      "step": "solana-write-59400",
+      "state": "confirmed",
+      "transaction_id": "5gV9SmFRrUhMf3XLSrwrWYGh7S85QTckTfikWGZxJPqFcFn36rtFmivbFYkPbLf9RtLxeBvU5rf22xg8ED4WozMT"
+    },
+    {
+      "step": "solana-write-60300",
+      "state": "confirmed",
+      "transaction_id": "49VdjHiVt5C1PxVx5xSuThbSD3Meg4UoYcuCsacdwLfafSzTSfjEtPEmSwiSJfWnTvbazkTFTew4GH6HPwFw7XAw"
+    },
+    {
+      "step": "solana-write-61200",
+      "state": "confirmed",
+      "transaction_id": "3TYguAKK68hHBoTXnSgHtgZitdQU4VXMFftxosiCRKsnWr6Drh6Q3om4eGSiwh2C8ydkbVkkEkKf1h9VRcJJq1EY"
+    },
+    {
+      "step": "solana-write-62100",
+      "state": "confirmed",
+      "transaction_id": "2SaQHJFrTwHXanFGxtehD4Yk6rMfXncAvWNuadZ2vjdtabX1R4JsFhRZGpoGQ6cYHF52Pm5zMN6FPkhndRnRNX4y"
+    },
+    {
+      "step": "solana-write-63000",
+      "state": "confirmed",
+      "transaction_id": "UiN4cw3bxHspQ9MDFoahA1SyVpxLiJJtcb55LnezQ6HkoYb2f27qEnioU7bjv7fPQaXbxCvX1S6CVE6bRszaXkW"
+    },
+    {
+      "step": "solana-write-63900",
+      "state": "confirmed",
+      "transaction_id": "hSQVxDdqu5FEvq431F6BUxvbLfDgkX1VL5E82yx5Yzpo7rhzVw5HRp2yxxPPnH72JHuDZEeihRcJvm4kGTrHJaa"
+    },
+    {
+      "step": "solana-write-64800",
+      "state": "confirmed",
+      "transaction_id": "31oW4dJoiqqcx3HCmpnC4crz2iR4QAsCKcg36mJpMo4fakQTevDeg5T2nKn8WvTuXyte5upeeC6mJWPbZ5BqAthj"
+    },
+    {
+      "step": "solana-write-65700",
+      "state": "confirmed",
+      "transaction_id": "2bw2gHNWPNBaFenkWvTrQFduNKVnfqUcicQcdXMfyCYMSAbM4QAzuXZNLDCgvQLZjNZK1FK7UwNXWW55eFjgUvtb"
+    },
+    {
+      "step": "solana-write-66600",
+      "state": "confirmed",
+      "transaction_id": "QtCgbLWHgsJGkw2GUuheH4UXWTVEPfUEeAGxAucUrMtgpfLpmNxvvNwXQzna113B53YK61gaht5xVfnEiQSR41t"
+    },
+    {
+      "step": "solana-write-67500",
+      "state": "confirmed",
+      "transaction_id": "4LfH3j4CrPgyAtbwywpvfiahQTtwDvhp9fhHWxNnR6XM8TGWJvFF1xrCCsH3gS54LTkWW6EowM6YB1DHfvrdkSf9"
+    },
+    {
+      "step": "solana-write-68400",
+      "state": "confirmed",
+      "transaction_id": "4pM6K1iQ6XRfypJbHgLj5rRAdBpZZ3A4fjT7HNXi5Ceky8CUCDGb7VxGLZfkVYBboHBJPXXPQj7TWQoXhwXF2MT9"
+    },
+    {
+      "step": "solana-write-69300",
+      "state": "confirmed",
+      "transaction_id": "4rT5mYmX37xQ2Tbgn1TX32qdADDoEgh6CpnA8aXTxm7rh18wLFoTHxu3frwBJKoBsoWV64fD7Fg1hCLjXMpYrUdN"
+    },
+    {
+      "step": "solana-write-70200",
+      "state": "confirmed",
+      "transaction_id": "gMNgybLsoDPnonM7H4cHBfcSDbbhkdn4okqbeP7eneQQBug3dWQttEhX3fUKcc4FfsrQbb1srV1kPPGAEYnKWhk"
+    },
+    {
+      "step": "solana-write-71100",
+      "state": "confirmed",
+      "transaction_id": "5DAapfMJmkMknJtLSC8rC7zakPAbK4cCEPc1GeWQagQ3dH5m3CpKPrAdjx4qKvNVZ3Tg7aaFH9HBF5uMZp8SA1Nj"
+    },
+    {
+      "step": "solana-write-72000",
+      "state": "confirmed",
+      "transaction_id": "2QvdoYFMusr9T7XtKQPXcAyXA7euokQS2bdXksRWmFUynbnHHXuQNyW2uzqLmTEN2BJ43AyhvxNtenr2Wokg4ysK"
+    },
+    {
+      "step": "solana-write-72900",
+      "state": "confirmed",
+      "transaction_id": "433YRriLwBcxS4kd64brN5g4H8WBc6Rrx1AGbNeWkt3B4gQZobQJDsbShaJiRnhonC1Vtgu8q5S79KuEPCCxEE5r"
+    },
+    {
+      "step": "solana-write-73800",
+      "state": "confirmed",
+      "transaction_id": "3svjHBK1JRdQDL1Kr2C2fr7L7K32UrWAPQvLHaz4ZjHrYY9CAGbg2qbRSmEqUyB5m2EiQuCaCynPMmqroMsWqiMr"
+    },
+    {
+      "step": "solana-write-74700",
+      "state": "confirmed",
+      "transaction_id": "531hpZsVDDZdQY34B6Th5BFZU4C7vtcawoG7kS54fgfLb7iTsGWhrs1Z5gaBSXjyDTamjPrJGikidHHJhsPF5XAA"
+    },
+    {
+      "step": "solana-write-75600",
+      "state": "confirmed",
+      "transaction_id": "2xrpwTB81nc1WHcpLTtNVSfn17PVtrTM6zg8rpGCUo91mK18dEADuxFc9MrGWXXYRUVYQga4ZA6qoYUxQcKK2f9X"
+    },
+    {
+      "step": "solana-write-76500",
+      "state": "confirmed",
+      "transaction_id": "fFcpKpKvLTR2P3tKgnrPdqMoPbxKM7jxA29P1bejy73XHQRTSTVGF5CcVA6yxCQH9wsVSJFgiYzCKARnWDrmbmW"
+    },
+    {
+      "step": "solana-write-77400",
+      "state": "confirmed",
+      "transaction_id": "2REUUE7j3HNbxwv1jkCPfZPSwb7ixDiS6PS4ytT8hgD58oH6LNfJNbYVqncEdwYwb64mB6YGJBqdUQfCErUeLAbf"
+    },
+    {
+      "step": "solana-write-78300",
+      "state": "confirmed",
+      "transaction_id": "4Mt9QEHJSMr5JDnwb6BtLrWgiz8mC3n6xiuogiMMXPPeW5r6o1J2t19Xxrq1UyAMJqprKBEeqiwCxVyFP89WFJyz"
+    },
+    {
+      "step": "solana-write-79200",
+      "state": "confirmed",
+      "transaction_id": "2MrXjYS2swCm4VBXCdp7DabM9AtmHnT8iLK8vp3hSV2yEPExLHToMWLrK8F5kf5hG4oChVZevZCuimNLAPWdAZSW"
+    },
+    {
+      "step": "solana-write-80100",
+      "state": "confirmed",
+      "transaction_id": "2CoAV1T7GX98AX82rQgo3jRtsy3Ds6oDvvMd9Ti8KMfCcTcrpo6ro9C5vLRHPkBLDuYZzY6Chgpt7ULMJGF5dLa8"
+    },
+    {
+      "step": "solana-write-81000",
+      "state": "confirmed",
+      "transaction_id": "2ZWkYvT1WTZa339mscwYdkBnFsbMSpAMPz5uEPRxXddThBWuaR4X9UrVE8zpiAT5rmE77sVhEXAscvLjm8F294DG"
+    },
+    {
+      "step": "solana-write-81900",
+      "state": "confirmed",
+      "transaction_id": "4JeD26WUiPbhWpsZ2nDKD9SGLUYmKp15KZmYds2xz9qHuBpDsrqkqpGtMji9SSmmKgCo7PqMt7VHP7E3feVT16m3"
+    },
+    {
+      "step": "solana-write-82800",
+      "state": "confirmed",
+      "transaction_id": "5QNZRyDbkbUgBFpzf49PayeSoPZx4DZRRjQ7iBooKHEJCcdGCUDaHntRPx4RJYkeUgkqpEAESaJbP4Ccg2VombAr"
+    },
+    {
+      "step": "solana-write-83700",
+      "state": "confirmed",
+      "transaction_id": "47HwWyPBFvQTM6CSX8TKrns4r85J6y5xT5pzdk28aHkBKTBqmZ1WdtdxirvFBgsM8mTZQDug7Tuiwdfu459RvYe8"
+    },
+    {
+      "step": "solana-write-84600",
+      "state": "confirmed",
+      "transaction_id": "37AjQF3o1ZEBjHgYmC1dDhUj9YCUDhc3U3wcZBB9wKCnApMnFrVXcbxKPw5JNjJncGYVZHzaGiujmR55GYJiwuyh"
+    },
+    {
+      "step": "solana-write-85500",
+      "state": "confirmed",
+      "transaction_id": "2o6MmpJvtyF1eugWgcxPn2qx17BKZAqNuGnfjWEpqM9xSV1CBBYLiY4CKQba6pWLqNEUhgMMFBkgLWg6M5ujGwJV"
+    },
+    {
+      "step": "solana-write-86400",
+      "state": "confirmed",
+      "transaction_id": "23uftvekZ2jXTjeTuqGWR3NMUtgr4YYqFZYaW72td3vEQoPMvcPy5z9jNjDz4LUDMdyXWybrbPw782fidNTSTEzf"
+    },
+    {
+      "step": "solana-write-87300",
+      "state": "confirmed",
+      "transaction_id": "2AbhGQGoRtrEyEazgzFeeFaPhRKsYnqH3cH42iGZjUSUbLnQhTS3Ugs9io8GyXeqJmVAfiQXw35cAvnjaH38vB63"
+    },
+    {
+      "step": "solana-write-88200",
+      "state": "confirmed",
+      "transaction_id": "4ubUR9AiNqJhZ2MtFNhUWBVWzyt6yEtWBP1kXhCKTdjYQLEXwixZ7n1vGg8vqdHK3hRWQtdvB4gBoGkCKpNikxhN"
+    },
+    {
+      "step": "solana-write-89100",
+      "state": "confirmed",
+      "transaction_id": "3f14vVJZNNx16L5Tc5SqFeMyDjZZFji2RysKhYCy4fgUBHyjMqmswQfbrX4252aTuN8TcsS3J1MfmkiqSCTjo1Mu"
+    },
+    {
+      "step": "solana-write-90000",
+      "state": "confirmed",
+      "transaction_id": "47w9AYuQZ3bVi4qF81oKfGcgG9MPyfqDoRo4FXn63Tb15ZHP8KVwpaM15LDKkMQt6RqsFcwCh4RiwvkcwdJGduRQ"
+    },
+    {
+      "step": "solana-write-90900",
+      "state": "confirmed",
+      "transaction_id": "crUiGrKfYs2vC1kLeF2qJTSKx4xftyTcSPNhEzKtPDaZmeSXKWBepNJxSQjYuAvCdipF2h3fsdWfc7QGZuXNjP1"
+    },
+    {
+      "step": "solana-write-91800",
+      "state": "confirmed",
+      "transaction_id": "3EJpCKHcfwtW5jVo3gALNdGiLATm7kL7hwMGt2sWM5vaNjzRdmbQthM7urAvkaFzcbkWqtsEB6xUkcvJ62itbQ9X"
+    },
+    {
+      "step": "solana-write-92700",
+      "state": "confirmed",
+      "transaction_id": "37vpaF6dHJWN1gVVPciB8eYLCG1KWzimNwn4zSJJxP9t3GLmwPy5x181ZdYxd4XgfgXW49tqGexyVj5btjmkzdHy"
+    },
+    {
+      "step": "solana-write-93600",
+      "state": "confirmed",
+      "transaction_id": "5FJZ4Sno9SjPcmrQtrrkVJBB3jC656eyLeswsVHJhtDfCFcTYRnatf7n3Y66LezymAMZoVCAB1AZQ3RY2Br2mfco"
+    },
+    {
+      "step": "solana-write-94500",
+      "state": "confirmed",
+      "transaction_id": "4bBQ3QsFjddrnXHemi8YdffpSqAqCMkn1EaScqi6Z644btcRBTxmwH2BPKw44u8u94AYiQbpzD5ecsu7LBhmUbn"
+    },
+    {
+      "step": "solana-write-95400",
+      "state": "confirmed",
+      "transaction_id": "KffZfbCttrDsZwmStifn9EDmqxsSpvEt4uTzbcG1oxKrCgxqrPkC6ZCPMaHZfX1fnKoqPxhSXhQ21SJFvSB1wzB"
+    },
+    {
+      "step": "solana-write-96300",
+      "state": "confirmed",
+      "transaction_id": "5z2SfbQZrBFztDRx1s3LCiQhZ1YkQBiAsU6ru36BKE4VJRGq5GNAmvwjeVo8eHVf7rGu2zyWQSH9Uh4hBBxXBpPV"
+    },
+    {
+      "step": "solana-write-97200",
+      "state": "confirmed",
+      "transaction_id": "rAkzXTwssAk8uwVNnsm671Wv38KQtb3f1zHswMfayXrcUF1c2TXw4r3LQBhQTCK9NAznyoUwBLuy9i1gPJD88CF"
+    },
+    {
+      "step": "solana-write-98100",
+      "state": "confirmed",
+      "transaction_id": "5ipB65RLvnj8oUUu5ftTDmuErjFuPp99pHY1RK2ZWC3uaq6onaRzib6p48qW9q1H9W8Riy4677g8bUmedmkcVmG1"
+    },
+    {
+      "step": "solana-write-99000",
+      "state": "confirmed",
+      "transaction_id": "5xKdRjHuJmxFZqGEPVCBTQsVZ8xuAHrwHzZJ7JJ6Ue29zfuVM3q7N9vAhK9yHVAuqecoixtKi2PUQtnLwprPv2Sm"
+    },
+    {
+      "step": "solana-write-99900",
+      "state": "confirmed",
+      "transaction_id": "32485h9wENKtKMmwkbkPMRmSvZ19SFnMTshSrtj5h9kwY51MKZhBz6vP4tY7nCexMqpHc3SCMV2chsCtFA3nf3GW"
+    },
+    {
+      "step": "solana-write-100800",
+      "state": "confirmed",
+      "transaction_id": "55k7pDoY63gGrEke8rTeYi4wnj72tUhjeJyPSqqE7Q6vvXtcr1yYQAEbXZtxdKepkM6xYzGiWrxZV4gwxcimrpYP"
+    },
+    {
+      "step": "solana-write-101700",
+      "state": "confirmed",
+      "transaction_id": "DpdcBfWCxmtUX62vDGjS5rWNSdfzVQ9UBo5RnRmX8tAJSQKiAbDaoJK4eCKSKAkgdaTmBes9iRcV5Q4Nek3nUx1"
+    },
+    {
+      "step": "solana-program-deploy",
+      "state": "confirmed",
+      "transaction_id": "4xtAobDDqG5pNaeut2tCyEScuaSpwYdqXpiNaCgCn86yHzHZvddeVir4PWuwD61ZAbGgdyDLeqiDS8rtQ8mxqbxP"
+    },
+    {
+      "step": "solana-config-initialize",
+      "state": "confirmed",
+      "transaction_id": "3dmPBd6qHCdjFfzaogT6Wo913VD4vCe5zZmc1YxTJ4HhfJpcSvLgwQnB4ocH7rDGVVkRDXaWaNttUfWNsyrU37M6"
+    },
+    {
+      "step": "solana-make-immutable",
+      "state": "confirmed",
+      "transaction_id": "32HP1FRxtHNLg3sV2RiREd3X6MxykADHYvnaBRznybGZb6uMt6Vs4wzoN6366QJft9y5J1Rc5A8LThE3SYEzYGKL"
+    },
+    {
+      "step": "sui-publish",
+      "state": "confirmed",
+      "transaction_id": "5K5u6Cq73jiWTWJpizN63DnNDRGu6EDxpA3Xhzti3KUr"
+    },
+    {
+      "step": "sui-create-vault",
+      "state": "confirmed",
+      "transaction_id": "E34xzauWfQLL9YFVbwYQjfnRHbwjhn6Y25wX71xVvNAh"
+    },
+    {
+      "step": "starknet-deployer-account",
+      "state": "confirmed",
+      "transaction_id": "0x1c58eec3f30bd4c921cbda766b5b3bd21e3931cf016c1faab6b01cb1a3fa738"
+    },
+    {
+      "step": "starknet-declare-CollateralVault",
+      "state": "confirmed",
+      "transaction_id": "0x6799f9dcae4132dfc0b83744349d224c111d9273894a0b06c36a9f3b78db492"
+    },
+    {
+      "step": "starknet-declare-ControllerAccount",
+      "state": "confirmed",
+      "transaction_id": "0x3aba1aad22c3a594bb771e3dd738268ea0adb812f0ccf6d2dfa975bce92345e"
+    },
+    {
+      "step": "starknet-create-controller-vault",
+      "state": "confirmed",
+      "transaction_id": "0x236a9dcad629a26e4267c00d38454409100446ff0a9a9e53474f73bb24001e0"
+    },
+    {
+      "step": "usdc-migration-pause",
+      "state": "confirmed",
+      "transaction_id": "EJLYR5EwPdX6MQXA4izLRBPYudapKx1ueNhGuH1gWnL"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-storage-1284844-solver",
+      "state": "confirmed",
+      "transaction_id": "DXXpzSn3N9bjRk5TNwMrfR9nZByrbM3covKTqwnZXDxi"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-gas-1284844",
+      "state": "confirmed",
+      "transaction_id": "FFxHuXz1eGTNXN2hRqpio6nzYghxRrtDa66nVKPimWDY"
+    },
+    {
+      "step": "upgrade-e5a1d193b17648e9a0fe5ef396d6cd28b6932f4bbdb06b292bb748b7825c2fd8-execute",
+      "state": "confirmed",
+      "transaction_id": "799xWStNyHfosSCyVdHZvtCComxVyN5nZ2GGh6rkQpEv"
+    },
+    {
+      "step": "refund-c28dd6398a228048418e62a97119b19ee5f2aca7edbcf7e6179ad2338a6a52ed",
+      "state": "confirmed",
+      "transaction_id": "AEdsEkk8SLr9eGJ3CcKyF5eU4XUnJskLVND5YuQQMCkd"
+    },
+    {
+      "step": "request-b177044831d11731451e1878fa2431fe8d43323afb345bcf5b8881095319015c",
+      "state": "confirmed",
+      "transaction_id": "8rUKmbHvRs7j2zAXheLXFVRQLVc2iPz9AunCGftevLWg"
+    },
+    {
+      "step": "claim-b177044831d11731451e1878fa2431fe8d43323afb345bcf5b8881095319015c",
+      "state": "confirmed",
+      "transaction_id": "8TMDgcwfKuyKKNv4gFLNBnp4BBs9tWtVK7tiPXqHrFj4"
+    },
+    {
+      "step": "request-2f0d26d20d0e083b6f3646b7fb16c0a696f6b3f9ab7cdb6579aa7830add566b6",
+      "state": "confirmed",
+      "transaction_id": "3yG1Em8z8XzAdTD3ZDtYfHfq4V93zLQpEn2Eao2sZRXP"
+    },
+    {
+      "step": "claim-2f0d26d20d0e083b6f3646b7fb16c0a696f6b3f9ab7cdb6579aa7830add566b6",
+      "state": "confirmed",
+      "transaction_id": "jgNTtof15QkqV2PfMbXCKp34ikXfmv38sLR7TPELgss"
+    },
+    {
+      "step": "close-live-verification",
+      "state": "confirmed",
+      "transaction_id": "6kpEJ1xxNqa2NMUQuXrXP3YkGb1RDPtW8niEqvvE5qR1"
+    },
+    {
+      "step": "close-test-usdc",
+      "state": "confirmed",
+      "transaction_id": "4ejv3hkZpa2aPQ2MPgDqXU3pshyYm4P96YrNc4tDgNnG"
+    },
+    {
+      "step": "use-circle-usdc",
+      "state": "confirmed",
+      "transaction_id": "3DgLtoGNm322W3yEyd8YgxCxRnx7pCdBXTbh2SxXTPn2"
+    },
+    {
+      "step": "circle-register-coordinator",
+      "state": "confirmed",
+      "transaction_id": "8Ko38oAq5GXpLZF2aXNJSttiJaoZ8yq1F81arJNQfsmE"
+    },
+    {
+      "step": "create-usdc-pool",
+      "state": "confirmed",
+      "transaction_id": "AgZtGaLQ4uaLSLwKEr8aCTCrkzUKKdQ8vi6TBACM6ax1"
+    },
+    {
+      "step": "fund-circle-usdc-pool",
+      "state": "confirmed",
+      "transaction_id": "24BV5fQRdxCUaNkrDqnSC42mFmq45y2PyAnahka7XyGC"
+    },
+    {
+      "step": "circle-verification-open-1793011764114",
+      "state": "confirmed",
+      "transaction_id": "AZZJb97NnURqe2YDRrrVCNPWnMyu5ML7MiJqR8ArZxUy"
+    },
+    {
+      "step": "c6a8a3aaddcc4bc763f6e4bac604bcf67706c127b05cc51219e94ff68271c962",
+      "state": "confirmed",
+      "transaction_id": "rfbbZwNHcrd5UQWg8GLgRhiDj9Rc75yBxgmaxgvNjEa"
+    },
+    {
+      "step": "circle-verification-close-1793011764114",
+      "state": "confirmed",
+      "transaction_id": "F4Cc4tM6PiyDZBhJv1VWrwfML9q5Q13PpLKXKRaCaxNe"
+    },
+    {
+      "step": "circle-verification-open-1793011934220",
+      "state": "confirmed",
+      "transaction_id": "97m42dCuQn2D5LS8KDLUfYvvZcHv5SLApVTCYGR2qP4W"
+    },
+    {
+      "step": "84d8c148b28a7764a82510b30863375c349191b68ce383af9a30b2f2a1717209",
+      "state": "confirmed",
+      "transaction_id": "0x66e74ff2b255a884a046dcb5d970d4c62fa7ce74542422f255673cb7f729ddcf"
+    },
+    {
+      "step": "3f11a697500ac0393cd7e0496ad085ffeadc950cac551ff44b666c49a06dcedf",
+      "state": "confirmed",
+      "transaction_id": "7cQPz1J2MxaQ2wh3nK7FumqdeTgpoiEp16SkkVG55CXM"
+    },
+    {
+      "step": "circle-verification-close-1793011934220",
+      "state": "confirmed",
+      "transaction_id": "E4QSrpfCr6W1KL6hMaEoKmHCDQGrQF75hBDY5VLFzTAH"
+    },
+    {
+      "step": "circle-sui-borrower-funding-v1",
+      "state": "confirmed",
+      "transaction_id": "EHGAhGvHHYiT3kAHEC6ffncJzPGcypabAnMe6Bd6FQB8"
+    },
+    {
+      "step": "circle-sui-materialize-v1",
+      "state": "confirmed",
+      "transaction_id": "9B1Q2b9aMSns3z2seRTZzZv4bNCBge85zNbNV8pEztkp"
+    },
+    {
+      "step": "circle-verification-open-1793012197985",
+      "state": "confirmed",
+      "transaction_id": "65Kmh5kPkizBdPpxcNH833ik3V8gLQScNe3c6RfUbZKS"
+    },
+    {
+      "step": "circle-verification-open-1793012413142",
+      "state": "confirmed",
+      "transaction_id": "BYX1THE8TfNTVKgeoMjrDvWb4KNxToWB3NgT9XiCGx1z"
+    },
+    {
+      "step": "4fbc711866e2c8d947217dff68fa013a49d053aa0f091a055a9782092004eef3",
+      "state": "confirmed",
+      "transaction_id": "5KjC6QFHdXmXmMLVN8MQegM92SReb3uUvyMvDjwaHkjt"
+    },
+    {
+      "step": "edb62e59a0877eefdd38306650d702ba76dbb6aaa11147172da592fe304fdc6a",
+      "state": "confirmed",
+      "transaction_id": "7vmRwupexc5LrA4GwiuTofMk6ss2bUiSogftFBqkvKx9"
+    },
+    {
+      "step": "8f63c416e89272f72e105cee03fa73b6b07cb1d66423c68c378778ff57547abe-quote",
+      "state": "confirmed",
+      "transaction_id": "CnQ75UagYdkn5AG5KRUujq8gXRRDj79mWLAWy4t7dSqU"
+    },
+    {
+      "step": "8f63c416e89272f72e105cee03fa73b6b07cb1d66423c68c378778ff57547abe-fund",
+      "state": "confirmed",
+      "transaction_id": "2j3aU6MiKWUZte6stqCLdmf5zs7eWDow7UFXkdyiWSPN"
+    },
+    {
+      "step": "8f63c416e89272f72e105cee03fa73b6b07cb1d66423c68c378778ff57547abe-cancel",
+      "state": "confirmed",
+      "transaction_id": "5uk2KkgtEfpcbLXR7B8wcCLcjurfyp3KKavah6fvEQFL"
+    },
+    {
+      "step": "8f63c416e89272f72e105cee03fa73b6b07cb1d66423c68c378778ff57547abe-claim",
+      "state": "confirmed",
+      "transaction_id": "DYaPAEgy9EaZQ2xgBQXPYepEuwwci74ATsgus3wdgbkh"
+    },
+    {
+      "step": "0b03a44074cb6bad933c1db00dd0db205f185aecdb328344e43b54b46fb0e2d9",
+      "state": "confirmed",
+      "transaction_id": "EQD1ejNr4qbMpwXng6K7yqvkQ8Nm1ts7XUtjwSsEZNZA"
+    },
+    {
+      "step": "eb7ad8b41741a5cc2fcb7c616cbcd4a7199bac689f3d63fb79fbc9d07eb3d07f",
+      "state": "confirmed",
+      "transaction_id": "DDZdoLzCgvcDQKnGWmpQLsu7sfU6kKR5RJfHcdmyiQd8"
+    },
+    {
+      "step": "44bf4063e1e3d3f3d44751bc776a7f987520ada6d9ffe9014b3135ab0bca5f92",
+      "state": "confirmed",
+      "transaction_id": "9SQdGmX4f8ar2t3Jd992HQgn7ARjKiQ7QMrcMD1XWd9q"
+    },
+    {
+      "step": "477647518097b75249d52544986199ee930457ad1f8edd7317366e3b26bf377c",
+      "state": "confirmed",
+      "transaction_id": "4hWd72AyoDkkvYFeM8wHkYYWzTZt8x7xGwmPybzEYQGu"
+    },
+    {
+      "step": "4a200bd93c47581ee59fe4802c9e4a5380909a83202b40afc16e9e5251bed7df",
+      "state": "confirmed",
+      "transaction_id": "6WvskYKahPiGRsn29troZLoN1orLMnZP3fqRt42F7RBp"
+    },
+    {
+      "step": "19630e969e39d7d4395970474f4bc8915cfbd7e1688068e1c14fb5227336f870",
+      "state": "confirmed",
+      "transaction_id": "Ctg8cLVDeWrHGDnUXirYEQEaquJPtLzepssLdQQVzBDj"
+    },
+    {
+      "step": "circle-verification-close-1793012413142",
+      "state": "confirmed",
+      "transaction_id": "vjaaWW22RyWgptzChkcEzNuVnv685ezgizzcUSSBJvu"
+    },
+    {
+      "step": "circle-verification-open-1793012743478",
+      "state": "confirmed",
+      "transaction_id": "6k2f7tKQptcv8TakxcCP5y8RTtUHBPDNVSqjCcMqKzpH"
+    },
+    {
+      "step": "circle-verification-close-1793012743478",
+      "state": "confirmed",
+      "transaction_id": "Ewy1uKgdEcaiCuskMfMsfhdfqBXYpK7DeFtVfqjo1cac"
+    },
+    {
+      "step": "circle-verification-open-1793012876580",
+      "state": "confirmed",
+      "transaction_id": "2pWUHtbduATzfcUvK1vbWcVtHSCLXJDxT65MEsgn1dKg"
+    },
+    {
+      "step": "0105f47de171b0704579b5cf6da852f6151655337acedcc1a19669cccb741907-request",
+      "state": "confirmed",
+      "transaction_id": "BkNbibkCEYvTRQMRwxbqUTAr34ewrkBAdsqzAqRvCogN"
+    },
+    {
+      "step": "0105f47de171b0704579b5cf6da852f6151655337acedcc1a19669cccb741907-claim",
+      "state": "confirmed",
+      "transaction_id": "C5Xpo5dpSF6vNvLms865g2H7AhBMTYG9B7V9WJ1vE7jd"
+    },
+    {
+      "step": "0105f47de171b0704579b5cf6da852f6151655337acedcc1a19669cccb741907-deposit",
+      "state": "confirmed",
+      "transaction_id": "2xoxBcsQ3UETEmDzHh3HmLykHi2cvg6QjCZxvXE2pB71"
+    },
+    {
+      "step": "circle-verification-close-1793012876580",
+      "state": "confirmed",
+      "transaction_id": "2bUw26gq3atZaky7cQxJhAG8R9ouzTZbhLvNk3hWuZdg"
+    }
+  ],
+  "remaining": {
+    "starknet": null,
+    "bitcoin": {
+      "status": "no_application_contract",
+      "custody": "Per-loan MPC-derived Testnet3 P2WPKH keys; transaction inclusion, delivery and recovery verified by the configured NEAR Bitcoin light client",
+      "verifier": {
+        "account_id": "btc-client-v4.testnet",
+        "network_fingerprint": "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943",
+        "max_tip_age_seconds": 21600,
+        "code_hash": "GoMf83WAKXNL1y4ApPtzm2Q88oJvEp3hmR3Ps6tjaG6W",
+        "manifest_versions": 6
+      },
+      "new_borrowing_enabled": true
+    },
+    "integration": []
+  },
+  "recovery_trust": "Recovery attestors and protocol owner keys are on one development machine"
+}

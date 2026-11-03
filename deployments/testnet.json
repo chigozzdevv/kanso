@@ -1,0 +1,609 @@
+{
+  "deployment_id": "kanso-testnet-9774b8b352-v1",
+  "network": "testnet",
+  "near": {
+    "rpc_url": "https://rpc.testnet.fastnear.com",
+    "coordinator": "kanso-coordinator-9774b8b352.testnet",
+    "settlement_token": "3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520d03d4afcb8af",
+    "settlement_decimals": 6,
+    "max_mpc_deposit_atomic": "1"
+  },
+  "pool_ids": ["usdc"],
+  "chains": [
+    {
+      "manifest": {
+        "chain_id": "base",
+        "version": 6,
+        "family": "evm",
+        "network_fingerprint": "84532",
+        "vault": [
+          161, 0, 91, 205, 37, 137, 173, 99, 149, 39, 83, 72, 146, 202, 186, 40,
+          228, 16, 241, 155
+        ],
+        "controller": [
+          80, 199, 47, 160, 240, 200, 30, 130, 95, 91, 87, 236, 145, 225, 84,
+          255, 114, 109, 202, 71
+        ],
+        "controller_public_key": [
+          215, 253, 135, 70, 132, 37, 59, 28, 235, 157, 224, 198, 65, 123, 224,
+          106, 21, 161, 246, 48, 84, 167, 93, 123, 39, 16, 87, 186, 95, 206,
+          128, 21, 187, 115, 236, 36, 112, 198, 198, 171, 4, 14, 64, 111, 72,
+          171, 102, 127, 226, 0, 192, 231, 153, 146, 210, 174, 44, 104, 218,
+          171, 84, 78, 167, 121
+        ],
+        "asset_id": "base_eth",
+        "asset_address": [],
+        "decimals": 18,
+        "max_collateral_atomic": "1000000000000000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 0,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:base:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 250000,
+        "max_fee_per_gas": "100000000000",
+        "max_network_cost_atomic": "75000000000000000",
+        "capability_evidence_hash": [
+          223, 159, 231, 191, 29, 71, 233, 213, 63, 208, 232, 46, 30, 193, 41,
+          249, 217, 31, 162, 123, 225, 206, 139, 221, 199, 30, 194, 124, 218,
+          114, 179, 121
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://sepolia.base.org",
+      "evidence": {
+        "verified_at": 1792951319,
+        "record_url": "https://testnet.nearblocks.io/txns/BUfu8LfpA5mFBHetKogJMhBBf82qHc78Q6yvbFRQYzoW",
+        "deposit_transaction": "0x4065ea641ac4effe0b329ff33150b05e6471f8ff427a645dc31693ebafeb7002",
+        "release_transaction": "0x51031834dd2b7b6c89efcecd5049a45991c508c6087fca4dc62ca8bb6549a789"
+      }
+    },
+    {
+      "manifest": {
+        "chain_id": "arbitrum",
+        "version": 6,
+        "family": "evm",
+        "network_fingerprint": "421614",
+        "vault": [
+          161, 0, 91, 205, 37, 137, 173, 99, 149, 39, 83, 72, 146, 202, 186, 40,
+          228, 16, 241, 155
+        ],
+        "controller": [
+          28, 100, 139, 226, 107, 102, 184, 81, 114, 163, 166, 115, 47, 1, 130,
+          121, 157, 136, 242, 93
+        ],
+        "controller_public_key": [
+          232, 153, 108, 0, 45, 241, 120, 223, 218, 15, 49, 144, 124, 51, 121,
+          230, 230, 107, 242, 64, 114, 228, 69, 25, 219, 73, 65, 73, 213, 210,
+          91, 12, 207, 206, 50, 86, 187, 14, 182, 229, 107, 44, 148, 139, 83,
+          194, 158, 118, 13, 168, 194, 190, 31, 34, 199, 113, 7, 171, 183, 0,
+          81, 42, 205, 160
+        ],
+        "asset_id": "arbitrum_eth",
+        "asset_address": [],
+        "decimals": 18,
+        "max_collateral_atomic": "1000000000000000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 0,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:arbitrum:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 250000,
+        "max_fee_per_gas": "100000000000",
+        "max_network_cost_atomic": "75000000000000000",
+        "capability_evidence_hash": [
+          64, 116, 24, 227, 228, 97, 226, 162, 37, 40, 186, 212, 192, 82, 26,
+          107, 47, 185, 250, 170, 146, 43, 203, 237, 195, 228, 122, 191, 210,
+          22, 245, 225
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://sepolia-rollup.arbitrum.io/rpc",
+      "evidence": {
+        "verified_at": 1792951319,
+        "record_url": "https://testnet.nearblocks.io/txns/DcYrFApSzRe6Vv9yMpSJWzqjQPU9fR7PgaMei1dEGCmL",
+        "deposit_transaction": "0xde4bf923638197905207f5e69b55ef4645cf2afd34ba2d5361dd6aaae4ce2d28",
+        "release_transaction": "0x00ed9d208537e1379a46445e76e2616a755f9165113d64d0bad34cc66aaa78be"
+      }
+    },
+    {
+      "manifest": {
+        "chain_id": "bnb",
+        "version": 6,
+        "family": "evm",
+        "network_fingerprint": "97",
+        "vault": [
+          161, 0, 91, 205, 37, 137, 173, 99, 149, 39, 83, 72, 146, 202, 186, 40,
+          228, 16, 241, 155
+        ],
+        "controller": [
+          45, 81, 174, 118, 248, 102, 195, 232, 149, 163, 36, 35, 65, 136, 90,
+          209, 10, 212, 122, 44
+        ],
+        "controller_public_key": [
+          140, 15, 134, 113, 202, 119, 22, 157, 178, 160, 50, 99, 138, 5, 53,
+          200, 236, 9, 11, 186, 151, 132, 7, 31, 143, 173, 173, 3, 208, 159, 21,
+          227, 8, 247, 145, 19, 27, 28, 19, 66, 199, 48, 243, 116, 36, 73, 113,
+          148, 223, 73, 169, 144, 129, 183, 212, 112, 158, 212, 103, 62, 73, 5,
+          254, 70
+        ],
+        "asset_id": "bnb",
+        "asset_address": [],
+        "decimals": 18,
+        "max_collateral_atomic": "1000000000000000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 0,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:bnb:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 250000,
+        "max_fee_per_gas": "100000000000",
+        "max_network_cost_atomic": "75000000000000000",
+        "capability_evidence_hash": [
+          71, 218, 7, 164, 198, 60, 97, 107, 213, 207, 244, 255, 94, 254, 112,
+          98, 215, 20, 62, 225, 21, 140, 186, 11, 95, 2, 139, 52, 184, 76, 78,
+          133
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+      "evidence": {
+        "verified_at": 1792951320,
+        "record_url": "https://testnet.nearblocks.io/txns/F5QAzXbgCQVjhdN2aFyttmWppz6JHoj2ccvA9T1JjUiF",
+        "deposit_transaction": "0x6446b247b13dafdabfacad57605d05a1136061933031a73b319a0ba2238fb565",
+        "release_transaction": "0x086bd6942f27da840ecc6224aaa85ee9b5bad63b2a95448182de97c73e376d64"
+      }
+    },
+    {
+      "manifest": {
+        "chain_id": "polygon",
+        "version": 6,
+        "family": "evm",
+        "network_fingerprint": "80002",
+        "vault": [
+          161, 0, 91, 205, 37, 137, 173, 99, 149, 39, 83, 72, 146, 202, 186, 40,
+          228, 16, 241, 155
+        ],
+        "controller": [
+          65, 205, 193, 7, 202, 164, 30, 55, 165, 144, 76, 167, 32, 57, 9, 178,
+          57, 161, 208, 140
+        ],
+        "controller_public_key": [
+          17, 165, 160, 113, 1, 217, 37, 36, 244, 61, 47, 191, 241, 90, 196, 32,
+          224, 147, 240, 3, 114, 189, 162, 26, 14, 45, 18, 14, 217, 70, 107, 57,
+          160, 207, 210, 20, 255, 240, 218, 226, 7, 122, 96, 240, 118, 55, 221,
+          60, 14, 177, 184, 230, 51, 81, 133, 184, 142, 96, 199, 41, 57, 104,
+          228, 97
+        ],
+        "asset_id": "pol",
+        "asset_address": [],
+        "decimals": 18,
+        "max_collateral_atomic": "1000000000000000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 0,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:polygon:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 250000,
+        "max_fee_per_gas": "100000000000",
+        "max_network_cost_atomic": "75000000000000000",
+        "capability_evidence_hash": [
+          138, 213, 211, 153, 241, 81, 30, 106, 214, 137, 230, 227, 248, 225,
+          242, 163, 178, 130, 146, 129, 217, 29, 80, 35, 223, 107, 181, 140,
+          255, 59, 155, 144
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://polygon-amoy.drpc.org",
+      "evidence": {
+        "verified_at": 1792951320,
+        "record_url": "https://testnet.nearblocks.io/txns/F2xhMyBdDkSJRHXyksERtF5x76MiP9ioW71wNRo5xwHS",
+        "deposit_transaction": "0x6e564fe8c53e7d667b119f8991895f4fe32c900e063042a9425445463cdf515a",
+        "release_transaction": "0xadf3953b63004f09229c4df50b4e7b251a01612547cc975bfb6e47129c646f6b"
+      }
+    },
+    {
+      "manifest": {
+        "chain_id": "avalanche",
+        "version": 6,
+        "family": "evm",
+        "network_fingerprint": "43113",
+        "vault": [
+          161, 0, 91, 205, 37, 137, 173, 99, 149, 39, 83, 72, 146, 202, 186, 40,
+          228, 16, 241, 155
+        ],
+        "controller": [
+          208, 178, 22, 100, 125, 250, 249, 36, 43, 231, 210, 55, 245, 210, 45,
+          21, 169, 82, 196, 68
+        ],
+        "controller_public_key": [
+          70, 44, 232, 79, 228, 63, 154, 64, 108, 70, 234, 132, 233, 97, 245,
+          200, 56, 206, 132, 71, 63, 80, 1, 37, 53, 224, 81, 68, 162, 181, 2,
+          170, 126, 249, 138, 119, 6, 43, 173, 189, 143, 100, 208, 139, 137, 68,
+          242, 180, 162, 75, 14, 195, 105, 55, 74, 35, 22, 4, 147, 69, 162, 227,
+          225, 193
+        ],
+        "asset_id": "avax",
+        "asset_address": [],
+        "decimals": 18,
+        "max_collateral_atomic": "1000000000000000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 0,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:avalanche:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 250000,
+        "max_fee_per_gas": "100000000000",
+        "max_network_cost_atomic": "75000000000000000",
+        "capability_evidence_hash": [
+          216, 5, 151, 66, 151, 247, 183, 76, 143, 100, 253, 227, 147, 4, 250,
+          184, 195, 120, 56, 192, 227, 205, 34, 57, 144, 47, 68, 243, 233, 222,
+          191, 91
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://api.avax-test.network/ext/bc/C/rpc",
+      "evidence": {
+        "verified_at": 1792951321,
+        "record_url": "https://testnet.nearblocks.io/txns/GD2AUawgrvjkdunAxb8SF8tgQbhTyMeEK39at9Qnr9dT",
+        "deposit_transaction": "0x781de34457fce2640a639ab8562ab0511c710b158bc9ada15116bf58acffce1f",
+        "release_transaction": "0x639de04651509c2e605c9c7e14e7e735104463b8fcd1c408fdcc810b160b4f1a"
+      }
+    },
+    {
+      "manifest": {
+        "chain_id": "hyperevm",
+        "version": 6,
+        "family": "evm",
+        "network_fingerprint": "998",
+        "vault": [
+          161, 0, 91, 205, 37, 137, 173, 99, 149, 39, 83, 72, 146, 202, 186, 40,
+          228, 16, 241, 155
+        ],
+        "controller": [
+          83, 183, 62, 251, 32, 169, 235, 99, 3, 249, 242, 72, 230, 203, 212,
+          118, 68, 86, 113, 106
+        ],
+        "controller_public_key": [
+          68, 94, 247, 255, 77, 152, 132, 157, 24, 107, 30, 124, 77, 146, 49,
+          68, 9, 83, 221, 188, 0, 16, 74, 239, 244, 11, 57, 213, 87, 248, 52,
+          89, 26, 121, 197, 234, 23, 108, 191, 140, 44, 221, 109, 158, 145, 240,
+          41, 166, 76, 152, 6, 189, 124, 128, 107, 249, 227, 75, 60, 212, 4,
+          137, 213, 136
+        ],
+        "asset_id": "hype",
+        "asset_address": [],
+        "decimals": 18,
+        "max_collateral_atomic": "1000000000000000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 0,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:hyperevm:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 250000,
+        "max_fee_per_gas": "100000000000",
+        "max_network_cost_atomic": "75000000000000000",
+        "capability_evidence_hash": [
+          177, 153, 120, 80, 244, 234, 153, 182, 251, 28, 209, 84, 181, 82, 163,
+          147, 39, 204, 178, 58, 219, 1, 42, 190, 60, 22, 148, 92, 225, 170,
+          228, 105
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://rpc.hyperliquid-testnet.xyz/evm",
+      "evidence": {
+        "verified_at": 1792951321,
+        "record_url": "https://testnet.nearblocks.io/txns/6aPfsvvkS4MCz3CPJQrcMGYY8xdrNwViz54K6MRy4kZT",
+        "deposit_transaction": "0x8db2404ad335f2c1d49daa9d0636cf0e86b1d3d9544de1931bdd3b0055141337",
+        "release_transaction": "0xbd3a6e73eeb7146c4d1abb01b341caedddc6c32baf608236a1cc4a17a051adce"
+      }
+    },
+    {
+      "manifest": {
+        "chain_id": "solana",
+        "version": 6,
+        "family": "solana",
+        "network_fingerprint": "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+        "vault": [
+          111, 79, 205, 208, 212, 64, 201, 110, 92, 229, 222, 101, 128, 135,
+          254, 199, 146, 90, 218, 237, 76, 20, 152, 149, 101, 206, 220, 172,
+          212, 0, 212, 79, 157, 190, 61, 135, 168, 223, 209, 222, 247, 228, 181,
+          151, 254, 88, 192, 94, 60, 149, 180, 177, 235, 38, 5, 178, 22, 85, 24,
+          213, 249, 20, 138, 70
+        ],
+        "controller": [
+          33, 26, 86, 165, 108, 17, 48, 7, 45, 226, 133, 208, 124, 203, 80, 127,
+          191, 113, 12, 6, 59, 250, 130, 100, 245, 228, 214, 61, 191, 205, 107,
+          97
+        ],
+        "controller_public_key": [
+          33, 26, 86, 165, 108, 17, 48, 7, 45, 226, 133, 208, 124, 203, 80, 127,
+          191, 113, 12, 6, 59, 250, 130, 100, 245, 228, 214, 61, 191, 205, 107,
+          97
+        ],
+        "asset_id": "sol",
+        "asset_address": [],
+        "decimals": 9,
+        "max_collateral_atomic": "1000000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 1,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:solana:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 200000,
+        "max_fee_per_gas": "1000000",
+        "max_network_cost_atomic": "5000000",
+        "capability_evidence_hash": [
+          236, 232, 154, 147, 88, 198, 87, 133, 143, 20, 228, 238, 141, 97, 166,
+          195, 190, 184, 224, 159, 233, 2, 105, 20, 158, 135, 105, 118, 208,
+          170, 84, 123
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://api.devnet.solana.com",
+      "evidence": {
+        "verified_at": 1792951322,
+        "record_url": "https://testnet.nearblocks.io/txns/5XiobA1NcAGeLiADSP7a6WyXacjapJ5vKWctxZt9nEpt",
+        "deposit_transaction": "4gqBBGi3TKKGnfnC949wQB8whYpWVosFaiESbvb37iprFsuzjoRPsn1QFNHyyKggfHbfhiQXifHofmQkKcC1BBGE",
+        "release_transaction": "2SqGKcFPHa658ZRShT7ENsnAeCW3mtWF5n8oswPdZXAvF14iDZ99si1FRRGTYfVRMp4o8JuMy3XM5sky4fHnK68a"
+      }
+    },
+    {
+      "manifest": {
+        "chain_id": "sui",
+        "version": 6,
+        "family": "sui",
+        "network_fingerprint": "69WiPg3DAQiwdxfncX6wYQ2siKwAe6L9BZthQea3JNMD",
+        "vault": [
+          156, 217, 77, 215, 48, 181, 147, 127, 70, 108, 144, 246, 183, 220, 96,
+          193, 244, 155, 176, 163, 56, 20, 209, 233, 176, 124, 243, 186, 65,
+          147, 203, 8, 139, 132, 33, 73, 64, 60, 161, 111, 86, 204, 144, 0, 72,
+          149, 121, 112, 245, 67, 6, 147, 115, 60, 50, 97, 226, 254, 145, 241,
+          142, 112, 27, 141
+        ],
+        "controller": [
+          155, 220, 156, 108, 216, 21, 203, 206, 136, 209, 81, 234, 96, 91, 104,
+          251, 169, 189, 110, 60, 152, 152, 208, 29, 137, 40, 20, 101, 138, 155,
+          223, 220
+        ],
+        "controller_public_key": [
+          130, 183, 14, 162, 0, 7, 225, 124, 238, 196, 34, 160, 12, 188, 89,
+          195, 10, 124, 92, 255, 198, 113, 184, 219, 177, 123, 96, 67, 154, 216,
+          99, 221
+        ],
+        "asset_id": "sui",
+        "asset_address": [],
+        "decimals": 9,
+        "max_collateral_atomic": "1000000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 1,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:sui:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 100000000,
+        "max_fee_per_gas": "100000",
+        "max_network_cost_atomic": "50000000",
+        "capability_evidence_hash": [
+          13, 44, 154, 114, 190, 155, 26, 24, 32, 183, 201, 86, 99, 198, 207,
+          64, 125, 212, 12, 192, 237, 242, 125, 243, 126, 235, 46, 76, 248, 234,
+          29, 89
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://fullnode.testnet.sui.io:443",
+      "evidence": {
+        "verified_at": 1792951322,
+        "record_url": "https://testnet.nearblocks.io/txns/G7Vn4ykfj1vjajGEQzJwGaX8wevCfwdczorMWxMQcuT6",
+        "deposit_transaction": "HFjScznSeCFWj9toRT5TCjFGiaYrwFhguJhpNkAcWvJf",
+        "release_transaction": "G3AptMWYRhdCSG9rkVtJmeWwVy9P9f3vis3rRsW9ZUGn"
+      }
+    },
+    {
+      "manifest": {
+        "chain_id": "starknet",
+        "version": 6,
+        "family": "starknet",
+        "network_fingerprint": "SN_SEPOLIA",
+        "vault": [
+          7, 144, 34, 57, 66, 71, 128, 216, 250, 216, 152, 148, 26, 63, 82, 123,
+          247, 15, 162, 21, 162, 41, 220, 202, 106, 189, 179, 212, 75, 144, 245,
+          93
+        ],
+        "controller": [
+          6, 202, 32, 154, 84, 242, 130, 135, 118, 157, 63, 28, 18, 37, 180, 47,
+          66, 126, 236, 79, 210, 226, 5, 80, 183, 237, 229, 16, 106, 216, 29, 58
+        ],
+        "controller_public_key": [
+          171, 151, 112, 79, 116, 170, 153, 112, 33, 132, 16, 223, 140, 44, 133,
+          175, 117, 220, 70, 235, 204, 98, 255, 42, 135, 191, 182, 147, 45, 209,
+          63, 34, 32, 211, 153, 186, 208, 79, 62, 147, 60, 153, 33, 72, 240, 49,
+          188, 73, 252, 170, 243, 215, 240, 237, 162, 132, 61, 33, 13, 190, 106,
+          142, 216, 31
+        ],
+        "asset_id": "strk",
+        "asset_address": [
+          4, 113, 143, 90, 15, 195, 76, 193, 175, 22, 161, 205, 238, 152, 255,
+          178, 12, 49, 245, 205, 97, 214, 171, 7, 32, 24, 88, 244, 40, 124, 147,
+          141
+        ],
+        "decimals": 18,
+        "max_collateral_atomic": "1000000000000000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 0,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:starknet:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 100000000,
+        "max_fee_per_gas": "1000000000000000",
+        "max_network_cost_atomic": "9000000000000000000",
+        "capability_evidence_hash": [
+          211, 216, 53, 51, 119, 237, 73, 4, 222, 219, 77, 168, 192, 205, 231,
+          189, 126, 185, 90, 147, 241, 45, 65, 254, 204, 103, 185, 50, 172, 2,
+          58, 8
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://api.zan.top/public/starknet-sepolia/rpc/v0_10",
+      "evidence": {
+        "verified_at": 1792951322,
+        "record_url": "https://testnet.nearblocks.io/txns/H51FETfss6v4ohsrBM6PnczP7biDmrVjj5oDkx1VpQi2",
+        "deposit_transaction": "0x70e1b12165c186bd41aebcd811d87612246a781ff56517e8cf8d891cb53587f",
+        "release_transaction": "0x0246f3ad3d82b8ba94e9d43d38fcb20cda4ad9bf132e34816b420236a1b4d6ea"
+      }
+    },
+    {
+      "manifest": {
+        "chain_id": "bitcoin",
+        "version": 6,
+        "family": "bitcoin",
+        "network_fingerprint": "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943",
+        "vault": [],
+        "controller": [
+          3, 131, 164, 85, 55, 250, 241, 13, 214, 196, 186, 89, 112, 18, 67, 86,
+          230, 178, 89, 216, 162, 162, 247, 80, 209, 199, 149, 104, 152, 181,
+          14, 203, 2
+        ],
+        "controller_public_key": [
+          3, 131, 164, 85, 55, 250, 241, 13, 214, 196, 186, 89, 112, 18, 67, 86,
+          230, 178, 89, 216, 162, 162, 247, 80, 209, 199, 149, 104, 152, 181,
+          14, 203, 2
+        ],
+        "asset_id": "btc",
+        "asset_address": [],
+        "decimals": 8,
+        "max_collateral_atomic": "100000000000",
+        "ltv_bps": 5000,
+        "liquidation_threshold_bps": 7000,
+        "mpc_account": "v1.signer-prod.testnet",
+        "read_domain": 3,
+        "read_public_key": [
+          65, 195, 252, 54, 171, 88, 63, 162, 191, 27, 212, 236, 190, 53, 185,
+          252, 131, 146, 66, 101, 149, 119, 222, 33, 199, 98, 237, 206, 113, 80,
+          70, 152, 112, 179, 253, 139, 17, 95, 15, 222, 185, 251, 29, 72, 31, 4,
+          156, 112, 142, 223, 110, 150, 229, 56, 30, 217, 37, 63, 132, 185, 135,
+          179, 222, 140
+        ],
+        "sign_domain": 0,
+        "derivation_path": "kanso-testnet-9774b8b352-v1:bitcoin:custody:v1",
+        "minimum_confirmations": 1,
+        "initial_account_nonce": 0,
+        "max_gas": 1000,
+        "max_fee_per_gas": "100",
+        "max_network_cost_atomic": "1000",
+        "capability_evidence_hash": [
+          45, 214, 82, 165, 246, 212, 243, 137, 52, 230, 6, 178, 148, 57, 96,
+          178, 66, 7, 214, 39, 109, 249, 27, 70, 53, 215, 179, 9, 132, 226, 28,
+          38
+        ],
+        "new_locks_enabled": true,
+        "signing_enabled": true
+      },
+      "rpc_url": "https://bitcoin-testnet-rpc.publicnode.com",
+      "evidence": {
+        "verified_at": 1792951323,
+        "record_url": "https://testnet.nearblocks.io/txns/8GUbt3w5sotTJSks8nPy9pp7dqYMWJJ21xWkSaQB38Tx",
+        "deposit_transaction": "3cd2708cbdbfdcd7bafd1395c904a759a1bdb159a1caf8cb861f348bb88ea6c6",
+        "release_transaction": "6e67403b3e90f1a539dd168a009659a065196caf9752f3bfc880d0db97bb90a7"
+      }
+    }
+  ]
+}
