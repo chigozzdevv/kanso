@@ -1,0 +1,91 @@
+import {
+  SystemProgram,
+  PublicKey,
+  Transaction as SolanaTransaction,
+} from '@solana/web3.js';
+import { Transaction as SuiTransaction } from '@mysten/sui/transactions';
+import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
+import type { Hex } from 'viem';
+import { digest } from '@testnet/deployment';
+import type { Release } from '@testnet/deployment';
+import { read_json } from '@testnet/store';
+import { live_plan } from '@testnet/live-setup';
+import { send_evm, send_solana } from '@testnet/live-wallets';
+import { execute_sui } from '@testnet/deploy-sui';
+import { starknet_invoke } from '@testnet/deploy-starknet';
+import { STRK } from '@testnet/network';
+
+export async function fund_controllers(release: Release) {
+  const plan = await live_plan(release);
+  const amounts: Record<string, bigint> = {
+    base: 500_000_000_000_000n,
+    arbitrum: 500_000_000_000_000n,
+    bnb: 1_000_000_000_000_000n,
+    polygon: 15_000_000_000_000_000n,
+    avalanche: 10_000_000_000_000_000n,
+    hyperevm: 500_000_000_000_000n,
+  };
+  for (const c of plan.deployment.chains) {
+    const m = c.manifest;
+    if (process.env.LIVE_CHAIN && process.env.LIVE_CHAIN !== m.chain_id)
+      continue;
+    const id = `gas-${m.chain_id}-v1`;
+    if (release.journal.effects[id]?.state === 'confirmed') continue;
+    const address = ('0x' + Buffer.from(m.controller).toString('hex')) as Hex;
+    if (m.family === 'evm')
+      await send_evm(
+        release,
+        id,
+        m.chain_id,
+        address,
+        '0x',
+        amounts[m.chain_id]!,
+      );
+    if (m.family === 'solana') {
+      const { Keypair } = await import('@solana/web3.js');
+      const key = Keypair.fromSecretKey(
+        Uint8Array.from(
+          await read_json<number[]>(
+            release.folder,
+            'keys/solana-deployer.json',
+          ),
+        ),
+      );
+      await send_solana(
+        release,
+        id,
+        new SolanaTransaction().add(
+          SystemProgram.transfer({
+            fromPubkey: key.publicKey,
+            toPubkey: new PublicKey(m.controller),
+            lamports: 50_000_000,
+          }),
+        ),
+      );
+    }
+    if (m.family === 'sui') {
+      const key = await read_json<{ private_key: string }>(
+        release.folder,
+        'keys/sui-deployer.json',
+      );
+      const tx = new SuiTransaction();
+      const [coin] = tx.splitCoins(tx.gas, [tx.pure.u64(200_000_000)]);
+      tx.transferObjects([coin], tx.pure.address(address));
+      await execute_sui(
+        release,
+        id,
+        tx,
+        Ed25519Keypair.fromSecretKey(key.private_key),
+        digest(JSON.stringify({ address, amount: '200000000' })),
+      );
+    }
+    if (m.family === 'starknet')
+      await starknet_invoke(release, id, [
+        {
+          contractAddress: STRK,
+          entrypoint: 'transfer',
+          calldata: [address, '25000000000000000000', '0'],
+        },
+      ]);
+  }
+}
