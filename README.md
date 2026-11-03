@@ -53,7 +53,7 @@ The protocol owner schedules the SHA-256 hash of reviewed WASM with `schedule_up
 
 After the delay, call `execute_upgrade` with `{"code":null}` and 300 Tgas. It hashes the entire staged WASM and batches deployment with private `migrate` on the same account. Failure rolls back the deployment and retains the proposal and staged bytes. Successful migration preserves version-1 root state, loans, pool shares and accounting, then clears the upload. A future incompatible state layout requires an explicit migration from its previous layout. `cancel_upgrade` discards the proposal and upload. Ownership uses `propose_owner`, `accept_owner` and `cancel_owner_transfer`; acceptance also cancels pending upgrades.
 
-This upgrade authority can replace validation and signing logic and therefore has effective custody power. Any full-access key on the coordinator account can bypass the contract timelock. The current Testnet coordinator has no account access keys, as recorded in [deployment evidence](deployments/testnet-contracts.json). Remote vaults remain immutable, versioned deployments; existing loans retain their original vault and manifest version.
+This upgrade authority can replace validation and signing logic and therefore has effective custody power. Any full-access key on the coordinator account can bypass the contract timelock. The current Testnet coordinator has no account access keys; check `view_access_key_list` on the NEAR RPC before an upgrade. Remote vaults remain immutable, versioned deployments; existing loans retain their original vault and manifest version.
 
 ## Local testnet credentials
 
@@ -192,81 +192,56 @@ The development server uses `http://127.0.0.1:3000`. The production export is `c
 
 ## Public Testnet deployment
 
-The Testnet deployment uses [Circle's official USDC on NEAR Testnet](https://developers.circle.com/stablecoins/usdc-contract-addresses#testnet): `3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520d03d4afcb8af`, with six decimals. The public pool is `usdc`. The custom-token pools were emptied through normal LP withdrawals and refund claims, then removed before changing the settlement token. Historical loan, transfer and replay records remain valid; their balances were not converted into Circle USDC.
+The deployment uses [Circle's official USDC on NEAR Testnet](https://developers.circle.com/stablecoins/usdc-contract-addresses#testnet): `3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520d03d4afcb8af`, with six decimals. The public pool is `usdc`. Current coordinator, vault, controller and light-client configuration is in `deployments/testnet.json`, which the server and client consume.
 
-Circle Mint Sandbox funding uses `CIRCLE_MINT_SANDBOX_API_KEY` from root `.env`. These commands are pinned to Circle's sandbox API and reject production keys. Check the account's deposit limits in the Circle console before submitting. `circle-prepare` uses Circle's documented fictitious bank fixture and submits a simulated deposit; it does not send a real bank payment. Reuse its run ID when resuming. A mock deposit with an ambiguous submission outcome stops for reconciliation instead of being submitted again.
+The coordinator has no account access keys and upgrades through the owner's current minimum 60-second Testnet timelock. EVM vault controllers are immutable, Solana's upgrade authority is removed, and Sui's UpgradeCap was destroyed during publication. USDC follows Circle's token controls. The owner and recovery attestors share one development machine.
 
-```sh
-pnpm --filter @kanso/server testnet circle-prepare 200000 demo-liquidity-100k-v1
-pnpm --filter @kanso/server testnet circle-status
-pnpm --filter @kanso/server testnet circle-withdraw lp 1 probe
-pnpm --filter @kanso/server testnet circle-fund 100000 100000 demo-liquidity-100k-v1
-```
-
-Wait for the sandbox deposit to settle and for recipient addresses to be approved before withdrawing. Repeat `circle-withdraw` with the same arguments to reconcile the probe. Bulk funding requires that finalized 1-USDC receipt from the exact Circle token, then tops up pool cash and the solver wallet to the requested targets. Repeat `circle-fund` with the same arguments while transfers are pending; it preserves the original request identities. Circle API responses alone do not prove that USDC reached NEAR.
-
-For onchain funding, `circle-address NEAR` or `circle-address XLM` returns the sandbox account's deposit address. Stellar deposits must include the returned `addressTag` as their ID memo. `circle-deposit-near <amount> <run>` sends official Testnet USDC from the solver to the Circle deposit address and reports Circle's incoming transfer and balance. Reuse the run ID to reconcile the same transaction.
-
-The existing NEAR coordinator and remote custody deployments are retained: six EVM vaults, a Solana Devnet program and configuration, an immutable Sui package and shared vault, and a Starknet Sepolia controller and STRK vault. Addresses, code hashes and transaction IDs are in `deployments/testnet-contracts.json`.
-
-The NEAR coordinator has no account access keys. Its owner can upgrade through the current minimum 60-second Testnet timelock. USDC follows Circle's token controls. EVM vaults have immutable controller settings, Solana's upgrade authority is removed, and Sui's UpgradeCap was destroyed during publication. The protocol owner and recovery attestors still share one development machine.
-
-Starknet's controller constructor atomically creates its vault to avoid circular constructor addresses; all 14 Cairo tests pass. Both declared classes and deployed contracts have verified hashes and configuration. Its live repayment, liquidation and remaining collateral releases reached L1 finality and their MPC proofs were accepted. Bitcoin uses per-loan MPC custody addresses and the reviewed NEAR light client for transaction inclusion. Real Testnet3 deposits funded NEAR loans; repayment, liquidation, confirmed change, final collateral release and additional-output recovery all passed.
-
-Live verification commands cover repayment, liquidation, collateral release, multi-chain baskets, wallet authentication, pool accounting and governance. Status and verification results print to the terminal. Private transaction journals retain signed transactions and checkpoints for safe retries and recovery.
-
-The Circle USDC SDK/API/worker lifecycle passed with a fresh 1 USDC loan backed by NEAR + BNB + Sui. Checks covered the exact payout, payout replay protection, funded solver escrow cancellation and refund, direct repayment with excess returned, all three collateral releases, LP withdrawal and redeposit, and exact token backing of pool cash. Origination was enabled only after these checks and runtime readiness passed.
-
-The earlier Bitcoin SDK/API lifecycle used the retired custom test token. Current Circle USDC verification is recorded separately in `settlement_verification` in the deployment record; remote lifecycle evidence alone does not prove settlement with a different token.
-
-The local Testnet API and worker use persistent MongoDB replica-set and Redis data in `.testnet/`, with private runtime configuration in the root `.env` and the original service settings retained in `.testnet/server.env`. The API binds to `127.0.0.1:55203`; local indexer and keeper polling runs every 15 seconds to limit shared RPC traffic. These are local processes; they must stay running for reconciliation. `live-oracle` publishes fresh CoinGecko observations using the configured development oracle account, with an explicit 1% conservative haircut. Stale prices block new risk. This feed and the internal solver are development infrastructure.
-
-Deployment commands run from the workspace root:
+Run deployment and maintenance commands from the workspace root:
 
 ```sh
 pnpm --filter @kanso/server testnet deploy-near
 pnpm --filter @kanso/server testnet configure-near
 pnpm --filter @kanso/server testnet upgrade-near
-pnpm --filter @kanso/server testnet migrate-settlement
-pnpm --filter @kanso/server testnet settlement-status
 pnpm --filter @kanso/server testnet configure-bitcoin
 pnpm --filter @kanso/server testnet mpc-keys
 pnpm --filter @kanso/server testnet deploy-evm
 pnpm --filter @kanso/server testnet deploy-solana
 pnpm --filter @kanso/server testnet deploy-sui
 pnpm --filter @kanso/server testnet deploy-starknet
-pnpm --filter @kanso/server testnet deployment-record
+pnpm --filter @kanso/server testnet deployment-config
 ```
 
-Live verification and capability commands also run from the workspace root:
+`upgrade-near` resumes staged uploads and executes the reviewed artifact after the contract timelock. `configure-bitcoin` registers the reviewed light client against existing Bitcoin manifests without enabling borrowing. `deployment-config` validates the coordinator's settlement token and account keys, then updates the runtime configuration while preserving configured pools and manifests.
+
+Controller gas can be replenished from the local deployer wallets:
 
 ```sh
-pnpm --filter @kanso/server testnet live-report
-pnpm --filter @kanso/server testnet live-bitcoin-recovery
-pnpm --filter @kanso/server testnet live-wallet-auth
-pnpm --filter @kanso/server testnet live-basket
-pnpm --filter @kanso/server testnet live-audit
-pnpm --filter @kanso/server testnet prepare-capabilities
-pnpm --filter @kanso/server testnet activate-lending
-pnpm --filter @kanso/server testnet live-api
-pnpm --filter @kanso/server testnet verify-settlement
-LIVE_CHAIN=near,bnb,sui pnpm --filter @kanso/server testnet live-api
-LIVE_CHAIN=bitcoin pnpm --filter @kanso/server testnet live-api
+pnpm --filter @kanso/server testnet fund-controllers gas-topup-2026-11-03
+pnpm --filter @kanso/server testnet fund-controllers gas-topup-2026-11-03 base
 ```
 
-`prepare-capabilities` requires paused origination and complete on-chain lifecycle, authority, wallet, basket and accounting evidence. It registers the next immutable manifest versions and leaves incomplete chains disabled. Restart the API and worker with the resulting runtime configuration before `activate-lending`; activation checks worker connectivity, the API catalog, canonical manifests, fresh prices and pool liquidity. After a blocked chain completes its original verification cases, pausing origination and rerunning preparation creates another manifest version without changing accepted loans. Repeated commands reconcile recorded effects. Capability preparation preserves the current settlement token and configured pools; it does not fund or recreate retired pools.
+The optional chain ID restricts the operation to that network. Reuse the run ID to reconcile the same transfers; choose a new ID only for an intentional additional top-up. The command uses fixed Testnet gas amounts for EVM, Solana, Sui and Starknet controllers. It does not transfer settlement USDC.
 
-`migrate-settlement` pauses activity, executes the staged upgrade when its existing delay expires, audits all legacy loans and transfers, pays refunds, withdraws old LP positions and deletes empty legacy pools. It then switches to the fixed Circle Testnet token, creates `usdc` and funds it with 20 USDC from the LP wallet. It refuses to switch while pool claims, escrow or refunds remain. `verify-settlement` exercises the SDK/API/worker journey with a NEAR + BNB + Sui basket by default, verifies exact Circle USDC payouts and refunds, repayment, collateral release, LP withdrawal and redeposit, and leaves origination paused for `activate-lending`. The local settlement-token contract is only a sandbox fixture; public deployment never deploys a replacement USDC token.
+Capability changes retain the existing private verification journals:
 
-`upgrade-near` resumes uploads and executes the reviewed artifact after the contract timelock. `configure-bitcoin` binds the reviewed light client to historical Bitcoin manifests without enabling borrowing. `live-bitcoin-recovery [loan_id] [satoshis]` deposits and refunds an extra output, using `live_bitcoin_repay_v1` and 5,000 test satoshis by default; reruns reconcile the same deposit and refund.
+```sh
+pnpm --filter @kanso/server testnet prepare-capabilities
+pnpm --filter @kanso/server testnet activate-lending
+```
 
-For the existing local configuration, start the processes in separate terminals:
+`prepare-capabilities` requires paused origination and complete onchain lifecycle, authority, wallet, basket and accounting evidence. It registers the next immutable manifest versions and leaves incomplete chains disabled. Restart the API and worker with the resulting runtime configuration before `activate-lending`; activation verifies the recorded Circle USDC lifecycle, worker connectivity, API catalog, canonical manifests, fresh prices and pool liquidity. These gates require the original evidence in `.testnet/`; the commands do not generate it or bypass missing checks.
+
+Start the local services and application processes in separate terminals:
 
 ```sh
 pnpm --filter @kanso/server testnet local-services
 pnpm dev:api
 pnpm dev:worker
-pnpm --filter @kanso/server testnet live-oracle
+pnpm --filter @kanso/server testnet oracle
 ```
 
-The scripts preserve signed transactions and receipts in ignored `.testnet/deployment*.json` journals before broadcasting. An ambiguous response is reconciled with its original transaction identity. Changed deployment intent and recorded chain failures stop the affected step. EVM fee replacements reuse the original nonce; Solana code uploads reuse the existing program and buffer. Keep these journals and key files for recovery. Before removing a leftover deployment lock after a crash, establish that its recorded process has exited and inspect the pending transaction. Rebuild contract artifacts before starting a new release. Existing immutable deployments are verified against those artifacts rather than replaced.
+`local-services` starts a persistent MongoDB replica set and Redis under `.testnet/`, prints their connection URLs and stops them on SIGINT or SIGTERM. Set `MONGODB_URI` and `REDIS_URL` in the root `.env` to those URLs before starting the API and worker. Defaults are MongoDB port 27021 and Redis port 6381; override them with `TESTNET_MONGO_PORT` and `TESTNET_REDIS_PORT`. The existing `.testnet/server.env` is retained for recovery; commands load the root `.env`.
+
+`oracle` publishes fresh CoinGecko observations using the development oracle account, with an explicit 1% conservative haircut. `prices` publishes once. Stale prices block new risk. The feed and internal solver are development infrastructure.
+
+Operations preserve signed transactions and receipts in ignored `.testnet/deployment*.json` journals before broadcasting. Ambiguous responses are reconciled with the original transaction identity. Changed deployment intent and recorded chain failures stop the affected step. EVM fee replacements reuse the original nonce; Solana code uploads reuse the existing program and buffer. Keep these journals and keys for recovery. Before removing a leftover deployment lock after a crash, establish that its recorded process has exited and inspect the pending transaction. Rebuild contract artifacts before a new release. Existing immutable deployments are verified against those artifacts rather than replaced.
