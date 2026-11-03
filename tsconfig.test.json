@@ -5,15 +5,18 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "paths": {
       "@test/*": ["./test/*"],
+      "@testnet/*": ["./server/scripts/testnet/*"],
       "@schema/*": ["./packages/schema/src/*"],
       "@kanso/schema": ["./packages/schema/src/index.ts"],
       "@bindings/*": ["./packages/bindings/src/*"],
-      "@kanso/bindings": ["./packages/bindings/src/index.ts"],
       "@sdk/*": ["./packages/sdk/src/*"],
-      "@kanso/sdk": ["./packages/sdk/src/index.ts"]
+      "@server/*": ["./server/src/*"],
+      "@kanso/bindings": ["./packages/bindings/src/index.ts"],
+      "@kanso/sdk": ["./packages/sdk/src/index.ts"],
+      "@kanso/server": ["./server/src/index.ts"]
     },
     "types": ["node"],
     "declaration": false
   },
-  "include": ["test", "vitest.config.ts"]
+  "include": ["test", "vitest.config.ts", "server/test"]
 }

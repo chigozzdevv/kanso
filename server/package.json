@@ -1,0 +1,46 @@
+{
+  "name": "@kanso/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.scripts.json",
+    "start": "node --env-file-if-exists=../.env dist/server.js",
+    "start:worker": "node --env-file-if-exists=../.env dist/worker.js",
+    "dev": "node --env-file-if-exists=../.env --import tsx --watch src/server.ts",
+    "dev:worker": "node --env-file-if-exists=../.env --import tsx --watch src/worker.ts",
+    "testnet": "node --env-file-if-exists=../.env --import tsx scripts/testnet/cli.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.3.1",
+    "@fastify/rate-limit": "11.2.1",
+    "@kanso/bindings": "workspace:*",
+    "@kanso/schema": "workspace:*",
+    "@kanso/sdk": "workspace:*",
+    "@mysten/sui": "2.37.0",
+    "@noble/curves": "1.9.7",
+    "@noble/hashes": "1.8.0",
+    "@solana/web3.js": "1.99.0",
+    "bitcoinjs-lib": "7.0.4",
+    "bs58": "6.0.0",
+    "bullmq": "6.3.4",
+    "dotenv": "17.4.2",
+    "fastify": "5.12.4",
+    "ioredis": "6.0.0",
+    "mongoose": "9.10.0",
+    "near-api-js": "5.1.1",
+    "starknet": "10.8.0",
+    "viem": "2.56.3",
+    "zod": "4.6.7"
+  }
+}
