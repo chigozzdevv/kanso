@@ -1,0 +1,108 @@
+.section {
+  background: linear-gradient(180deg, #38c276 0%, #1c874c 100%);
+  border-radius: 48px;
+  padding: 60px;
+}
+.heading {
+  color: #fff;
+  margin-bottom: 36px;
+}
+.heading h2 {
+  font-size: clamp(35px, 4.5vw, 52px);
+  line-height: 1.2;
+  letter-spacing: -0.05em;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.card {
+  min-width: 0;
+  min-height: 390px;
+  padding: 32px 32px 24px;
+  border-radius: 24px;
+  color: #111;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.card h3 {
+  font-size: clamp(28px, 3vw, 34px);
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+.card p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 12px;
+  max-width: 340px;
+  color: #34433b;
+}
+.native {
+  background: linear-gradient(180deg, #d2fae4 -6.79377%, #c9f5dd 100%);
+}
+.balance {
+  background: linear-gradient(180deg, #ccf0ff 0%, #b0e7ff 100%);
+}
+.flexible {
+  background: linear-gradient(180deg, #ffd1a6 0%, #edba8a 100%);
+}
+.liquidity {
+  background: linear-gradient(180deg, #ffc4c4 0%, #f7a6a6 100%);
+}
+.illustration {
+  width: 100%;
+  margin: 0;
+  min-height: 210px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 1020px) {
+  .section {
+    padding: 40px 32px 32px;
+    border-radius: 36px;
+  }
+  .card {
+    min-height: 350px;
+    padding: 26px 24px 24px;
+  }
+  .illustration {
+    min-height: 190px;
+  }
+}
+@media (max-width: 760px) {
+  .section {
+    border-radius: 28px;
+    padding: 30px 16px 24px;
+  }
+  .heading {
+    padding-inline: 10px;
+    margin-bottom: 25px;
+  }
+  .heading h2 {
+    font-size: clamp(29px, 8vw, 38px);
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .card {
+    min-height: 350px;
+    padding: 26px 25px 24px;
+    border-radius: 22px;
+  }
+  .card h3 {
+    font-size: clamp(26px, 7.4vw, 34px);
+  }
+  .card p {
+    max-width: 260px;
+  }
+  .illustration {
+    width: calc(100% + 50px);
+    margin-inline: -25px;
+    min-height: 165px;
+  }
+}

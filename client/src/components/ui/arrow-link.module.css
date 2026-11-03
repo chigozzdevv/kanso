@@ -1,0 +1,22 @@
+.link:is(:hover, :focus-visible) {
+  transform: none;
+}
+.arrow {
+  width: 26px;
+  height: 22px;
+}
+.shaft {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0.3;
+  transition: stroke-dashoffset 0.22s ease;
+}
+.head {
+  transform: translateX(-6px);
+  transition: transform 0.22s ease;
+}
+.link:is(:hover, :focus-visible) .shaft {
+  stroke-dashoffset: 0;
+}
+.link:is(:hover, :focus-visible) .head {
+  transform: translateX(0);
+}

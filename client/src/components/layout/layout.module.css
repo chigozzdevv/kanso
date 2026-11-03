@@ -1,0 +1,152 @@
+.header {
+  position: relative;
+  z-index: 20;
+}
+.nav {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #111;
+  font-size: 32px;
+  font-weight: 650;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+.wordmark svg {
+  color: var(--brand-green);
+}
+.desktopLinks {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  margin-left: 70px;
+}
+.desktopLinks a {
+  font-size: 13px;
+  font-weight: 550;
+  transition: color 0.2s;
+}
+.desktopLinks a:hover {
+  color: var(--green);
+}
+.navCta {
+  min-height: 56px;
+  padding: 16px 24px;
+  background: #a3f7c1;
+  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+}
+.navCta:hover {
+  background: #92efb4;
+  transform: none;
+}
+.menuToggle {
+  display: none;
+  border: 1px solid var(--line);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+.mobileLinks {
+  display: none;
+}
+.footer {
+  padding: 70px 0 25px;
+}
+.footerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.footerTop nav {
+  display: flex;
+  gap: 27px;
+  align-items: center;
+}
+.footerTop nav a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+.footerTop nav a:hover {
+  color: var(--green);
+}
+.copyright {
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .desktopLinks {
+    margin-left: 0;
+    gap: 24px;
+  }
+}
+@media (max-width: 760px) {
+  .nav {
+    gap: 14px;
+  }
+  .wordmark {
+    font-size: 29px;
+    gap: 7px;
+  }
+  .wordmark svg {
+    width: 18px;
+    height: 18px;
+  }
+  .desktopLinks,
+  .navCta {
+    display: none;
+  }
+  .menuToggle {
+    display: flex;
+  }
+  .mobileLinks:not([hidden]) {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 76px;
+    left: 20px;
+    right: 20px;
+    padding: 15px 22px;
+    border-radius: 22px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    box-shadow: 0 16px 36px #173c2b12;
+  }
+  .mobileLinks a {
+    padding: 16px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+  }
+  .mobileLinks a + a {
+    border-top: 1px solid var(--line);
+  }
+  .footer {
+    padding-top: 48px;
+  }
+  .footerTop {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px 16px;
+  }
+  .footerTop nav {
+    grid-column: 1 / -1;
+    gap: 18px 24px;
+    flex-wrap: wrap;
+  }
+}

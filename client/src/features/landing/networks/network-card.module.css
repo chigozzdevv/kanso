@@ -1,0 +1,63 @@
+.card {
+  display: grid;
+  grid-template-rows: 48px 22px 16px 18px;
+  align-content: center;
+  justify-items: center;
+  row-gap: 6px;
+  min-height: 190px;
+  padding: 22px 16px;
+  background: var(--white);
+  border: 1px solid #c9e9d3;
+  border-radius: 24px;
+  text-align: center;
+  transition:
+    border-color 0.2s,
+    transform 0.2s;
+}
+.card:hover,
+.card:focus-visible {
+  border-color: var(--brand-green);
+  transform: translateY(-3px);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.name {
+  align-self: end;
+  font-size: 16px;
+  font-weight: 550;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+.testnet {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 16px;
+}
+.settlement {
+  align-self: center;
+  padding: 3px 8px;
+  border-radius: 99px;
+  background: var(--mint);
+  color: #21623e;
+  font-size: 9px;
+  line-height: 12px;
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .card {
+    min-height: 174px;
+    padding: 18px 12px;
+    grid-template-rows: 40px 22px 16px 18px;
+    border-radius: 20px;
+  }
+  .logo svg {
+    width: 40px;
+    height: 40px;
+  }
+  .name {
+    font-size: 15px;
+  }
+}

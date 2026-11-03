@@ -1,0 +1,222 @@
+.hero {
+  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100svh - var(--header-height));
+  padding-block: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.title {
+  margin: 0 auto;
+  font-size: clamp(54px, 6.1vw, 88px);
+  letter-spacing: -0.068em;
+  line-height: 1.2;
+  font-weight: 550;
+}
+.heroLine {
+  display: block;
+}
+.heroLine + .heroLine {
+  margin-top: 3px;
+}
+.combination {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 67px;
+  padding: 13px 14px 13px 20px;
+  background: var(--mint);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  letter-spacing: -0.035em;
+  vertical-align: middle;
+  position: relative;
+}
+.assetList {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  width: 428px;
+  animation: enter 0.4s ease both;
+}
+.asset {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 23px;
+  font-weight: 560;
+}
+.asset svg {
+  border-radius: 50%;
+}
+.plus,
+.more {
+  font-size: 21px;
+  color: #67825e;
+  font-weight: 400;
+}
+.more {
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+}
+.animationToggle {
+  width: 24px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: #57734f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+.animationToggle:hover {
+  background: #bdebd1;
+}
+.basket {
+  color: var(--green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.06em;
+  height: 1.1em;
+  transform: rotate(-9deg);
+  vertical-align: -0.18em;
+}
+.basket svg {
+  width: 0.98em;
+  height: 0.98em;
+}
+.usdc {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.13em;
+  color: var(--brand-green);
+  vertical-align: -0.035em;
+}
+.usdc svg {
+  width: 0.63em;
+  height: 0.63em;
+}
+.actions {
+  margin-top: 38px;
+  display: flex;
+  justify-content: center;
+}
+.tryButton {
+  min-width: 210px;
+  min-height: 64px;
+  padding: 18px 28px;
+  gap: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  background: #1fa64e;
+  color: var(--white);
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 1080px) {
+  .title {
+    font-size: 65px;
+  }
+  .assetList {
+    width: 380px;
+    gap: 9px;
+  }
+  .asset {
+    font-size: 20px;
+    gap: 5px;
+  }
+  .asset svg {
+    width: 24px;
+    height: 24px;
+  }
+  .combination {
+    min-height: 59px;
+    padding: 11px 10px 11px 14px;
+    gap: 8px;
+  }
+}
+@media (max-width: 760px) {
+  .hero {
+    padding-block: 32px;
+  }
+  .title {
+    font-size: clamp(28px, 8.3vw, 53px);
+    letter-spacing: -0.055em;
+    line-height: 1.25;
+  }
+  .heroLine:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+  .heroLine + .heroLine {
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+  .combination {
+    min-height: 53px;
+    border-radius: 14px;
+    padding: 10px 8px 10px 12px;
+    gap: 8px;
+  }
+  .assetList {
+    width: 265px;
+    gap: 5px;
+  }
+  .asset {
+    font-size: 14px;
+    gap: 3px;
+  }
+  .asset svg {
+    width: 18px;
+    height: 18px;
+  }
+  .plus,
+  .more {
+    font-size: 14px;
+  }
+  .animationToggle {
+    width: 18px;
+  }
+  .actions {
+    margin-top: 30px;
+  }
+  .tryButton {
+    min-width: 200px;
+    padding: 16px 24px;
+  }
+}
+@media (max-width: 360px) {
+  .assetList {
+    width: 200px;
+    gap: 4px;
+  }
+  .assetList > :nth-last-child(-n + 2) {
+    display: none;
+  }
+  .asset {
+    font-size: 13px;
+    gap: 3px;
+  }
+  .asset svg {
+    width: 16px;
+    height: 16px;
+  }
+  .combination {
+    gap: 6px;
+  }
+}

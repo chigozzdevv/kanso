@@ -1,0 +1,59 @@
+.artwork {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  color: #173c2b;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.paper {
+  fill: #fffef9;
+  stroke: #173c2b14;
+  stroke-width: 1;
+}
+.shadow {
+  filter: drop-shadow(0 8px 8px #173c2b0c);
+}
+.dark {
+  fill: #173c2b;
+}
+.stroke {
+  stroke: #173c2b;
+  stroke-width: 2.5;
+}
+.handle {
+  stroke: #173c2b;
+  stroke-width: 8;
+}
+.label {
+  fill: #698075;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+}
+.value {
+  fill: #173c2b;
+  font-family: inherit;
+  font-size: 25px;
+  font-weight: 550;
+  letter-spacing: -0.6px;
+}
+.lightLabel {
+  fill: #a5c4b3;
+}
+.lightValue {
+  fill: #fffef9;
+}
+.networkName {
+  fill: #173c2b;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 550;
+  text-anchor: middle;
+}
+@media (max-width: 760px) {
+  .label {
+    font-size: 15px;
+  }
+}
