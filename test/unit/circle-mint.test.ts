@@ -2,6 +2,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { CircleMintSandbox } from '@testnet/circle-mint';
 import {
   circle_receipt_received,
+  circle_shortfall,
+  circle_withdraw,
   usdc_atomic,
   usdc_decimal,
 } from '@testnet/circle-funding';
@@ -129,6 +131,42 @@ describe('Circle Mint sandbox funding requests', () => {
 });
 
 describe('Circle withdrawal verification', () => {
+  it('funds an exact pool target when its existing cash has sub-cent precision', () => {
+    const target = usdc_atomic('100000');
+    const cash = usdc_atomic('20.000001');
+    const lp = usdc_atomic('1');
+    const deposit = target - cash;
+    const withdrawal = circle_shortfall(deposit, lp);
+    expect(usdc_decimal(deposit)).toBe('99979.999999');
+    expect(usdc_decimal(withdrawal)).toBe('99979.000000');
+    expect(cash + deposit).toBe(target);
+    expect(lp + withdrawal - deposit).toBe(1n);
+  });
+
+  it('avoids extra withdrawals when existing balances cover or exactly align with the target', () => {
+    const target = usdc_atomic('100000');
+    expect(circle_shortfall(target, target)).toBe(0n);
+    expect(circle_shortfall(target, target + 1n)).toBe(0n);
+    expect(circle_shortfall(target, usdc_atomic('20'))).toBe(
+      usdc_atomic('99980'),
+    );
+    expect(circle_shortfall(target, target - 1n)).toBe(usdc_atomic('0.01'));
+  });
+
+  it('rejects a sub-cent withdrawal before making a network request', async () => {
+    const send = vi
+      .spyOn(globalThis, 'fetch')
+      .mockRejectedValue(new Error('Unexpected network request'));
+    try {
+      await expect(
+        circle_withdraw(journal(), 'lp', '1.000001', 'precision'),
+      ).rejects.toThrow('whole USD cents');
+      expect(send).not.toHaveBeenCalled();
+    } finally {
+      send.mockRestore();
+    }
+  });
+
   it('preserves large USDC amounts and rejects fractional precision loss', () => {
     expect(usdc_atomic('10000000')).toBe(10_000_000_000_000n);
     const amount = '9007199254740993.123456';
