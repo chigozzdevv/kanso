@@ -1,0 +1,20 @@
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.identity p {
+  margin-top: 6px;
+}
+
+@media (max-width: 540px) {
+  .heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .heading > button {
+    width: 100%;
+  }
+}
