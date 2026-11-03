@@ -90,6 +90,13 @@ export function usdc_decimal(value: bigint): string {
   return `${value / 1_000_000n}.${(value % 1_000_000n).toString().padStart(6, '0')}`;
 }
 
+export function circle_shortfall(target: bigint, balance: bigint): bigint {
+  const missing = target > balance ? target - balance : 0n;
+  const cent = 10_000n;
+  // Only the Circle withdrawal is rounded; pool deposits retain USDC precision.
+  return ((missing + cent - 1n) / cent) * cent;
+}
+
 async function funding_context(release: Release) {
   const d = deployment.parse(
     JSON.parse(
@@ -182,6 +189,8 @@ export async function circle_withdraw(
     throw new Error('Use an LP or solver role and a stable funding run ID');
   const atomic = usdc_atomic(amount);
   if (atomic <= 0n) throw new Error('Withdrawal must be greater than zero');
+  if (atomic % 10_000n !== 0n)
+    throw new Error('Circle withdrawals must use whole USD cents');
   const { circle, index } = await funding_context(release);
   const address = index.wallets.find(
     (w) => w.family === 'near' && w.role === role,
@@ -351,13 +360,10 @@ export async function circle_fund_targets(
       pool_target,
       solver_target,
       pool_deposit: deposit.toString(),
-      lp_withdraw: (deposit > lp_balance
-        ? deposit - lp_balance
-        : 0n
-      ).toString(),
-      solver_withdraw: (solver_amount > solver_balance
-        ? solver_amount - solver_balance
-        : 0n
+      lp_withdraw: circle_shortfall(deposit, lp_balance).toString(),
+      solver_withdraw: circle_shortfall(
+        solver_amount,
+        solver_balance,
       ).toString(),
     };
     release.journal.contracts[state_key] = targets;
