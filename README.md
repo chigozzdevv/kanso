@@ -70,7 +70,9 @@ The Starknet account command verifies the Sepolia chain and declared OpenZeppeli
 
 ## Interfaces and operations
 
-The static client includes the landing page and `/app/` borrowing workspace, with basket selection, wallet connections, SDK offers, resumable operation progress, loan reads/direct repayment/collateral release and pool discovery/deposits. Client components live under `client/src/features` and share the SDK rather than rebuilding transaction policy in React.
+The static client includes the landing page and `/app/` borrowing workspace, with basket selection, wallet connections, SDK offers, resumable operation progress, loan reads, direct USDC and solver-backed repayment, collateral release and pool discovery/deposits. Repayment supports wallet assets and pledged collateral, with USDC target estimates, a fresh review after wallet funding and returns of unused payment assets. Client components live under `client/src/features` and share the SDK rather than rebuilding transaction policy in React.
+
+During development, `/app/preview/repayment/` shows the shared repayment form and review screens with sample assets, prices and fees. It sends no transactions and needs no wallet or API connection. The preview is unavailable in production builds.
 
 Set `NEXT_PUBLIC_KANSO_API_URL` and `NEXT_PUBLIC_KANSO_AUTH_DOMAIN` in the root `.env` before building the client. The auth domain must match the API's `AUTH_DOMAIN`. `CLIENT_ORIGINS` is the API's comma-separated browser origin allowlist; restart the API after changing it. Only explicitly named public configuration is embedded in the static client. RPC credentials and signing keys remain server-side.
 
@@ -240,7 +242,7 @@ pnpm dev:worker
 pnpm --filter @kanso/server testnet oracle
 ```
 
-`local-services` starts a persistent MongoDB replica set and Redis under `.testnet/`, prints their connection URLs and stops them on SIGINT or SIGTERM. Set `MONGODB_URI` and `REDIS_URL` in the root `.env` to those URLs before starting the API and worker. Defaults are MongoDB port 27021 and Redis port 6381; override them with `TESTNET_MONGO_PORT` and `TESTNET_REDIS_PORT`. The existing `.testnet/server.env` is retained for recovery; commands load the root `.env`.
+`local-services` starts a persistent MongoDB replica set and Redis under `.testnet/`, prints their connection URLs and stops them on SIGINT or SIGTERM. Set `MONGODB_URI` and `REDIS_URL` in the root `.env` to those URLs before starting the API and worker. Defaults are MongoDB port 27021 and Redis port 6381; override them with `TESTNET_MONGO_PORT` and `TESTNET_REDIS_PORT`. Commands load the root `.env`.
 
 `oracle` publishes fresh CoinGecko observations using the development oracle account, with an explicit 1% conservative haircut. `prices` publishes once. Stale prices block new risk. The feed and internal solver are development infrastructure.
 
