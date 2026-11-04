@@ -1,7 +1,6 @@
 'use client';
 
 import { Fragment, useEffect, useState } from 'react';
-import { Pause, Play } from 'lucide-react';
 import { TokenIcon } from '@/components/ui/token-icon';
 import type { TokenSymbol } from '@/components/ui/token-icon';
 import styles from '@/features/landing/hero.module.css';
@@ -15,14 +14,13 @@ const combinations: readonly (readonly TokenSymbol[])[] = [
 
 export function AssetCombination() {
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let timer: ReturnType<typeof setInterval> | undefined;
     const sync = () => {
       clearInterval(timer);
-      if (!paused && !motion.matches && !document.hidden) {
+      if (!motion.matches && !document.hidden) {
         timer = setInterval(
           () => setIndex((current) => (current + 1) % combinations.length),
           4200,
@@ -37,7 +35,9 @@ export function AssetCombination() {
       motion.removeEventListener('change', sync);
       document.removeEventListener('visibilitychange', sync);
     };
-  }, [paused]);
+  }, []);
+
+  const symbols = combinations[index]!;
 
   return (
     <span className={styles.combination}>
@@ -45,9 +45,15 @@ export function AssetCombination() {
         NEAR, BTC, SOL, ETH and other eligible assets
       </span>
       <span className={styles.assetList} aria-hidden="true" key={index}>
-        {combinations[index]!.map((symbol, position) => (
+        {symbols.map((symbol, position) => (
           <Fragment key={symbol}>
             {position > 0 && <span className={styles.plus}>+</span>}
+            {position === symbols.length - 1 && (
+              <>
+                <span className={styles.more}>…</span>
+                <span className={styles.plus}>+</span>
+              </>
+            )}
             <span className={styles.asset}>
               <TokenIcon symbol={symbol} size={28} />
               <span>{symbol}</span>
@@ -55,18 +61,6 @@ export function AssetCombination() {
           </Fragment>
         ))}
       </span>
-      <span className={styles.more} aria-hidden="true">
-        + …
-      </span>
-      <button
-        className={styles.animationToggle}
-        type="button"
-        aria-label={paused ? 'Play asset animation' : 'Pause asset animation'}
-        aria-pressed={paused}
-        onClick={() => setPaused(!paused)}
-      >
-        {paused ? <Play size={12} fill="currentColor" /> : <Pause size={12} />}
-      </button>
     </span>
   );
 }
