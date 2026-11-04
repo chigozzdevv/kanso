@@ -8,6 +8,7 @@ export * from '@schema/operation';
 export * from '@schema/bytes';
 export * from '@schema/manifest';
 export * from '@schema/settlement';
+export * from '@schema/repayment';
 export * from '@schema/conditional-repayment';
 export * from '@schema/collateral';
 

@@ -87,7 +87,7 @@ export async function create_runtime(o: RuntimeOptions) {
       coordinator,
       requests,
     ),
-    repayment = new RepaymentService(coordinator, solver, operations);
+    repayment = new RepaymentService(coordinator, solver, operations, catalog);
   await Promise.all([
     auth.initialize(),
     requests.initialize(),

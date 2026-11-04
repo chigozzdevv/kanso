@@ -1,15 +1,70 @@
 import { KansoError } from '@kanso/schema';
-import type { OperationPlan } from '@kanso/schema';
+import type { OperationPlan, RepaymentEstimateInput } from '@kanso/schema';
 import { plan_hash } from '@kanso/sdk';
 import type { CoordinatorClient } from '@kanso/sdk';
 import type { SolverService } from '@server/features/solver/solver.service';
 import type { OperationService } from '@server/features/operation/operation.service';
+import type { CatalogService } from '@server/features/catalog/catalog.service';
 export class RepaymentService {
   constructor(
     private readonly near: CoordinatorClient,
     private readonly solver: SolverService,
     private readonly operations: OperationService,
+    private readonly catalog: CatalogService,
   ) {}
+  async estimate(
+    owner: string,
+    loan_id: string,
+    input: RepaymentEstimateInput,
+  ) {
+    const loan = await this.near.view('get_loan', { loan_id });
+    if (loan.state !== 'active')
+      throw new KansoError(
+        'INVALID_INPUT',
+        'This loan is not open for repayment',
+      );
+    const summary = await this.near.view('loan_summary', { loan_id });
+    if (BigInt(input.amount_atomic) > BigInt(summary.debt_atomic))
+      throw new KansoError(
+        'INVALID_INPUT',
+        'Enter an amount up to the current debt',
+      );
+    if ('leg_id' in input) {
+      const lock = loan.locks.find((l) => l.leg.leg_id === input.leg_id);
+      if (!lock?.accepted)
+        throw new KansoError(
+          'LOCK_NOT_VERIFIED',
+          'Repayment input has not been accepted',
+        );
+      if ((input.mode === 'wallet') !== (lock.purpose.kind === 'payment'))
+        throw new KansoError(
+          'INVALID_INPUT',
+          'Repayment mode differs from the committed input purpose',
+        );
+      const payer =
+        lock.purpose.kind === 'payment'
+          ? lock.purpose.payer
+          : loan.offer.borrower;
+      if (owner !== payer)
+        throw new KansoError(
+          'FORBIDDEN',
+          'Prove ownership of the repayment input',
+        );
+    } else {
+      if (loan.locks.length >= 16)
+        throw new KansoError(
+          'INVALID_INPUT',
+          'This loan has no room for another payment input',
+        );
+      const assets = await this.catalog.assets();
+      if (!assets.some((a) => a.asset_id === input.asset_id && a.enabled))
+        throw new KansoError(
+          'CAPABILITY_DISABLED',
+          'This payment asset is currently unavailable',
+        );
+    }
+    return this.solver.estimate(loan, input);
+  }
   async review(
     owner: string,
     loan_id: string,

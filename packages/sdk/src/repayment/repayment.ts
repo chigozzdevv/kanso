@@ -1,5 +1,13 @@
-import { operation_plan } from '@kanso/schema';
-import type { BasketLeg, OperationPlan } from '@kanso/schema';
+import {
+  operation_plan,
+  repayment_estimate,
+  repayment_estimate_input,
+} from '@kanso/schema';
+import type {
+  BasketLeg,
+  OperationPlan,
+  RepaymentEstimateInput,
+} from '@kanso/schema';
 import { build_leg } from '@sdk/basket/basket';
 import type { AssetInput } from '@sdk/types/client.types';
 import { KansoError } from '@kanso/schema';
@@ -64,6 +72,15 @@ export class Repayment {
       'POST',
       `/v1/loans/${this.loan_id}/repayment/quote`,
       input,
+    );
+  }
+  async estimate(input: RepaymentEstimateInput) {
+    return repayment_estimate.parse(
+      await this.c.http.request(
+        'POST',
+        `/v1/loans/${this.loan_id}/repayment/estimate`,
+        repayment_estimate_input.parse(input),
+      ),
     );
   }
   async review(

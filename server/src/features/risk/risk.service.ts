@@ -6,13 +6,21 @@ import type {
   ChainManifest,
 } from '@kanso/schema';
 import type { CoordinatorClient } from '@kanso/sdk';
+
+export type PricedAsset = {
+  asset_id: string;
+  custody:
+    | { family: 'near' }
+    | { family: 'remote'; chain_id: string; manifest_version: number };
+};
+
 export class RiskService {
   private readonly manifests = new Map<string, ChainManifest>();
   constructor(
     private readonly d: Deployment,
     private readonly near: CoordinatorClient,
   ) {}
-  async prices(legs: BasketLeg[]) {
+  async prices(legs: PricedAsset[]) {
     for (const l of legs)
       if (l.custody.family === 'remote') {
         const c = l.custody;
@@ -58,7 +66,7 @@ export class RiskService {
     }
     return result;
   }
-  value(leg: BasketLeg, amount: bigint, price: bigint) {
+  decimals(leg: PricedAsset) {
     const custody = leg.custody;
     const decimals =
       custody.family === 'near'
@@ -75,7 +83,10 @@ export class RiskService {
           )?.decimals;
     if (decimals === undefined)
       throw new KansoError('CAPABILITY_DISABLED', 'Unconfigured asset');
-    return mul_div_floor(amount, price, 10n ** BigInt(decimals));
+    return decimals;
+  }
+  value(leg: PricedAsset, amount: bigint, price: bigint) {
+    return mul_div_floor(amount, price, 10n ** BigInt(this.decimals(leg)));
   }
   capacity(
     legs: BasketLeg[],

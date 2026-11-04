@@ -6,6 +6,7 @@ import {
   atomic_amount,
   operation_plan,
   conditional_terms,
+  repayment_estimate_input,
 } from '@kanso/schema';
 import type { Runtime } from '@server/shared/runtime';
 const review = z.discriminatedUnion('mode', [
@@ -25,6 +26,13 @@ const review = z.discriminatedUnion('mode', [
 ]);
 export function repayment_routes(app: FastifyInstance, r: Runtime) {
   const id = (p: unknown) => z.object({ id: identifier }).parse(p).id;
+  app.post('/v1/loans/:id/repayment/estimate', async (request) =>
+    r.repayment.estimate(
+      await r.auth.authenticate(request.headers.authorization),
+      id(request.params),
+      repayment_estimate_input.parse(request.body),
+    ),
+  );
   for (const method of ['review', 'quote'])
     app.post(`/v1/loans/:id/repayment/${method}`, async (request) =>
       r.repayment.review(
