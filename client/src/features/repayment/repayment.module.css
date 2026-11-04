@@ -3,6 +3,33 @@
   gap: 22px;
   margin-top: 24px;
 }
+.select {
+  position: relative;
+}
+.select select {
+  appearance: none;
+  padding-right: 42px;
+}
+.select > svg {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+.solverNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: #68796d;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.solverNote > svg {
+  flex: none;
+  margin-top: 3px;
+}
 .amountHeading,
 .buttons,
 .payment {

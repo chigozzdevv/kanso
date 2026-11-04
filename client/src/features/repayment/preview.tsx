@@ -134,7 +134,6 @@ export function RepaymentPreview() {
           }
           onClose={() => setOpen(false)}
         >
-          <p className={ui.muted}>Preview only · No transactions are sent.</p>
           {stage === 'complete' || stage === 'deposit' ? (
             <div className={styles.result}>
               <CheckCircle2 size={42} aria-hidden="true" />

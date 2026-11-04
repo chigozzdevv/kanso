@@ -1,4 +1,5 @@
 import type { Asset } from '@kanso/schema';
+import { ChevronDown, CircleAlert } from 'lucide-react';
 import { Select } from '@/components/ui/select';
 import { inputAmount } from '@/lib/amounts';
 import { networks } from '@/lib/networks';
@@ -59,56 +60,62 @@ export function RepaymentForm({
         <label className={ui.label} htmlFor="repay-method">
           Pay with
         </label>
-        <Select
-          id="repay-method"
-          className={ui.field}
-          value={mode}
-          disabled={busy}
-          onChange={(e) => onMode(e.target.value as PaymentMode)}
-        >
-          <option value="direct">USDC on NEAR</option>
-          <option value="wallet">Wallet asset</option>
-          {borrower && (
-            <option value="collateral">Collateral from your basket</option>
-          )}
-        </Select>
+        <div className={styles.select}>
+          <Select
+            id="repay-method"
+            className={ui.field}
+            value={mode}
+            disabled={busy}
+            onChange={(e) => onMode(e.target.value as PaymentMode)}
+          >
+            <option value="direct">USDC on NEAR</option>
+            <option value="wallet">Wallet asset</option>
+            {borrower && (
+              <option value="collateral">Collateral from your basket</option>
+            )}
+          </Select>
+          <ChevronDown size={16} aria-hidden="true" />
+        </div>
       </div>
       {mode !== 'direct' && (
         <div>
           <label className={ui.label} htmlFor="repay-source">
             {mode === 'collateral' ? 'Collateral' : 'Asset'}
           </label>
-          <Select
-            id="repay-source"
-            className={ui.field}
-            value={source}
-            disabled={busy}
-            onChange={(e) => onSource(e.target.value)}
-            required
-          >
-            <option value="">Choose an asset</option>
-            {choices.map((source) => {
-              const asset = assets.find((a) => a.asset_id === source.assetId);
-              return (
-                <option key={source.legId} value={`lock:${source.legId}`}>
-                  {asset ? assetLabel(asset) : source.assetId}
-                  {mode === 'wallet' ? ' · Already deposited' : ''}
-                </option>
-              );
-            })}
-            {mode === 'wallet' &&
-              canDeposit &&
-              assets
-                .filter((a) => a.enabled)
-                .map((asset) => (
-                  <option
-                    key={asset.asset_id}
-                    value={`asset:${asset.asset_id}`}
-                  >
-                    {assetLabel(asset)}
+          <div className={styles.select}>
+            <Select
+              id="repay-source"
+              className={ui.field}
+              value={source}
+              disabled={busy}
+              onChange={(e) => onSource(e.target.value)}
+              required
+            >
+              <option value="">Choose an asset</option>
+              {choices.map((source) => {
+                const asset = assets.find((a) => a.asset_id === source.assetId);
+                return (
+                  <option key={source.legId} value={`lock:${source.legId}`}>
+                    {asset ? assetLabel(asset) : source.assetId}
+                    {mode === 'wallet' ? ' · Already deposited' : ''}
                   </option>
-                ))}
-          </Select>
+                );
+              })}
+              {mode === 'wallet' &&
+                canDeposit &&
+                assets
+                  .filter((a) => a.enabled)
+                  .map((asset) => (
+                    <option
+                      key={asset.asset_id}
+                      value={`asset:${asset.asset_id}`}
+                    >
+                      {assetLabel(asset)}
+                    </option>
+                  ))}
+            </Select>
+            <ChevronDown size={16} aria-hidden="true" />
+          </div>
         </div>
       )}
       <div>
@@ -145,9 +152,12 @@ export function RepaymentForm({
         {busy ? 'Preparing…' : 'Review repayment'}
       </button>
       {mode !== 'direct' && (
-        <p className={ui.muted}>
-          Cross-chain repayments use Kanso’s testnet solver, with NEAR Intents
-          planned for mainnet.
+        <p className={styles.solverNote}>
+          <CircleAlert size={14} aria-hidden="true" />
+          <em>
+            Cross-chain repayments use Kanso’s testnet solver, with NEAR Intents
+            planned for mainnet.
+          </em>
         </p>
       )}
     </form>
