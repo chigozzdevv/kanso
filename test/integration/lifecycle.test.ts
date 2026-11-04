@@ -406,17 +406,27 @@ describe('headless SDK, API, transactional journal and workers on actual local s
   });
   it('funds solver escrow before converting pledged collateral and returns a wallet input independently', async () => {
     const { loan, client } = await active('conversion');
+    const estimate = await loan.repayment.estimate({
+      mode: 'collateral',
+      leg_id: 'near',
+      amount_atomic: '10000000',
+    });
     const review = await loan.repayment.review({
       mode: 'collateral',
       leg_id: 'near',
-      input_atomic: (2n * NEAR).toString(),
-      max_execution_cost_atomic: '0',
+      input_atomic: estimate.input_atomic,
+      max_execution_cost_atomic: estimate.execution_cost_atomic,
     });
     const repayment = await loan.repay({ review, idempotency_key: 'sale' });
     const result = await complete(repayment);
     expect(result.error, result.error?.message).toBeNull();
     expect(result.status).toBe('succeeded');
     expect(BigInt((await loan.summary()).debt_atomic)).toBeLessThan(91000000n);
+    const walletEstimate = await loan.repayment.estimate({
+      mode: 'wallet',
+      asset_id: 'near',
+      amount_atomic: '2000000',
+    });
     const payment = await loan.repayment.prepare_wallet_input({
       asset: { asset_id: 'near', amount_atomic: NEAR.toString() },
       payment_id: 'external',
@@ -425,6 +435,41 @@ describe('headless SDK, API, transactional journal and workers on actual local s
     expect((await complete(payment)).status).toBe('succeeded');
     const snap = await payment.snapshot();
     if (snap.plan.kind !== 'wallet_payment') throw new Error('Unexpected plan');
+    const stranger = context.client(context.sandbox.lp);
+    await stranger.session.connect(context.sandbox.lp.accountId);
+    await expect(
+      stranger.loan(loan.loan_id).repayment.estimate({
+        mode: 'wallet',
+        leg_id: snap.plan.leg.leg_id,
+        amount_atomic: '2000000',
+      }),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    const fresh = await loan.repayment.estimate({
+      mode: 'wallet',
+      leg_id: snap.plan.leg.leg_id,
+      amount_atomic: '2000000',
+    });
+    expect(fresh.input_atomic).toBe(walletEstimate.input_atomic);
+    const walletReview = await loan.repayment.review({
+      mode: 'wallet',
+      leg_id: snap.plan.leg.leg_id,
+      input_atomic: fresh.input_atomic,
+      max_execution_cost_atomic: fresh.execution_cost_atomic,
+    });
+    const beforeRepayment = BigInt((await loan.summary()).debt_atomic);
+    expect(
+      (
+        await complete(
+          await loan.repay({
+            review: walletReview,
+            idempotency_key: 'wallet_conversion',
+          }),
+        )
+      ).status,
+    ).toBe('succeeded');
+    expect(BigInt((await loan.summary()).debt_atomic)).toBeLessThan(
+      beforeRepayment - 1900000n,
+    );
     const capacity = (await loan.summary()).borrowing_capacity_atomic;
     const refund = await loan.repayment.refund_wallet_input({
       leg_id: snap.plan.leg.leg_id,
