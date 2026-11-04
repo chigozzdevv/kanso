@@ -50,3 +50,12 @@
 .paymentList {
   margin-top: 20px;
 }
+@media (max-width: 400px) {
+  .reviewActions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .reviewActions > button {
+    width: 100%;
+  }
+}

@@ -91,7 +91,7 @@ export function PaymentReview({
         })}
         .
       </p>
-      <div className={styles.buttons}>
+      <div className={`${styles.buttons} ${styles.reviewActions}`}>
         <button
           type="button"
           className={ui.secondary}
