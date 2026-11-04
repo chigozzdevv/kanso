@@ -8,7 +8,7 @@
 }
 .select select {
   appearance: none;
-  padding-right: 42px;
+  padding-right: 34px;
 }
 .select > svg {
   position: absolute;
@@ -78,6 +78,9 @@
   margin-top: 20px;
 }
 @media (max-width: 400px) {
+  .select select {
+    font-size: 13px;
+  }
   .reviewActions {
     display: grid;
     grid-template-columns: 1fr;
