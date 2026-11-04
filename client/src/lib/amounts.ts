@@ -39,6 +39,16 @@ export function shortAddress(value: string): string {
   return value.length > 24 ? `${value.slice(0, 10)}…${value.slice(-6)}` : value;
 }
 
+export function inputAmount(value: string, decimals = 6): string {
+  const scale = 10n ** BigInt(decimals);
+  const atomic = BigInt(value);
+  const fraction = (atomic % scale)
+    .toString()
+    .padStart(decimals, '0')
+    .replace(/0+$/, '');
+  return `${atomic / scale}${fraction ? `.${fraction}` : ''}`;
+}
+
 export function errorMessage(error: unknown): string {
   return error instanceof Error
     ? error.message

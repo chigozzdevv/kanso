@@ -1,0 +1,52 @@
+.form {
+  display: grid;
+  gap: 22px;
+  margin-top: 24px;
+}
+.amountHeading,
+.buttons,
+.payment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.amountHeading label {
+  margin-bottom: 0;
+}
+.amountHeading {
+  margin-bottom: 8px;
+}
+.review {
+  display: grid;
+  gap: 18px;
+}
+.review > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 14px;
+}
+.review dt {
+  color: var(--muted);
+}
+.review dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+  max-width: 65%;
+}
+.buttons > :last-child {
+  flex: 1;
+}
+.payment {
+  padding-block: 16px;
+  border-top: 1px solid #e5eee6;
+  flex-wrap: wrap;
+}
+.payment p {
+  margin-top: 5px;
+}
+.paymentList {
+  margin-top: 20px;
+}
