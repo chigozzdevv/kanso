@@ -62,45 +62,53 @@ export function PoolList() {
         </section>
       )}
       {catalog?.pools.map((summary) => (
-        <section className={ui.card} key={summary.pool.pool_id}>
-          <div className={`${ui.cardHeading} ${styles.heading}`}>
-            <div className={styles.identity}>
-              <TokenIcon symbol="USDC" size={36} />
-              <div>
-                <h2>
-                  {summary.pool.pool_id === 'usdc'
-                    ? 'USDC pool'
-                    : summary.pool.pool_id}
-                </h2>
-                <p className={ui.muted}>USDC on NEAR</p>
-              </div>
+        <section
+          className={`${ui.card} ${styles.pool}`}
+          key={summary.pool.pool_id}
+          aria-labelledby={`pool-${summary.pool.pool_id}`}
+        >
+          <div className={styles.identity}>
+            <TokenIcon symbol="USDC" size={36} />
+            <div>
+              <h2 id={`pool-${summary.pool.pool_id}`}>
+                {summary.pool.pool_id === 'usdc'
+                  ? 'USDC pool'
+                  : summary.pool.pool_id}
+              </h2>
+              <p className={ui.muted}>USDC on NEAR</p>
             </div>
-            <button
-              type="button"
-              className={ui.primary}
-              onClick={() => {
-                setSelected(summary);
-                setError(null);
-                setAmount('');
-              }}
-            >
-              Supply liquidity
-            </button>
           </div>
-          <dl className={ui.metrics}>
+          <dl className={styles.metrics}>
             <div>
               <dt>Pool value</dt>
-              <dd>{formatAmount(summary.nav_atomic)} USDC</dd>
+              <dd>
+                {formatAmount(summary.nav_atomic)}
+                <span className={styles.unit}>USDC</span>
+              </dd>
             </div>
             <div>
               <dt>Available liquidity</dt>
-              <dd>{formatAmount(summary.available_cash_atomic)} USDC</dd>
+              <dd>
+                {formatAmount(summary.available_cash_atomic)}
+                <span className={styles.unit}>USDC</span>
+              </dd>
             </div>
             <div>
               <dt>Borrow APR</dt>
               <dd>{summary.pool.policy.apr_bps / 100}%</dd>
             </div>
           </dl>
+          <button
+            type="button"
+            className={`${ui.primary} ${styles.supply}`}
+            onClick={() => {
+              setSelected(summary);
+              setError(null);
+              setAmount('');
+            }}
+          >
+            Supply liquidity
+          </button>
         </section>
       ))}
       {catalog && !catalog.pools.length && (
