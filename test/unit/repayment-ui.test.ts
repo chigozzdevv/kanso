@@ -6,6 +6,7 @@ import {
   loan_record,
   repayment_estimate,
   settlement_plan,
+  basket_repayment_quote,
 } from '@kanso/schema';
 import type { LoanSummary } from '@kanso/schema';
 import type { Kanso, Operation } from '@kanso/sdk';
@@ -36,6 +37,26 @@ const estimate = repayment_estimate.parse({
   expires_at: 2000000000,
 });
 
+const basket = basket_repayment_quote.parse({
+  loan_id: 'loan',
+  amount_atomic: estimate.amount_atomic,
+  basket_value_atomic: '500000000',
+  execution_cost_atomic: '0',
+  net_output_atomic: estimate.net_output_atomic,
+  expires_at: estimate.expires_at,
+  sources: [
+    {
+      leg_id: 'near',
+      asset_id: 'near',
+      chain_id: 'near',
+      decimals: 24,
+      available_atomic: fixture.loan.locks[0]!.locked_atomic,
+      value_atomic: '500000000',
+    },
+  ],
+  allocations: [{ ...estimate, mode: 'collateral', leg_id: 'near' }],
+});
+
 function setup() {
   const record = loan_record.parse(fixture.loan);
   const summary = { debt_atomic: '100000000' } as LoanSummary;
@@ -48,6 +69,13 @@ function setup() {
         expires_at: 2000000000,
       }),
     ),
+    review_basket: vi.fn<
+      ReturnType<Kanso['loan']>['repayment']['review_basket']
+    >(async () => ({
+      plan: { kind: 'basket_repayment', loan_id: 'loan', quote: basket },
+      plan_hash: 'hash',
+      expires_at: basket.expires_at,
+    })),
     execute: vi.fn(),
     prepare_wallet_input: vi.fn(),
     refund_wallet_input: vi.fn(),
@@ -106,12 +134,12 @@ afterEach(() => {
 });
 
 describe('repayment screens', () => {
-  it('offers three methods and reviews direct repayment without preparing a transfer', async () => {
+  it('offers Assets and Collateral and treats USDC as a payment asset', async () => {
     const { payment } = setup();
     fireEvent.click(screen.getByRole('button', { name: 'Repay' }));
-    expect(
-      screen.getByRole('option', { name: 'Collateral from your basket' }),
-    ).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Assets' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Collateral' })).toBeTruthy();
+    expect(screen.getByRole('option', { name: 'USDC · NEAR' })).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Repay amount · USDC'), {
       target: { value: '10' },
     });
@@ -130,9 +158,6 @@ describe('repayment screens', () => {
       operation_id: 'payment-op',
     } as Operation);
     fireEvent.click(screen.getByRole('button', { name: 'Repay' }));
-    fireEvent.change(screen.getByLabelText('Pay with'), {
-      target: { value: 'wallet' },
-    });
     fireEvent.change(screen.getByLabelText('Asset'), {
       target: { value: 'asset:near' },
     });
@@ -235,31 +260,13 @@ describe('repayment screens', () => {
     await screen.findByText('This quote expired. Review your repayment again.');
     expect(payment.execute).not.toHaveBeenCalled();
   });
-  it('shows the collateral quote and only prepares it after confirmation', async () => {
+  it('reviews the whole basket and does not ask users to choose an individual collateral asset', async () => {
     const { payment } = setup();
-    const quoted = { ...estimate, mode: 'collateral' as const, leg_id: 'near' };
-    payment.estimate.mockResolvedValue(quoted);
-    payment.review.mockResolvedValue({
-      plan: {
-        kind: 'settlement',
-        plan: settlement_plan.parse({
-          ...fixture.settlement.plan,
-          input_atomic: estimate.input_atomic,
-          net_output_atomic: estimate.net_output_atomic,
-          expires_at: 2000000000,
-        }),
-      },
-      plan_hash: 'hash',
-      expires_at: 2000000000,
-    });
     payment.execute.mockResolvedValue({ operation_id: 'repay' } as Operation);
     fireEvent.click(screen.getByRole('button', { name: 'Repay' }));
-    fireEvent.change(screen.getByLabelText('Pay with'), {
-      target: { value: 'collateral' },
-    });
-    fireEvent.change(screen.getByLabelText('Collateral'), {
-      target: { value: 'lock:near' },
-    });
+    fireEvent.click(screen.getByRole('button', { name: 'Collateral' }));
+    expect(screen.queryByLabelText('Asset')).toBeNull();
+    expect(screen.getByLabelText('Collateral basket')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Repay amount · USDC'), {
       target: { value: '10' },
     });
@@ -267,6 +274,9 @@ describe('repayment screens', () => {
     const confirm = await screen.findByRole('button', {
       name: 'Confirm repayment',
     });
+    expect(payment.review_basket).toHaveBeenCalledWith('10000000');
+    expect(payment.estimate).not.toHaveBeenCalled();
+    expect(screen.getByText('500 USDC')).toBeTruthy();
     expect(screen.getByText('2 NEAR')).toBeTruthy();
     expect(payment.execute).not.toHaveBeenCalled();
     fireEvent.click(confirm);
@@ -278,9 +288,6 @@ describe('repayment screens', () => {
     const { payment, wallet } = setup();
     wallet.balance.mockResolvedValue('1');
     fireEvent.click(screen.getByRole('button', { name: 'Repay' }));
-    fireEvent.change(screen.getByLabelText('Pay with'), {
-      target: { value: 'wallet' },
-    });
     fireEvent.change(screen.getByLabelText('Asset'), {
       target: { value: 'asset:near' },
     });
