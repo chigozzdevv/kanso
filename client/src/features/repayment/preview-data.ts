@@ -1,6 +1,11 @@
-import type { Asset, RepaymentEstimate } from '@kanso/schema';
+import type {
+  Asset,
+  RepaymentEstimate,
+  BasketRepaymentQuote,
+} from '@kanso/schema';
 import { mul_div_ceil } from '@kanso/schema';
 import type { RepaymentSource } from '@/features/repayment/form';
+import { parseAmount } from '@/lib/amounts';
 
 export const previewAssets: Asset[] = [
   {
@@ -85,5 +90,65 @@ export function previewEstimate(
     execution_cost_atomic: fee.toString(),
     max_source_fee_atomic: '0',
     expires_at: Math.floor(Date.now() / 1000) + 120,
+  };
+}
+
+export function previewBasket(amount: string): BasketRepaymentQuote {
+  const sources = previewAssets
+    .map((asset, index) => {
+      const available = parseAmount(previewBalances[index]!, asset.decimals);
+      return {
+        leg_id: `preview_${asset.asset_id}`,
+        asset_id: asset.asset_id,
+        chain_id: asset.chain_id,
+        decimals: asset.decimals,
+        available_atomic: available,
+        value_atomic: (
+          (BigInt(available) * previewPrices[asset.asset_id]!) /
+          10n ** BigInt(asset.decimals)
+        ).toString(),
+      };
+    })
+    .sort((a, b) => (BigInt(a.value_atomic) > BigInt(b.value_atomic) ? -1 : 1));
+  let remaining = BigInt(amount);
+  const allocations = [];
+  for (const source of sources) {
+    if (!remaining) break;
+    const maximum = (BigInt(source.value_atomic) * 10000n) / 10025n;
+    const target = remaining < maximum ? remaining : maximum;
+    const asset = previewAssets.find(
+      (item) => item.asset_id === source.asset_id,
+    )!;
+    const estimate = previewEstimate(asset, target.toString(), 'collateral');
+    allocations.push({
+      ...estimate,
+      mode: 'collateral' as const,
+      leg_id: source.leg_id,
+    });
+    remaining -= target;
+  }
+  if (remaining)
+    throw new Error('The example basket cannot cover this repayment.');
+  return {
+    loan_id: 'preview',
+    amount_atomic: amount,
+    basket_value_atomic: sources
+      .reduce((sum, source) => sum + BigInt(source.value_atomic), 0n)
+      .toString(),
+    execution_cost_atomic: allocations
+      .reduce(
+        (sum, allocation) => sum + BigInt(allocation.execution_cost_atomic),
+        0n,
+      )
+      .toString(),
+    net_output_atomic: allocations
+      .reduce(
+        (sum, allocation) => sum + BigInt(allocation.net_output_atomic),
+        0n,
+      )
+      .toString(),
+    expires_at: Math.floor(Date.now() / 1000) + 120,
+    sources,
+    allocations,
   };
 }

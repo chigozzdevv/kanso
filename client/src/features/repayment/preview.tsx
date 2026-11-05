@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { CheckCircle2, RotateCcw } from 'lucide-react';
-import type { RepaymentEstimate } from '@kanso/schema';
+import type { RepaymentEstimate, BasketRepaymentQuote } from '@kanso/schema';
 import { Wordmark } from '@/components/layout/wordmark';
 import { Dialog } from '@/components/ui/dialog';
 import { RepaymentForm } from '@/features/repayment/form';
@@ -15,6 +15,7 @@ import {
   previewSources,
   previewBalances,
   previewEstimate,
+  previewBasket,
 } from '@/features/repayment/preview-data';
 import { parseAmount, formatAmount, errorMessage } from '@/lib/amounts';
 import ui from '@/features/workspace/workspace.module.css';
@@ -23,13 +24,14 @@ import styles from '@/features/repayment/preview.module.css';
 type Review = {
   amount: string;
   estimate?: RepaymentEstimate;
+  basket?: BasketRepaymentQuote;
   expiresAt: number;
 };
 
 export function RepaymentPreview() {
   const [open, setOpen] = useState(true);
-  const [mode, setMode] = useState<PaymentMode>('wallet');
-  const [source, setSource] = useState('asset:solana');
+  const [mode, setMode] = useState<PaymentMode>('collateral');
+  const [source, setSource] = useState('usdc');
   const [amount, setAmount] = useState('100');
   const [review, setReview] = useState<Review | null>(null);
   const [stage, setStage] = useState<
@@ -54,12 +56,15 @@ export function RepaymentPreview() {
           source === `asset:${asset.asset_id}` ||
           source === `lock:preview_${asset.asset_id}`,
       );
-      if (mode !== 'direct' && !asset) throw new Error('Choose an asset.');
+      if (mode === 'assets' && source !== 'usdc' && !asset)
+        throw new Error('Choose an asset.');
       setReview({
         amount: atomic,
-        ...(mode !== 'direct'
-          ? { estimate: previewEstimate(asset!, atomic, mode) }
-          : {}),
+        ...(mode === 'collateral'
+          ? { basket: previewBasket(atomic) }
+          : source !== 'usdc'
+            ? { estimate: previewEstimate(asset!, atomic, 'wallet') }
+            : {}),
         expiresAt: Math.floor(Date.now() / 1000) + 120,
       });
       setStage('review');
@@ -162,8 +167,11 @@ export function RepaymentPreview() {
             <PaymentReview
               amount={review.amount}
               estimate={review.estimate}
+              basket={review.basket}
               expiresAt={review.expiresAt}
-              fundingRequired={mode === 'wallet' && stage !== 'final'}
+              fundingRequired={
+                !!review.estimate && mode === 'assets' && stage !== 'final'
+              }
               assets={previewAssets}
               busy={false}
               onBack={() => {
@@ -172,7 +180,7 @@ export function RepaymentPreview() {
               }}
               onConfirm={() =>
                 setStage(
-                  mode === 'wallet' && stage !== 'final'
+                  review.estimate && mode === 'assets' && stage !== 'final'
                     ? 'deposit'
                     : 'complete',
                 )
@@ -191,11 +199,7 @@ export function RepaymentPreview() {
               busy={false}
               onMode={(value) => {
                 setMode(value);
-                setSource(
-                  value === 'collateral'
-                    ? 'lock:preview_solana'
-                    : 'asset:solana',
-                );
+                setSource('usdc');
                 setError(null);
               }}
               onSource={setSource}
