@@ -27,3 +27,4 @@ export * from '@sdk/request/costs';
 export * from '@sdk/basket/basket';
 
 export * from '@sdk/wallet/message';
+export * from '@sdk/repayment/basket';

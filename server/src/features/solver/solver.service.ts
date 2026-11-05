@@ -1,4 +1,9 @@
-import { KansoError, settlement_plan, mul_div_floor } from '@kanso/schema';
+import {
+  KansoError,
+  settlement_plan,
+  mul_div_floor,
+  basket_repayment_quote,
+} from '@kanso/schema';
 import type {
   Deployment,
   SettlementPlan,
@@ -14,7 +19,10 @@ import {
 } from '@kanso/sdk';
 import type { CoordinatorClient } from '@kanso/sdk';
 import type { NearSigner } from '@server/shared/near/coordinator.client';
-import { repayment_input } from '@server/features/solver/repayment-input';
+import {
+  repayment_input,
+  repayment_sources,
+} from '@server/features/solver/repayment-input';
 import type { PricedAsset } from '@server/features/risk/risk.service';
 import type { RiskService } from '@server/features/risk/risk.service';
 export class SolverService {
@@ -150,13 +158,179 @@ export class SolverService {
       expires_at: (await this.near.now()) + 120,
     };
   }
-  private async pricing(source: PricedAsset) {
+  async basket(loan: Loan, amount_atomic: string) {
+    const locks = loan.locks.filter(
+      (lock) =>
+        lock.purpose.kind === 'collateral' &&
+        lock.accepted &&
+        BigInt(lock.locked_atomic) > BigInt(lock.reserved_atomic),
+    );
+    if (!locks.length)
+      throw new KansoError(
+        'INSUFFICIENT_BALANCE',
+        'No collateral is available for repayment',
+      );
+    const prices = await this.risk.prices(locks.map((lock) => lock.leg));
+    const candidates = await Promise.all(
+      locks.map(async (lock) => {
+        const pricing = await this.pricing(lock.leg, prices);
+        const available =
+          BigInt(lock.locked_atomic) - BigInt(lock.reserved_atomic);
+        const value = this.risk.value(
+          lock.leg,
+          available,
+          prices.get(lock.leg.asset_id)!,
+        );
+        const maximum = pricing.convert(available).output;
+        const sourceFeeValue = this.risk.value(
+          lock.leg,
+          pricing.source_fee,
+          prices.get(lock.leg.asset_id)!,
+        );
+        const fee = BigInt(this.fee_bps);
+        const limit = BigInt(loan.policy.max_execution_cost_bps);
+        const ceil = (n: bigint, d: bigint) => (n + d - 1n) / d;
+        let minimum = maximum + 1n;
+        if (fee < 10000n && fee <= limit && (!sourceFeeValue || fee < limit)) {
+          const positive = ceil((sourceFeeValue + 1n) * 10000n, 10000n - fee);
+          const withinLimit = sourceFeeValue
+            ? ceil(sourceFeeValue * 10000n, limit - fee)
+            : 1n;
+          const gross = positive > withinLimit ? positive : withinLimit;
+          const price = prices.get(lock.leg.asset_id)!;
+          if (price > 0n) {
+            const input = ceil(
+              gross * 10n ** BigInt(this.risk.decimals(lock.leg)),
+              price,
+            );
+            if (input <= available) minimum = pricing.convert(input).output;
+          }
+        }
+        return {
+          lock,
+          pricing,
+          available,
+          value,
+          minimum,
+          maximum,
+          sourceFeeValue,
+        };
+      }),
+    );
+    candidates.sort((a, b) =>
+      a.sourceFeeValue !== b.sourceFeeValue
+        ? a.sourceFeeValue < b.sourceFeeValue
+          ? -1
+          : 1
+        : a.maximum !== b.maximum
+          ? a.maximum > b.maximum
+            ? -1
+            : 1
+          : a.lock.leg.leg_id.localeCompare(b.lock.leg.leg_id),
+    );
+    const expires_at = (await this.near.now()) + 120;
+    const selected = repayment_sources(
+      candidates.map((candidate) => ({
+        minimum: candidate.minimum,
+        maximum: candidate.maximum,
+        fee: candidate.sourceFeeValue,
+      })),
+      BigInt(amount_atomic),
+    ).map((index) => candidates[index]!);
+    let remaining =
+      BigInt(amount_atomic) -
+      selected.reduce((sum, candidate) => sum + candidate.minimum, 0n);
+    const allocations = [];
+    for (const candidate of selected) {
+      const capacity = candidate.maximum - candidate.minimum;
+      const extra = remaining < capacity ? remaining : capacity;
+      const target = candidate.minimum + extra;
+      remaining -= extra;
+      const input = repayment_input(
+        target,
+        candidate.available,
+        (amount) => candidate.pricing.convert(amount).output,
+      );
+      const converted = candidate.pricing.convert(input);
+      if (
+        converted.cost * 10000n >
+        (converted.output + converted.cost) *
+          BigInt(loan.policy.max_execution_cost_bps)
+      )
+        throw new KansoError(
+          'BUDGET_EXHAUSTED',
+          'Collateral conversion exceeds the pool fee limit',
+        );
+      allocations.push({
+        mode: 'collateral' as const,
+        loan_id: loan.loan_id,
+        leg_id: candidate.lock.leg.leg_id,
+        asset_id: candidate.lock.leg.asset_id,
+        chain_id:
+          candidate.lock.leg.custody.family === 'near'
+            ? 'near'
+            : candidate.lock.leg.custody.chain_id,
+        decimals: this.risk.decimals(candidate.lock.leg),
+        amount_atomic: target.toString(),
+        input_atomic: input.toString(),
+        net_output_atomic: converted.output.toString(),
+        execution_cost_atomic: converted.cost.toString(),
+        max_source_fee_atomic: candidate.pricing.source_fee.toString(),
+        expires_at,
+      });
+    }
+    if (remaining)
+      throw new KansoError(
+        'INSUFFICIENT_BALANCE',
+        'Your collateral basket cannot cover this repayment and its fees',
+      );
+    const output = allocations.reduce(
+      (sum, allocation) => sum + BigInt(allocation.net_output_atomic),
+      0n,
+    );
+    const cost = allocations.reduce(
+      (sum, allocation) => sum + BigInt(allocation.execution_cost_atomic),
+      0n,
+    );
+    await this.check(
+      loan,
+      output,
+      cost,
+      BigInt(loan.policy.max_execution_cost_atomic),
+    );
+    return basket_repayment_quote.parse({
+      loan_id: loan.loan_id,
+      amount_atomic,
+      basket_value_atomic: candidates
+        .reduce((sum, candidate) => sum + candidate.value, 0n)
+        .toString(),
+      execution_cost_atomic: cost.toString(),
+      net_output_atomic: output.toString(),
+      expires_at,
+      sources: candidates.map(({ lock, available, value }) => ({
+        leg_id: lock.leg.leg_id,
+        asset_id: lock.leg.asset_id,
+        chain_id:
+          lock.leg.custody.family === 'near'
+            ? 'near'
+            : lock.leg.custody.chain_id,
+        decimals: this.risk.decimals(lock.leg),
+        available_atomic: available.toString(),
+        value_atomic: value.toString(),
+      })),
+      allocations,
+    });
+  }
+  private async pricing(
+    source: PricedAsset,
+    currentPrices?: Map<string, bigint>,
+  ) {
     if (!this.signer)
       throw new KansoError(
         'CAPABILITY_DISABLED',
         'Internal testnet solver is not configured',
       );
-    const prices = await this.risk.prices([source]);
+    const prices = currentPrices ?? (await this.risk.prices([source]));
     const price = prices.get(source.asset_id)!;
     let source_fee = 0n;
     let remote_recipient: number[] = [];
@@ -197,7 +371,9 @@ export class SolverService {
       output <= 0n ||
       cost > budget ||
       cost > BigInt(loan.policy.max_execution_cost_atomic) ||
-      this.fee_bps > loan.policy.max_execution_cost_bps
+      this.fee_bps > loan.policy.max_execution_cost_bps ||
+      cost * 10000n >
+        (output + cost) * BigInt(loan.policy.max_execution_cost_bps)
     )
       throw new KansoError(
         'BUDGET_EXHAUSTED',
@@ -312,5 +488,24 @@ export class SolverService {
         scoped_id('solver-cancel', plan.operation_id),
       );
     await this.refund_cancelled(plan);
+  }
+  async cancel_uncommitted(plan: SettlementPlan) {
+    if (!this.signer || plan.solver !== this.signer.account.accountId)
+      return false;
+    const current = await this.near.view('get_settlement', {
+      operation_id: plan.operation_id,
+    });
+    if (!current) return true;
+    if (!['quoted', 'funded', 'cancelled'].includes(current.state))
+      return false;
+    if (current.state !== 'cancelled')
+      await this.signer.send(
+        coordinator_transaction(this.d, plan.solver, 'cancel_settlement', {
+          operation_id: plan.operation_id,
+        }),
+        scoped_id('solver-cancel', plan.operation_id),
+      );
+    await this.refund_cancelled(plan);
+    return true;
   }
 }

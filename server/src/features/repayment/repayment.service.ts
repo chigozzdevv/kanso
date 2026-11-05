@@ -12,6 +12,31 @@ export class RepaymentService {
     private readonly operations: OperationService,
     private readonly catalog: CatalogService,
   ) {}
+  async review_basket(owner: string, loan_id: string, amount_atomic: string) {
+    const loan = await this.near.view('get_loan', { loan_id });
+    if (loan.offer.borrower !== owner)
+      throw new KansoError('FORBIDDEN', 'Borrower required');
+    if (loan.state !== 'active')
+      throw new KansoError(
+        'INVALID_INPUT',
+        'This loan is not open for repayment',
+      );
+    if (loan.active_outflow || loan.recovery_outflows.length)
+      throw new KansoError(
+        'SETTLEMENT_RECONCILING',
+        'Wait for the current collateral operation to finish',
+        true,
+      );
+    const summary = await this.near.view('loan_summary', { loan_id });
+    if (BigInt(amount_atomic) > BigInt(summary.debt_atomic))
+      throw new KansoError(
+        'INVALID_INPUT',
+        'Enter an amount up to the current debt',
+      );
+    const quote = await this.solver.basket(loan, amount_atomic);
+    const plan: OperationPlan = { kind: 'basket_repayment', loan_id, quote };
+    return { plan, plan_hash: plan_hash(plan), expires_at: quote.expires_at };
+  }
   async estimate(
     owner: string,
     loan_id: string,
@@ -126,8 +151,12 @@ export class RepaymentService {
     if (plan_hash(plan) !== input.review.plan_hash)
       throw new KansoError('INVALID_INPUT', 'Repayment review was changed');
     if (
-      (plan.kind !== 'repayment' && plan.kind !== 'settlement') ||
-      (plan.kind === 'repayment' ? plan.loan_id : plan.plan.loan_id) !== loan_id
+      !['repayment', 'settlement', 'basket_repayment'].includes(plan.kind) ||
+      (plan.kind === 'settlement'
+        ? plan.plan.loan_id
+        : 'loan_id' in plan
+          ? plan.loan_id
+          : null) !== loan_id
     )
       throw new KansoError('INVALID_INPUT', 'Review belongs to another loan');
     return this.operations.prepare(owner, plan, input.idempotency_key);

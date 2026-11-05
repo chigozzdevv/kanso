@@ -11,6 +11,7 @@ import { pool_policy } from '@schema/pool';
 import { conditional_terms } from '@schema/conditional-repayment';
 import { settlement_plan } from '@schema/settlement';
 import { chain_family } from '@schema/chain';
+import { basket_repayment_quote } from '@schema/repayment';
 export const hex = z.string().regex(/^0x(?:[a-fA-F0-9]{2})*$/);
 export const near_call = z.strictObject({
   method: z.string().regex(/^[a-z][a-z0-9_]{0,63}$/),
@@ -166,6 +167,16 @@ export const operation_plan = z.discriminatedUnion('kind', [
   }),
   z.strictObject({ kind: z.literal('refund'), refund_id: identifier }),
   z.strictObject({ kind: z.literal('settlement'), plan: settlement_plan }),
+  z
+    .strictObject({
+      kind: z.literal('basket_repayment'),
+      loan_id: identifier,
+      quote: basket_repayment_quote,
+    })
+    .refine(
+      (plan) => plan.loan_id === plan.quote.loan_id,
+      'Basket quote belongs to another loan',
+    ),
   z.strictObject({ kind: z.literal('setup_cancel'), loan_id: identifier }),
 ]);
 export const operation_step = z.strictObject({
@@ -203,6 +214,7 @@ const common = {
   plan: operation_plan,
   plan_hash: z.string().regex(/^[a-f0-9]{64}$/),
   steps: z.array(operation_step),
+  settlement_quotes: z.array(settlement_plan).max(16).optional(),
   created_at: unix_seconds,
   updated_at: unix_seconds,
   next_poll_after_ms: z.number().int().min(100).max(60000),

@@ -83,6 +83,15 @@ export class Repayment {
       ),
     );
   }
+  async review_basket(
+    amount_atomic: string,
+  ): Promise<{ plan: OperationPlan; plan_hash: string; expires_at: number }> {
+    return this.c.http.request(
+      'POST',
+      `/v1/loans/${this.loan_id}/repayment/basket`,
+      { amount_atomic },
+    );
+  }
   async review(
     input:
       | { mode: 'direct'; amount_atomic: string }

@@ -26,6 +26,14 @@ const review = z.discriminatedUnion('mode', [
 ]);
 export function repayment_routes(app: FastifyInstance, r: Runtime) {
   const id = (p: unknown) => z.object({ id: identifier }).parse(p).id;
+  app.post('/v1/loans/:id/repayment/basket', async (request) =>
+    r.repayment.review_basket(
+      await r.auth.authenticate(request.headers.authorization),
+      id(request.params),
+      z.strictObject({ amount_atomic: positive_amount }).parse(request.body)
+        .amount_atomic,
+    ),
+  );
   app.post('/v1/loans/:id/repayment/estimate', async (request) =>
     r.repayment.estimate(
       await r.auth.authenticate(request.headers.authorization),
