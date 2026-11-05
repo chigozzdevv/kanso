@@ -57,7 +57,7 @@ This upgrade authority can replace validation and signing logic and therefore ha
 
 ## Local testnet credentials
 
-`.testnet/` contains local testnet keys, a public address index and the faucet request journal. It is ignored by Git, lint and formatting. Directories use mode `0700`; credential files use `0600`. These are local plaintext keys protected by filesystem permissions. `pnpm testnet:keys` generates keys once and reuses the existing index without rotating them. Recovery-attestor keys share this development machine and do not provide independent production attestation. MPC custody keys must come from the actual signer derivation.
+`.keys/` contains local testnet keys and their wallet index. It is ignored by Git, lint and formatting. `deployments/testnet.json` contains the public deployed contract addresses and runtime configuration. Directories use mode `0700`; credential files use `0600`. These are local plaintext keys protected by filesystem permissions. `pnpm testnet:keys` generates keys once and reuses the existing index without rotating them. Recovery-attestor keys share this development machine and do not provide independent production attestation. MPC custody keys must come from the actual signer derivation.
 
 ```sh
 pnpm testnet:keys
@@ -231,7 +231,7 @@ pnpm --filter @kanso/server testnet prepare-capabilities
 pnpm --filter @kanso/server testnet activate-lending
 ```
 
-`prepare-capabilities` requires paused origination and complete onchain lifecycle, authority, wallet, basket and accounting evidence. It registers the next immutable manifest versions and leaves incomplete chains disabled. Restart the API and worker with the resulting runtime configuration before `activate-lending`; activation verifies the recorded Circle USDC lifecycle, worker connectivity, API catalog, canonical manifests, fresh prices and pool liquidity. These gates require the original evidence in `.testnet/`; the commands do not generate it or bypass missing checks.
+`prepare-capabilities` requires paused origination and complete onchain lifecycle, authority, wallet, basket and accounting evidence. It registers the next immutable manifest versions and leaves incomplete chains disabled. Restart the API and worker with the resulting runtime configuration before `activate-lending`; activation verifies the recorded Circle USDC lifecycle, worker connectivity, API catalog, canonical manifests, fresh prices and pool liquidity. These gates require the original verification records in the local state directory; the commands do not generate them or bypass missing checks.
 
 Start the local services and application processes in separate terminals:
 
@@ -242,8 +242,8 @@ pnpm dev:worker
 pnpm --filter @kanso/server testnet oracle
 ```
 
-`local-services` starts a persistent MongoDB replica set and Redis under `.testnet/`, prints their connection URLs and stops them on SIGINT or SIGTERM. Set `MONGODB_URI` and `REDIS_URL` in the root `.env` to those URLs before starting the API and worker. Defaults are MongoDB port 27021 and Redis port 6381; override them with `TESTNET_MONGO_PORT` and `TESTNET_REDIS_PORT`. Commands load the root `.env`.
+`local-services` starts a persistent MongoDB replica set and Redis in the local state directory, prints their connection URLs and stops them on SIGINT or SIGTERM. Set `MONGODB_URI` and `REDIS_URL` in the root `.env` to those URLs before starting the API and worker. Defaults are MongoDB port 27021 and Redis port 6381; override them with `TESTNET_MONGO_PORT` and `TESTNET_REDIS_PORT`. Commands load the root `.env`.
 
 `oracle` publishes fresh CoinGecko observations using the development oracle account, with an explicit 1% conservative haircut. `prices` publishes once. Stale prices block new risk. The feed and internal solver are development infrastructure.
 
-Operations preserve signed transactions and receipts in ignored `.testnet/deployment*.json` journals before broadcasting. Ambiguous responses are reconciled with the original transaction identity. Changed deployment intent and recorded chain failures stop the affected step. EVM fee replacements reuse the original nonce; Solana code uploads reuse the existing program and buffer. Keep these journals and keys for recovery. Before removing a leftover deployment lock after a crash, establish that its recorded process has exited and inspect the pending transaction. Rebuild contract artifacts before a new release. Existing immutable deployments are verified against those artifacts rather than replaced.
+Operational state stays outside the repository: `~/Library/Application Support/Kanso/testnet` on macOS, `%LOCALAPPDATA%/Kanso/testnet` on Windows and `${XDG_STATE_HOME:-~/.local/state}/Kanso/testnet` on Linux. Set `KANSO_STATE_DIR` to an absolute path to override it. This directory holds MongoDB/Redis data, faucet request records, derived MPC controller metadata and private deployment journals. Operations preserve signed transactions and receipts in `deployment*.json` journals before broadcasting. Ambiguous responses are reconciled with the original transaction identity. Changed deployment intent and recorded chain failures stop the affected step. EVM fee replacements reuse the original nonce; Solana code uploads reuse the existing program and buffer. Keep these journals and `.keys/` for recovery. The oracle retains its latest confirmed price update, storage setup and unresolved transactions instead of accumulating old confirmed updates. Before removing a leftover deployment lock after a crash, establish that its recorded process has exited and inspect the pending transaction. Rebuild contract artifacts before a new release. Existing immutable deployments are verified against those artifacts rather than replaced.
