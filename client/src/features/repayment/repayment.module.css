@@ -3,6 +3,66 @@
   gap: 22px;
   margin-top: 24px;
 }
+.methods {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 13px;
+  background: #f1f6f1;
+}
+.methods button {
+  flex: 1;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+}
+.methods button[aria-pressed='true'] {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 1px 4px #173c2b12;
+}
+.basket {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid #d7e5da;
+  border-radius: 12px;
+}
+.basket > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.sales {
+  display: grid;
+  gap: 12px;
+}
+.reviewForm {
+  gap: 16px;
+  margin-top: 20px;
+}
+.sales > p {
+  margin-bottom: 0;
+}
+.sales > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 18px;
+  font-size: 13px;
+}
+.sales strong {
+  font-weight: 550;
+  text-align: right;
+  overflow-wrap: anywhere;
+  max-width: 60%;
+}
 .select {
   position: relative;
 }
@@ -82,10 +142,12 @@
     font-size: 13px;
   }
   .reviewActions {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    gap: 10px;
   }
   .reviewActions > button {
-    width: 100%;
+    width: auto;
+    padding-inline: 14px;
+    white-space: nowrap;
   }
 }

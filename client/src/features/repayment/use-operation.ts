@@ -64,6 +64,7 @@ export function useRepaymentOperation(client: Kanso, loanId: string) {
       const valid =
         saved.phase === 'repayment'
           ? (plan.kind === 'repayment' && plan.loan_id === loanId) ||
+            (plan.kind === 'basket_repayment' && plan.loan_id === loanId) ||
             (plan.kind === 'settlement' && plan.plan.loan_id === loanId)
           : saved.phase === 'wallet_payment'
             ? plan.kind === 'wallet_payment' && plan.loan_id === loanId

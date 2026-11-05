@@ -30,8 +30,8 @@ export function RepaymentFlow({
   const payment = client.loan(loanId).repayment;
   const progress = useRepaymentOperation(client, loanId);
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<PaymentMode>('direct');
-  const [source, setSource] = useState('');
+  const [mode, setMode] = useState<PaymentMode>('assets');
+  const [source, setSource] = useState('usdc');
   const [amount, setAmount] = useState('');
   const [review, setReview] = useState<RepaymentReview | null>(null);
   const [busy, setBusy] = useState(false);
@@ -81,15 +81,32 @@ export function RepaymentFlow({
       if (BigInt(atomic) > BigInt(fresh.debt_atomic))
         throw new Error('Enter an amount up to the current debt.');
       const owner = await authenticate();
-      if (mode === 'direct')
+      if (mode === 'assets' && source === 'usdc')
         setReview({
           owner,
           amount: atomic,
-          review: await payment.review({ mode, amount_atomic: atomic }),
+          review: await payment.review({
+            mode: 'direct',
+            amount_atomic: atomic,
+          }),
         });
-      else {
+      else if (mode === 'collateral') {
+        const basketReview = await payment.review_basket(atomic);
+        if (
+          basketReview.plan.kind !== 'basket_repayment' ||
+          basketReview.plan.loan_id !== loanId ||
+          basketReview.plan.quote.amount_atomic !== atomic
+        )
+          throw new Error('The basket quote does not match this repayment.');
+        setReview({
+          owner,
+          amount: atomic,
+          basket: basketReview.plan.quote,
+          review: basketReview,
+        });
+      } else {
         const input: RepaymentEstimateInput = source.startsWith('lock:')
-          ? { mode, leg_id: source.slice(5), amount_atomic: atomic }
+          ? { mode: 'wallet', leg_id: source.slice(5), amount_atomic: atomic }
           : {
               mode: 'wallet',
               asset_id: source.slice(6),
@@ -192,7 +209,7 @@ export function RepaymentFlow({
         snapshot.plan.kind === 'wallet_payment'
       ) {
         const legId = snapshot.plan.leg.leg_id;
-        setMode('wallet');
+        setMode('assets');
         setSource(`lock:${legId}`);
         if (saved?.amount_atomic) {
           setAmount(inputAmount(saved.amount_atomic));
@@ -298,7 +315,7 @@ export function RepaymentFlow({
                         className={ui.textButton}
                         disabled={busy || !!progress.saved}
                         onClick={() => {
-                          setMode('wallet');
+                          setMode('assets');
                           setSource(`lock:${lock.leg.leg_id}`);
                           setReview(null);
                           setError(null);
@@ -339,6 +356,7 @@ export function RepaymentFlow({
             <PaymentReview
               amount={review.amount}
               estimate={review.estimate}
+              basket={review.basket}
               expiresAt={
                 review.estimate?.expires_at ?? review.review!.expires_at
               }
@@ -376,7 +394,7 @@ export function RepaymentFlow({
               busy={busy}
               onMode={(value) => {
                 setMode(value);
-                setSource('');
+                setSource('usdc');
                 setError(null);
               }}
               onSource={setSource}

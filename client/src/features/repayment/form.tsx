@@ -1,12 +1,13 @@
 import type { Asset } from '@kanso/schema';
 import { ChevronDown, CircleAlert } from 'lucide-react';
 import { Select } from '@/components/ui/select';
+import { TokenIcon, isTokenSymbol } from '@/components/ui/token-icon';
 import { inputAmount } from '@/lib/amounts';
 import { networks } from '@/lib/networks';
 import ui from '@/features/workspace/workspace.module.css';
 import styles from '@/features/repayment/repayment.module.css';
 
-export type PaymentMode = 'direct' | 'wallet' | 'collateral';
+export type PaymentMode = 'assets' | 'collateral';
 export type RepaymentSource = {
   legId: string;
   assetId: string;
@@ -44,9 +45,12 @@ export function RepaymentForm({
   onAmount: (amount: string) => void;
   onReview: () => void;
 }) {
-  const choices = sources.filter(
-    (source) =>
-      source.purpose === (mode === 'collateral' ? 'collateral' : 'payment'),
+  const deposited = sources.filter((item) => item.purpose === 'payment');
+  const basket = assets.filter((asset) =>
+    sources.some(
+      (item) =>
+        item.purpose === 'collateral' && item.assetId === asset.asset_id,
+    ),
   );
   return (
     <form
@@ -56,31 +60,34 @@ export function RepaymentForm({
         onReview();
       }}
     >
-      <div>
-        <label className={ui.label} htmlFor="repay-method">
-          Pay with
-        </label>
-        <div className={styles.select}>
-          <Select
-            id="repay-method"
-            className={ui.field}
-            value={mode}
+      <div
+        className={styles.methods}
+        role="group"
+        aria-label="Repayment source"
+      >
+        <button
+          type="button"
+          aria-pressed={mode === 'assets'}
+          disabled={busy}
+          onClick={() => onMode('assets')}
+        >
+          Assets
+        </button>
+        {borrower && (
+          <button
+            type="button"
+            aria-pressed={mode === 'collateral'}
             disabled={busy}
-            onChange={(e) => onMode(e.target.value as PaymentMode)}
+            onClick={() => onMode('collateral')}
           >
-            <option value="direct">USDC on NEAR</option>
-            <option value="wallet">Wallet asset</option>
-            {borrower && (
-              <option value="collateral">Collateral from your basket</option>
-            )}
-          </Select>
-          <ChevronDown size={16} aria-hidden="true" />
-        </div>
+            Collateral
+          </button>
+        )}
       </div>
-      {mode !== 'direct' && (
+      {mode === 'assets' ? (
         <div>
           <label className={ui.label} htmlFor="repay-source">
-            {mode === 'collateral' ? 'Collateral' : 'Asset'}
+            Asset
           </label>
           <div className={styles.select}>
             <Select
@@ -88,23 +95,21 @@ export function RepaymentForm({
               className={ui.field}
               value={source}
               disabled={busy}
-              onChange={(e) => onSource(e.target.value)}
+              onChange={(event) => onSource(event.target.value)}
               required
             >
-              <option value="">Choose an asset</option>
-              {choices.map((source) => {
-                const asset = assets.find((a) => a.asset_id === source.assetId);
+              <option value="usdc">USDC · NEAR</option>
+              {deposited.map((item) => {
+                const asset = assets.find((a) => a.asset_id === item.assetId);
                 return (
-                  <option key={source.legId} value={`lock:${source.legId}`}>
-                    {asset ? assetLabel(asset) : source.assetId}
-                    {mode === 'wallet' ? ' · Already deposited' : ''}
+                  <option key={item.legId} value={`lock:${item.legId}`}>
+                    {asset ? assetLabel(asset) : item.assetId} · Deposited
                   </option>
                 );
               })}
-              {mode === 'wallet' &&
-                canDeposit &&
+              {canDeposit &&
                 assets
-                  .filter((a) => a.enabled)
+                  .filter((asset) => asset.enabled)
                   .map((asset) => (
                     <option
                       key={asset.asset_id}
@@ -115,6 +120,21 @@ export function RepaymentForm({
                   ))}
             </Select>
             <ChevronDown size={16} aria-hidden="true" />
+          </div>
+        </div>
+      ) : (
+        <div>
+          <span className={ui.label}>Collateral basket</span>
+          <div className={styles.basket} aria-label="Collateral basket">
+            {basket.map((asset) => (
+              <span key={asset.asset_id}>
+                {isTokenSymbol(asset.symbol) && (
+                  <TokenIcon symbol={asset.symbol} size={22} />
+                )}{' '}
+                {asset.symbol}
+              </span>
+            ))}
+            {!basket.length && <span>No collateral available</span>}
           </div>
         </div>
       )}
@@ -139,7 +159,7 @@ export function RepaymentForm({
           autoComplete="off"
           placeholder="0.00"
           value={amount}
-          onChange={(e) => onAmount(e.target.value)}
+          onChange={(event) => onAmount(event.target.value)}
           disabled={busy}
           required
         />
@@ -147,11 +167,11 @@ export function RepaymentForm({
       <button
         className={`${ui.primary} ${ui.full}`}
         type="submit"
-        disabled={busy || !amount || (mode !== 'direct' && !source)}
+        disabled={busy || !amount || (mode === 'collateral' && !basket.length)}
       >
         {busy ? 'Preparing…' : 'Review repayment'}
       </button>
-      {mode !== 'direct' && (
+      {(mode === 'collateral' || source !== 'usdc') && (
         <p className={styles.solverNote}>
           <CircleAlert size={14} aria-hidden="true" />
           <em>

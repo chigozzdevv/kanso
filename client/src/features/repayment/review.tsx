@@ -1,4 +1,8 @@
-import type { Asset, RepaymentEstimate } from '@kanso/schema';
+import type {
+  Asset,
+  RepaymentEstimate,
+  BasketRepaymentQuote,
+} from '@kanso/schema';
 import { assetLabel } from '@/features/repayment/form';
 import { inputAmount } from '@/lib/amounts';
 import ui from '@/features/workspace/workspace.module.css';
@@ -7,6 +11,7 @@ import styles from '@/features/repayment/repayment.module.css';
 export function PaymentReview({
   amount,
   estimate,
+  basket,
   expiresAt,
   fundingRequired,
   assets,
@@ -16,6 +21,7 @@ export function PaymentReview({
 }: {
   amount: string;
   estimate?: RepaymentEstimate | undefined;
+  basket?: BasketRepaymentQuote | undefined;
   expiresAt: number;
   fundingRequired: boolean;
   assets: Asset[];
@@ -25,26 +31,35 @@ export function PaymentReview({
 }) {
   const asset = assets.find((a) => a.asset_id === estimate?.asset_id);
   return (
-    <div className={styles.form}>
+    <div className={`${styles.form} ${styles.reviewForm}`}>
       <dl className={styles.review}>
         <div>
           <dt>Pay with</dt>
           <dd>
-            {estimate
-              ? asset
-                ? assetLabel(asset)
-                : estimate.asset_id
-              : 'USDC · NEAR'}
+            {basket
+              ? 'Collateral basket'
+              : estimate
+                ? asset
+                  ? assetLabel(asset)
+                  : estimate.asset_id
+                : 'USDC · NEAR'}
           </dd>
         </div>
-        <div>
-          <dt>You pay</dt>
-          <dd>
-            {estimate
-              ? `${inputAmount(estimate.input_atomic, estimate.decimals)} ${asset?.symbol ?? estimate.asset_id}`
-              : `${inputAmount(amount)} USDC`}
-          </dd>
-        </div>
+        {basket ? (
+          <div>
+            <dt>Basket value</dt>
+            <dd>{inputAmount(basket.basket_value_atomic)} USDC</dd>
+          </div>
+        ) : (
+          <div>
+            <dt>You pay</dt>
+            <dd>
+              {estimate
+                ? `${inputAmount(estimate.input_atomic, estimate.decimals)} ${asset?.symbol ?? estimate.asset_id}`
+                : `${inputAmount(amount)} USDC`}
+            </dd>
+          </div>
+        )}
         <div>
           <dt>Repay amount</dt>
           <dd>{inputAmount(amount)} USDC</dd>
@@ -70,6 +85,37 @@ export function PaymentReview({
           </>
         )}
       </dl>
+      {basket && (
+        <>
+          <div className={styles.sales}>
+            <p className={ui.label}>Assets to sell</p>
+            {basket.allocations.map((allocation) => {
+              const asset = assets.find(
+                (a) => a.asset_id === allocation.asset_id,
+              );
+              return (
+                <div key={allocation.leg_id}>
+                  <span>{asset ? assetLabel(asset) : allocation.asset_id}</span>
+                  <strong>
+                    {inputAmount(allocation.input_atomic, allocation.decimals)}{' '}
+                    {asset?.symbol ?? allocation.asset_id}
+                  </strong>
+                </div>
+              );
+            })}
+          </div>
+          <dl className={styles.review}>
+            <div>
+              <dt>Execution fee</dt>
+              <dd>{inputAmount(basket.execution_cost_atomic)} USDC</dd>
+            </div>
+          </dl>
+          <p className={ui.muted}>
+            Unused collateral stays in your basket. Surplus above your debt is
+            refunded.
+          </p>
+        </>
+      )}
       {estimate && fundingRequired && (
         <p className={ui.notice}>
           First, deposit the payment asset. You’ll review the final quote after

@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { identifier, positive_amount } from '@kanso/schema';
-import type { OperationPlan, RepaymentEstimate } from '@kanso/schema';
+import type {
+  OperationPlan,
+  RepaymentEstimate,
+  BasketRepaymentQuote,
+} from '@kanso/schema';
 
 export const repaymentCheckpoint = z.strictObject({
   operation_id: identifier,
@@ -13,6 +17,7 @@ export type RepaymentReview = {
   owner: string;
   amount: string;
   estimate?: RepaymentEstimate;
+  basket?: BasketRepaymentQuote;
   review?: { plan: OperationPlan; plan_hash: string; expires_at: number };
 };
 
