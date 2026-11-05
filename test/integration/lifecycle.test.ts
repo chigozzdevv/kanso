@@ -298,7 +298,7 @@ describe('headless SDK, API, transactional journal and workers on actual local s
     ).toBe(false);
     expect((await loan.record()).state).toBe('repaid');
   });
-  async function active(loan_id: string) {
+  async function active(loan_id: string, collateral?: bigint[]) {
     const b = context.sandbox;
     const lp = context.client(b.lp);
     await lp.session.connect(b.lp.accountId);
@@ -324,13 +324,20 @@ describe('headless SDK, API, transactional journal and workers on actual local s
       ).status,
     ).toBe('succeeded');
     const offer = await b.offer(loan_id, loan_id);
+    if (collateral)
+      offer.legs = collateral.map((amount, index) => ({
+        ...offer.legs[0]!,
+        leg_id: `near_${index}`,
+        amount_atomic: amount.toString(),
+      }));
     await b.borrower.call(b.coordinator, 'accept_offer', { offer }, signed);
-    await b.borrower.call(
-      b.coordinator,
-      'lock_native',
-      { loan_id, leg_id: 'near' },
-      { ...signed, attachedDeposit: 100n * NEAR },
-    );
+    for (const leg of offer.legs)
+      await b.borrower.call(
+        b.coordinator,
+        'lock_native',
+        { loan_id, leg_id: leg.leg_id },
+        { ...signed, attachedDeposit: BigInt(leg.amount_atomic) },
+      );
     await b.borrower.call(
       b.coordinator,
       'fund_loan',
@@ -483,6 +490,65 @@ describe('headless SDK, API, transactional journal and workers on actual local s
     expect(
       (await client.catalog.pools()).some((p) => p.pool_id === 'conversion'),
     ).toBe(true);
+  });
+  it('repays from a valued basket across two collateral sources and resumes the staged sales after restart', async () => {
+    const { loan } = await active('basket_repay', [
+      18n * NEAR,
+      18n * NEAR,
+      18n * NEAR,
+    ]);
+    const owner = context.sandbox.borrower.accountId;
+    const review = await loan.repayment.review_basket('100000000');
+    if (review.plan.kind !== 'basket_repayment')
+      throw new Error('Expected basket repayment');
+    expect(review.plan.quote.basket_value_atomic).toBe('270000000');
+    expect(review.plan.quote.allocations).toHaveLength(2);
+    const repayment = await loan.repay({
+      review,
+      idempotency_key: 'basket_sale',
+    });
+    const checkpoint = repayment.checkpoint();
+    await context.restart();
+    const client = context.client(context.sandbox.borrower);
+    await client.session.connect(owner);
+    const resumed = await client.operations.resume(checkpoint);
+    const result = await complete(resumed);
+    expect(result.error, JSON.stringify(result.error)).toBeNull();
+    expect(result.status).toBe('succeeded');
+    expect(result.settlement_quotes).toHaveLength(2);
+    expect(BigInt((await loan.summary()).debt_atomic)).toBeLessThan(1000000n);
+    const remaining = (await loan.record()).locks
+      .filter((lock) => lock.purpose.kind === 'collateral')
+      .reduce((sum, lock) => sum + BigInt(lock.locked_atomic), 0n);
+    expect(remaining).toBe(34n * NEAR);
+  });
+  it('claims excess USDC for the borrower before a collateral settlement is reported complete', async () => {
+    const { loan } = await active('sale_surplus');
+    const review = await loan.repayment.review({
+      mode: 'collateral',
+      leg_id: 'near',
+      input_atomic: (30n * NEAR).toString(),
+      max_execution_cost_atomic: '0',
+    });
+    const repayment = await loan.repay({
+      review,
+      idempotency_key: 'surplus_sale',
+    });
+    const result = await complete(repayment);
+    expect(result.error, JSON.stringify(result.error)).toBeNull();
+    expect(result.status).toBe('succeeded');
+    expect((await loan.summary()).debt_atomic).toBe('0');
+    if (review.plan.kind !== 'settlement')
+      throw new Error('Expected settlement');
+    const settled = await context.runtime.coordinator.view('get_settlement', {
+      operation_id: review.plan.plan.operation_id,
+    });
+    expect(settled?.refund_id).toBeTruthy();
+    const refund = await context.runtime.coordinator.view('get_refund', {
+      refund_id: settled!.refund_id!,
+    });
+    expect(refund?.owner).toBe(context.sandbox.borrower.accountId);
+    expect(refund?.paid).toBe(true);
   });
   it('returns expired uncommitted solver escrow after a failed operation', async () => {
     const { loan } = await active('expired_solver');
