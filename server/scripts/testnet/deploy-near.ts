@@ -50,7 +50,7 @@ export async function near_signer(release: Release, role: string) {
   const key = await read_json<{
     account_id: string;
     private_key: `ed25519:${string}`;
-  }>(release.folder, `keys/near-${role}.json`);
+  }>(release.key_folder, `near-${role}.json`);
   const store = new keyStores.InMemoryKeyStore();
   await store.setKey(
     'testnet',
@@ -287,8 +287,8 @@ export async function deploy_near(release: Release) {
   const public_keys = [];
   for (let i = 0; i < 3; i++) {
     const key = await read_json<{ public_key: string }>(
-      release.folder,
-      `keys/recovery-attestor-${i}.json`,
+      release.key_folder,
+      `recovery-attestor-${i}.json`,
     );
     public_keys.push(Array.from(bs58.decode(key.public_key.split(':')[1]!)));
   }

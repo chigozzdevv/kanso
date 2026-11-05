@@ -8,24 +8,37 @@ import {
   unlink,
 } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import { resolve, join } from 'node:path';
-export async function directory() {
-  const root = resolve(process.cwd(), '..');
-  const pkg = JSON.parse(
-    await readFile(join(root, 'package.json'), 'utf8'),
-  ) as { name: string };
-  if (pkg.name !== 'kanso')
-    throw new Error('Run through the Kanso workspace testnet commands');
-  const folder = join(root, '.testnet');
+import { homedir } from 'node:os';
+import { isAbsolute, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+export const workspace_root = fileURLToPath(
+  new URL('../../../', import.meta.url),
+);
+
+async function private_directory(folder: string) {
   await mkdir(folder, { recursive: true, mode: 0o700 });
   if ((await lstat(folder)).isSymbolicLink())
-    throw new Error('Credential directory cannot be a symlink');
+    throw new Error('Local storage cannot be a symlink');
   await chmod(folder, 0o700);
-  await mkdir(join(folder, 'keys'), { recursive: true, mode: 0o700 });
-  if ((await lstat(join(folder, 'keys'))).isSymbolicLink())
-    throw new Error('Key directory cannot be a symlink');
-  await chmod(join(folder, 'keys'), 0o700);
   return folder;
+}
+
+export async function keys_directory() {
+  return private_directory(join(workspace_root, '.keys'));
+}
+
+export async function directory() {
+  const base =
+    process.platform === 'darwin'
+      ? join(homedir(), 'Library', 'Application Support')
+      : process.platform === 'win32'
+        ? (process.env.LOCALAPPDATA ?? join(homedir(), 'AppData', 'Local'))
+        : (process.env.XDG_STATE_HOME ?? join(homedir(), '.local', 'state'));
+  const folder = process.env.KANSO_STATE_DIR ?? join(base, 'Kanso', 'testnet');
+  if (!isAbsolute(folder))
+    throw new Error('KANSO_STATE_DIR must be an absolute path');
+  return private_directory(folder);
 }
 export async function private_json(
   folder: string,

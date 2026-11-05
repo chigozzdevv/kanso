@@ -6,6 +6,8 @@ import {
   read_json,
   private_json,
   replace_json,
+  keys_directory,
+  workspace_root,
 } from '@testnet/store';
 
 export interface DeploymentEffect {
@@ -45,14 +47,16 @@ export class Release {
     readonly folder: string,
     readonly journal: DeploymentJournal,
     readonly filename: string,
+    readonly key_folder: string,
   ) {}
   static async load(filename = 'deployment.json') {
     if (!/^deployment(?:-[a-z]+)?\.json$/.test(filename))
       throw new Error('Invalid deployment journal name');
     const folder = await directory();
+    const key_folder = await keys_directory();
     const coordinator = await read_json<{ account_id: string }>(
-      folder,
-      'keys/near-coordinator.json',
+      key_folder,
+      'near-coordinator.json',
     );
     const suffix = /^kanso-coordinator-([a-f0-9]+)\.testnet$/.exec(
       coordinator.account_id,
@@ -63,7 +67,7 @@ export class Release {
       const journal = await read_json<DeploymentJournal>(folder, filename);
       if (journal.version !== 1 || journal.deployment_id !== deployment_id)
         throw new Error('Deployment journal belongs to another key set');
-      return new Release(folder, journal, filename);
+      return new Release(folder, journal, filename, key_folder);
     } catch (error) {
       if (!(
         error instanceof Error &&
@@ -78,7 +82,7 @@ export class Release {
         contracts: {},
       };
       await private_json(folder, filename, journal);
-      return new Release(folder, journal, filename);
+      return new Release(folder, journal, filename, key_folder);
     }
   }
   async save() {
@@ -90,7 +94,7 @@ export class Release {
     await saving;
   }
   async artifact(path: string) {
-    const bytes = await readFile(join(this.folder, '..', path));
+    const bytes = await readFile(join(workspace_root, path));
     return { bytes, sha256: digest(bytes) };
   }
   async lock<T>(run: () => Promise<T>): Promise<T> {

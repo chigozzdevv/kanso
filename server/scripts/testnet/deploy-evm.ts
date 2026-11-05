@@ -34,8 +34,8 @@ const chain_names: Record<number, string> = {
 
 export async function deploy_evm(release: Release) {
   const key = await read_json<{ private_key: Hex }>(
-    release.folder,
-    'keys/evm-deployer.json',
+    release.key_folder,
+    'evm-deployer.json',
   );
   const account = privateKeyToAccount(key.private_key);
   const mpc = await read_json<MpcKeys>(release.folder, 'mpc.json');

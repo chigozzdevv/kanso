@@ -7,7 +7,7 @@ import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
 import { fromBase64, toBase64 } from '@mysten/sui/utils';
 import type { SuiClientTypes } from '@mysten/sui/client';
 import { sui } from '@testnet/network';
-import { read_json } from '@testnet/store';
+import { read_json, workspace_root } from '@testnet/store';
 import { digest } from '@testnet/deployment';
 import type { Release } from '@testnet/deployment';
 import type { MpcKeys } from '@testnet/mpc';
@@ -81,8 +81,8 @@ export async function execute_sui(
 }
 export async function deploy_sui(release: Release) {
   const keyfile = await read_json<{ private_key: string }>(
-    release.folder,
-    'keys/sui-deployer.json',
+    release.key_folder,
+    'sui-deployer.json',
   );
   const key = Ed25519Keypair.fromSecretKey(keyfile.private_key);
   const mpc = await read_json<MpcKeys>(release.folder, 'mpc.json');
@@ -92,7 +92,7 @@ export async function deploy_sui(release: Release) {
       'move',
       'build',
       '--path',
-      join(release.folder, '..', 'contracts/sui'),
+      join(workspace_root, 'contracts/sui'),
       '--dump-bytecode-as-base64',
       '--no-tree-shaking',
     ],

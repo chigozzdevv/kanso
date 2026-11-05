@@ -38,8 +38,8 @@ export async function send_evm(
   if ((await client.getChainId()) !== chain.id)
     throw new Error('EVM network mismatch');
   const key = await read_json<{ private_key: Hex; address: string }>(
-    release.folder,
-    'keys/evm-deployer.json',
+    release.key_folder,
+    'evm-deployer.json',
   );
   const account = privateKeyToAccount(key.private_key);
   const request = {
@@ -126,7 +126,7 @@ export async function send_solana(
   });
   const key = Keypair.fromSecretKey(
     Uint8Array.from(
-      await read_json<number[]>(release.folder, 'keys/solana-deployer.json'),
+      await read_json<number[]>(release.key_folder, 'solana-deployer.json'),
     ),
   );
   if (

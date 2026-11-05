@@ -1,3 +1,4 @@
+import { workspace_root } from '@testnet/store';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { format, resolveConfig } from 'prettier';
@@ -42,7 +43,7 @@ export async function deployment_config() {
   });
   if (coordinator_keys.keys.length)
     throw new Error('Coordinator deployment keys have not been removed');
-  const folder = join(primary.folder, '..', 'deployments');
+  const folder = join(workspace_root, 'deployments');
   let prior_runtime;
   try {
     prior_runtime = deployment.parse(

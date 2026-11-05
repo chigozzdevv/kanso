@@ -5,7 +5,7 @@ target/
 .env.*
 !.env.example
 coverage/
-.sandbox/
+.keys/
 .DS_Store
 contracts/evm/out/
 contracts/evm/cache/
@@ -13,8 +13,6 @@ contracts/evm/lib/
 contracts/sui/build/
 
 contracts/starknet/.snfoundry_cache/
-
-.testnet/
 
 client/.next/
 client/out/

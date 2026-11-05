@@ -132,7 +132,7 @@ export async function deploy_starknet(release: Release) {
     class_hash: string;
     address_salt: string;
     constructor_calldata: string[];
-  }>(release.folder, 'keys/starknet-deployer.json');
+  }>(release.key_folder, 'starknet-deployer.json');
   const account = new Account({
     provider,
     address: key.address,
@@ -167,7 +167,7 @@ export async function deploy_starknet(release: Release) {
         family: 'starknet',
         role: 'deployer',
         address: key.address,
-        key_file: 'keys/starknet-deployer.json',
+        key_file: 'starknet-deployer.json',
       }))!,
     );
     if (maximum > funded / 2n)
@@ -369,8 +369,8 @@ export async function starknet_invoke(
   if ((await provider.getChainId()) !== CHAIN)
     throw new Error('Expected Starknet Sepolia');
   const key = await read_json<{ address: string; private_key: string }>(
-    release.folder,
-    'keys/starknet-deployer.json',
+    release.key_folder,
+    'starknet-deployer.json',
   );
   const account = new Account({
     provider,

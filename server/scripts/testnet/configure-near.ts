@@ -71,8 +71,8 @@ export async function configure_near(release: Release) {
     const role = 'coordinator',
       account = coordinator;
     const key = await read_json<{ private_key: `ed25519:${string}` }>(
-      release.folder,
-      `keys/near-${role}.json`,
+      release.key_folder,
+      `near-${role}.json`,
     );
     const public_key = KeyPair.fromString(key.private_key).getPublicKey();
     const keys = await rpc<{ keys: { public_key: string }[] }>(

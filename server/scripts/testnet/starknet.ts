@@ -1,6 +1,6 @@
 import { hash, CallData } from 'starknet';
 import { rpc, STARKNET_RPC } from '@testnet/network';
-import { directory, read_json, replace_json } from '@testnet/store';
+import { keys_directory, read_json, replace_json } from '@testnet/store';
 import type { KeyIndex } from '@testnet/store';
 
 const OZ_CLASS =
@@ -25,10 +25,10 @@ export async function prepare_starknet() {
     constructor.inputs[0]?.type !== 'core::felt252'
   )
     throw new Error('Unexpected OpenZeppelin account constructor');
-  const folder = await directory(),
+  const folder = await keys_directory(),
     index = await read_json<KeyIndex>(folder, 'index.json');
   for (const role of ['deployer', 'borrower']) {
-    const key_file = `keys/starknet-${role}.json`,
+    const key_file = `starknet-${role}.json`,
       key = await read_json<{
         network: string;
         private_key: string;

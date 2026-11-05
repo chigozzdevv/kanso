@@ -1,3 +1,4 @@
+import { workspace_root } from '@testnet/store';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { deployment, bitcoin_verifier } from '@kanso/schema';
@@ -9,10 +10,7 @@ import { NEAR_SIGNER_RPC, rpc } from '@testnet/network';
 export async function configure_bitcoin(release: Release) {
   const d = deployment.parse(
     JSON.parse(
-      await readFile(
-        join(release.folder, '../deployments/testnet.json'),
-        'utf8',
-      ),
+      await readFile(join(workspace_root, 'deployments/testnet.json'), 'utf8'),
     ),
   );
   const chain = d.chains.find((c) => c.manifest.chain_id === 'bitcoin');

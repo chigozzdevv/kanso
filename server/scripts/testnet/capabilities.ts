@@ -15,7 +15,7 @@ import { confirmed_effect_id, digest } from '@testnet/deployment';
 import { canonical_json, scoped_id } from '@kanso/sdk';
 import { NEAR_TESTNET_USDC } from '@kanso/bindings';
 import { near_send, near_signer, near_view, call } from '@testnet/deploy-near';
-import { read_json } from '@testnet/store';
+import { read_json, workspace_root } from '@testnet/store';
 import { refresh_prices } from '@testnet/oracle';
 import { Queues } from '@server/shared/queue/queue.client';
 
@@ -63,10 +63,7 @@ export async function prepare_capabilities(release: Release) {
     | undefined;
   const d = deployment.parse(
     JSON.parse(
-      await readFile(
-        join(release.folder, '..', 'deployments/testnet.json'),
-        'utf8',
-      ),
+      await readFile(join(workspace_root, 'deployments/testnet.json'), 'utf8'),
     ),
   );
   const config = await near_view<{ settlement_token: string }>(
@@ -183,7 +180,7 @@ export async function prepare_capabilities(release: Release) {
     throw new Error(
       `Live lifecycle verification remains incomplete: ${unfinished.join(', ')}`,
     );
-  const output = join(release.folder, '..', 'deployments');
+  const output = join(workspace_root, 'deployments');
   await mkdir(output, { recursive: true });
   const owner = await near_signer(release, 'owner');
   let saved = release.journal.contracts.targets as
@@ -383,10 +380,7 @@ export async function prepare_capabilities(release: Release) {
 export async function activate_lending(release: Release) {
   const d = deployment.parse(
     JSON.parse(
-      await readFile(
-        join(release.folder, '..', 'deployments/testnet.json'),
-        'utf8',
-      ),
+      await readFile(join(workspace_root, 'deployments/testnet.json'), 'utf8'),
     ),
   );
   const config = await near_view<{

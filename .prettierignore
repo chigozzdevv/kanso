@@ -12,7 +12,7 @@ contracts/sui/build
 
 contracts/starknet/.snfoundry_cache/
 
-.testnet/
+.keys/
 
 client/.next/
 client/out/

@@ -35,7 +35,7 @@ export async function deploy_solana(release: Release) {
   const load = async (role: string) =>
     Keypair.fromSecretKey(
       Uint8Array.from(
-        await read_json<number[]>(release.folder, `keys/solana-${role}.json`),
+        await read_json<number[]>(release.key_folder, `solana-${role}.json`),
       ),
     );
   for (const role of ['program', 'buffer']) {
@@ -57,8 +57,8 @@ export async function deploy_solana(release: Release) {
           { cause: error },
         );
       await private_json(
-        release.folder,
-        `keys/solana-${role}.json`,
+        release.key_folder,
+        `solana-${role}.json`,
         Array.from(Keypair.generate().secretKey),
       );
     }

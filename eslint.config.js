@@ -5,7 +5,7 @@ export default tseslint.config(
   {
     ignores: [
       '**/dist/**',
-      '.testnet/**',
+      '.keys/**',
       '**/target/**',
       '**/node_modules/**',
       'client/.next/**',

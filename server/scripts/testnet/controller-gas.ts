@@ -11,7 +11,7 @@ import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
 import type { Hex } from 'viem';
 import { digest } from '@testnet/deployment';
 import type { Release } from '@testnet/deployment';
-import { read_json } from '@testnet/store';
+import { read_json, workspace_root } from '@testnet/store';
 import { send_evm, send_solana } from '@testnet/controller-transfers';
 import { execute_sui } from '@testnet/deploy-sui';
 import { starknet_invoke } from '@testnet/deploy-starknet';
@@ -28,10 +28,7 @@ export async function fund_controllers(
     );
   const configured = deployment.parse(
     JSON.parse(
-      await readFile(
-        join(release.folder, '..', 'deployments/testnet.json'),
-        'utf8',
-      ),
+      await readFile(join(workspace_root, 'deployments/testnet.json'), 'utf8'),
     ),
   );
   if (
@@ -66,10 +63,7 @@ export async function fund_controllers(
       const { Keypair } = await import('@solana/web3.js');
       const key = Keypair.fromSecretKey(
         Uint8Array.from(
-          await read_json<number[]>(
-            release.folder,
-            'keys/solana-deployer.json',
-          ),
+          await read_json<number[]>(release.key_folder, 'solana-deployer.json'),
         ),
       );
       await send_solana(
@@ -86,8 +80,8 @@ export async function fund_controllers(
     }
     if (m.family === 'sui') {
       const key = await read_json<{ private_key: string }>(
-        release.folder,
-        'keys/sui-deployer.json',
+        release.key_folder,
+        'sui-deployer.json',
       );
       const tx = new SuiTransaction();
       const [coin] = tx.splitCoins(tx.gas, [tx.pure.u64(200_000_000)]);

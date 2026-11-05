@@ -24,8 +24,8 @@ export interface MpcKeys {
 export async function mpc_keys(release: Release): Promise<MpcKeys> {
   const account = 'v1.signer-prod.testnet';
   const { account_id: predecessor } = await read_json<{ account_id: string }>(
-    release.folder,
-    'keys/near-coordinator.json',
+    release.key_folder,
+    'near-coordinator.json',
   );
   const state = await near_view<{
     Running?: {

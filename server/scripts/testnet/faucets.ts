@@ -16,7 +16,13 @@ import {
 import { solve } from '@testnet/sui-proof';
 import { starknet_proof } from '@testnet/starknet-proof';
 import type { SuiChallenge } from '@testnet/sui-proof';
-import { directory, read_json, replace_json } from '@testnet/store';
+import {
+  directory,
+  keys_directory,
+  read_json,
+  private_json,
+  replace_json,
+} from '@testnet/store';
 import type { KeyIndex } from '@testnet/store';
 
 export interface FaucetRecord {
@@ -33,14 +39,25 @@ export interface FaucetRecord {
   amount_atomic?: string;
   detail?: string;
 }
+
+async function faucet_records(folder: string): Promise<FaucetRecord[]> {
+  try {
+    return await read_json<FaucetRecord[]>(folder, 'faucets.json');
+  } catch (error) {
+    if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT'))
+      throw error;
+    await private_json(folder, 'faucets.json', []);
+    return [];
+  }
+}
 export async function fund_testnet(family?: string, retry_unavailable = false) {
   if (family && !['near', 'solana', 'sui', 'starknet'].includes(family))
     throw new Error('Unsupported automated faucet family');
   const folder = await directory(),
-    index = await read_json<KeyIndex>(folder, 'index.json');
+    index = await read_json<KeyIndex>(await keys_directory(), 'index.json');
   const lock = await open(join(folder, 'faucet.lock'), 'wx', 0o600);
   try {
-    const records = await read_json<FaucetRecord[]>(folder, 'faucets.json');
+    const records = await faucet_records(folder);
     const save = () => replace_json(folder, 'faucets.json', records);
     const blocked = new Set<string>();
     for (const wallet of index.wallets) {
@@ -99,7 +116,7 @@ export async function fund_testnet(family?: string, retry_unavailable = false) {
         }
         if (wallet.family === 'near') {
           const key = await read_json<{ public_key: string }>(
-            folder,
+            await keys_directory(),
             wallet.key_file,
           );
           record.request = {
@@ -263,8 +280,8 @@ export async function fund_testnet(family?: string, retry_unavailable = false) {
 }
 export async function testnet_status() {
   const folder = await directory(),
-    index = await read_json<KeyIndex>(folder, 'index.json'),
-    records = await read_json<FaucetRecord[]>(folder, 'faucets.json');
+    index = await read_json<KeyIndex>(await keys_directory(), 'index.json'),
+    records = await faucet_records(folder);
   const wallets = [];
   for (const wallet of index.wallets) {
     try {

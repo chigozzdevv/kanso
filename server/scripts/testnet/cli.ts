@@ -1,5 +1,5 @@
 import { generate_keys } from '@testnet/keys';
-import { directory } from '@testnet/store';
+import { keys_directory } from '@testnet/store';
 import { fund_testnet, testnet_status } from '@testnet/faucets';
 import { prepare_starknet } from '@testnet/starknet';
 import { Release } from '@testnet/deployment';
@@ -59,7 +59,7 @@ if (command === 'keys') {
   console.log(
     JSON.stringify(
       {
-        directory: await directory(),
+        directory: await keys_directory(),
         created_at: index.created_at,
         wallets: index.wallets,
       },
