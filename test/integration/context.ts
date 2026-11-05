@@ -60,6 +60,7 @@ export async function integration_context() {
   try {
     mongo = await MongoMemoryReplSet.create({
       binary: { version: '8.2.2' },
+      instanceOpts: [{ launchTimeout: 60000 }],
       replSet: { count: 1, storageEngine: 'wiredTiger' },
     });
     if (redis_error) throw redis_error;
