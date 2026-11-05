@@ -4,6 +4,8 @@ import {
   operation_snapshot,
   loan_offer,
   operation_step,
+  basket_repayment_quote,
+  repayment_estimate,
 } from '@kanso/schema';
 import type { OperationPlan } from '@kanso/schema';
 import {
@@ -205,5 +207,109 @@ describe('SDK signing boundaries', () => {
     expect(() =>
       validate_checkpoint({ ...point, deployment_id: 'another' }, d),
     ).toThrow();
+  });
+});
+
+describe('basket repayment wallet boundaries', () => {
+  const allocation = repayment_estimate.parse({
+    mode: 'collateral',
+    loan_id: 'loan',
+    leg_id: 'near',
+    asset_id: 'near',
+    chain_id: 'near',
+    decimals: 24,
+    amount_atomic: '5000000',
+    input_atomic: fixture.settlement.plan.input_atomic,
+    net_output_atomic: '5000000',
+    execution_cost_atomic: '0',
+    max_source_fee_atomic: '0',
+    expires_at: 1700000300,
+  });
+  const quote = basket_repayment_quote.parse({
+    loan_id: 'loan',
+    amount_atomic: '5000000',
+    basket_value_atomic: '500000000',
+    execution_cost_atomic: '0',
+    net_output_atomic: '5000000',
+    expires_at: 1700000300,
+    sources: [
+      {
+        leg_id: 'near',
+        asset_id: 'near',
+        chain_id: 'near',
+        decimals: 24,
+        available_atomic: fixture.loan.locks[0]!.locked_atomic,
+        value_atomic: '500000000',
+      },
+    ],
+    allocations: [allocation],
+  });
+  it('binds each wallet action to both the reviewed basket limit and the actual on-chain quote', async () => {
+    const state = snapshot({
+      kind: 'basket_repayment',
+      loan_id: 'loan',
+      quote,
+    });
+    const plan = { ...fixture.settlement.plan, kind: 'repayment' as const };
+    state.settlement_quotes = [plan];
+    let onchainPlan = plan;
+    const near = {
+      deployment: d,
+      view: async (method: string) =>
+        method === 'loan_summary'
+          ? { debt_atomic: '100000000' }
+          : { plan: onchainPlan, state: 'funded' },
+    } as unknown as CoordinatorClient;
+    const action = {
+      ...step(
+        coordinator_transaction(d, owner, 'commit_settlement', {
+          operation_id: plan.operation_id,
+          transfer_id: scoped_id(
+            scoped_id(state.operation_id, 'sale_0'),
+            'delivery',
+          ),
+        }),
+      ),
+      step_id: 'sale_0_commit',
+    };
+    await expect(
+      assert_action_intent(state, action, near),
+    ).resolves.toBeUndefined();
+    onchainPlan = { ...plan, input_atomic: '9999999999999999999999999999' };
+    await expect(assert_action_intent(state, action, near)).rejects.toThrow(
+      'reviewed operation',
+    );
+    state.settlement_quotes = [onchainPlan];
+    await expect(assert_action_intent(state, action, near)).rejects.toThrow(
+      'reviewed repayment limits',
+    );
+  });
+  it('only claims settlement surplus belonging to the repayment account', async () => {
+    const plan = { ...fixture.settlement.plan, kind: 'repayment' as const };
+    const state = snapshot({ kind: 'settlement', plan });
+    let refundOwner = 'other.near';
+    const near = {
+      deployment: d,
+      view: async (method: string) =>
+        method === 'get_settlement'
+          ? { refund_id: 'surplus' }
+          : { owner: refundOwner },
+    } as unknown as CoordinatorClient;
+    const action = {
+      ...step(
+        coordinator_transaction(d, owner, 'claim_refund', {
+          refund_id: 'surplus',
+          transfer_id: scoped_id(state.operation_id, 'surplus'),
+        }),
+      ),
+      step_id: 'surplus',
+    };
+    await expect(assert_action_intent(state, action, near)).rejects.toThrow(
+      'reviewed operation',
+    );
+    refundOwner = owner;
+    await expect(
+      assert_action_intent(state, action, near),
+    ).resolves.toBeUndefined();
   });
 });
