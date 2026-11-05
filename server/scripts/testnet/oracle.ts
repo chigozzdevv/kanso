@@ -10,6 +10,18 @@ import {
 } from '@testnet/deploy-near';
 import { digest, Release } from '@testnet/deployment';
 
+export function prune_confirmed_prices(release: Release, current: string) {
+  for (const [id, record] of Object.entries(release.journal.effects)) {
+    if (
+      id.startsWith('oracle-') &&
+      id !== 'oracle-storage' &&
+      id !== current &&
+      record.state === 'confirmed'
+    )
+      delete release.journal.effects[id];
+  }
+}
+
 export const reference_assets: Record<string, string> = {
   near: 'near',
   base_eth: 'ethereum',
@@ -120,6 +132,7 @@ export async function publish_prices(release: Release) {
     near_transaction: effect.transaction_id,
     verified_at: new Date().toISOString(),
   };
+  prune_confirmed_prices(release, id);
   await release.save();
   return prices;
 }
