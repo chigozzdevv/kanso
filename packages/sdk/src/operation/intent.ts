@@ -10,6 +10,7 @@ import type { CoordinatorClient } from '@sdk/adapters/near/near.adapter';
 import { assert_near_transaction } from '@sdk/adapters/near/near.transaction';
 import { deposit_action } from '@sdk/adapters/deposit';
 import { canonical_json, scoped_id, unbase64 } from '@sdk/transport/codec';
+import { assert_basket_settlement } from '@sdk/repayment/basket';
 
 const same = (a: unknown, b: unknown) =>
   canonical_json(a) === canonical_json(b);
@@ -26,6 +27,52 @@ export async function assert_action_intent(
 ): Promise<void> {
   const a = step.action;
   if (!a) invalid();
+  if (s.plan.kind === 'basket_repayment') {
+    const matched = /^sale_(\d+)_(.+)$/.exec(step.step_id);
+    const index = Number(matched?.[1]);
+    const quote = s.settlement_quotes?.[index];
+    const limit = s.plan.quote.allocations[index];
+    if (!matched || !quote || !limit) invalid();
+    let paid = 0n;
+    for (let previous = 0; previous < index; previous++) {
+      const previousQuote = s.settlement_quotes?.[previous];
+      if (!previousQuote) invalid();
+      assert_basket_settlement(s.plan.quote, previous, previousQuote, 0n);
+      const settled = await near.view('get_settlement', {
+        operation_id: previousQuote.operation_id,
+      });
+      if (settled?.state !== 'applied' || !same(settled.plan, previousQuote))
+        invalid();
+      paid += BigInt(settled.applied_atomic);
+    }
+    const summary = await near.view('loan_summary', {
+      loan_id: s.plan.loan_id,
+    });
+    const target = [
+      BigInt(s.plan.quote.amount_atomic) - paid,
+      BigInt(limit.amount_atomic),
+      BigInt(summary.debt_atomic),
+    ].reduce((a, b) => (a < b ? a : b));
+    assert_basket_settlement(
+      s.plan.quote,
+      index,
+      quote,
+      target > 0n ? target : 0n,
+    );
+    const onchain = await near.view('get_settlement', {
+      operation_id: quote.operation_id,
+    });
+    if (!onchain || !same(onchain.plan, quote)) invalid();
+    return assert_action_intent(
+      {
+        ...s,
+        operation_id: scoped_id(s.operation_id, `sale_${index}`),
+        plan: { kind: 'settlement', plan: quote },
+      },
+      { ...step, step_id: matched[2]! },
+      near,
+    );
+  }
   const p = s.plan,
     d = near.deployment,
     id = (name: string) => scoped_id(s.operation_id, name);
@@ -154,6 +201,17 @@ export async function assert_action_intent(
     case 'claim_refund':
       if (p.kind === 'refund')
         args = { refund_id: p.refund_id, transfer_id: id('refund') };
+      else if (p.kind === 'settlement') {
+        const settlement = await near.view('get_settlement', {
+          operation_id: p.plan.operation_id,
+        });
+        if (!settlement?.refund_id) invalid();
+        const refund = await near.view('get_refund', {
+          refund_id: settlement.refund_id,
+        });
+        if (refund?.owner !== s.owner) invalid();
+        args = { refund_id: settlement.refund_id, transfer_id: id('surplus') };
+      }
       break;
     case 'storage_deposit':
       if (p.kind === 'storage_deposit') {

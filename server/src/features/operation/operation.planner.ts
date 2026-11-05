@@ -19,6 +19,7 @@ import {
 import type { CoordinatorClient } from '@kanso/sdk';
 import type { RemoteService } from '@server/features/collateral/collateral.service';
 import type { SolverService } from '@server/features/solver/solver.service';
+import { reconcile_basket_repayment } from '@server/features/repayment/basket.workflow';
 export class OperationPlanner {
   constructor(
     private readonly d: Deployment,
@@ -619,6 +620,13 @@ export class OperationPlanner {
       await step('abort', 'Abort setup', loan.state === 'cancelled', () =>
         tx('abort_setup', { loan_id: p.loan_id }),
       );
+    } else if (p.kind === 'basket_repayment') {
+      return reconcile_basket_repayment(
+        previous,
+        this.near,
+        this.solver,
+        (child) => this.reconcile(child),
+      );
     } else if (p.kind === 'settlement') {
       let settlement = await this.near.view('get_settlement', {
         operation_id: p.plan.operation_id,
@@ -690,17 +698,31 @@ export class OperationPlanner {
                 ['delivered', 'applied'].includes(settlement.state),
             )
           )
-            await step(
-              'apply',
-              'Apply verified USDC repayment',
-              settlement?.state === 'applied',
-              () =>
-                tx(
-                  'apply_settlement',
-                  { operation_id: p.plan.operation_id },
-                  '0',
-                ),
-            );
+            if (
+              (await step(
+                'apply',
+                'Apply verified USDC repayment',
+                settlement?.state === 'applied',
+                () =>
+                  tx(
+                    'apply_settlement',
+                    { operation_id: p.plan.operation_id },
+                    '0',
+                  ),
+              )) &&
+              p.plan.kind === 'repayment' &&
+              settlement?.refund_id
+            ) {
+              const refund = await this.near.view('get_refund', {
+                refund_id: settlement.refund_id,
+              });
+              await step('surplus', 'Return excess USDC', !!refund?.paid, () =>
+                tx('claim_refund', {
+                  refund_id: settlement.refund_id!,
+                  transfer_id: id('surplus'),
+                }),
+              );
+            }
         }
       }
     }

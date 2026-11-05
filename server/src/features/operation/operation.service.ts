@@ -14,6 +14,51 @@ export class OperationService {
     private readonly requests: RequestService,
   ) {}
   async authorize(owner: string, p: OperationPlan) {
+    if (p.kind === 'basket_repayment') {
+      const loan = await this.near.view('get_loan', { loan_id: p.loan_id });
+      if (loan.offer.borrower !== owner)
+        throw new KansoError('FORBIDDEN', 'Borrower required');
+      if (
+        loan.state !== 'active' ||
+        loan.active_outflow ||
+        loan.recovery_outflows.length
+      )
+        throw new KansoError(
+          'SETTLEMENT_RECONCILING',
+          'The collateral basket is not ready for repayment',
+          true,
+        );
+      if (p.quote.expires_at <= (await this.near.now()))
+        throw new KansoError('OFFER_EXPIRED', 'Review your repayment again');
+      const summary = await this.near.view('loan_summary', {
+        loan_id: p.loan_id,
+      });
+      if (
+        BigInt(p.quote.amount_atomic) > BigInt(summary.debt_atomic) ||
+        BigInt(p.quote.execution_cost_atomic) >
+          BigInt(loan.policy.max_execution_cost_atomic)
+      )
+        throw new KansoError(
+          'INVALID_INPUT',
+          'Basket repayment exceeds the current debt or fee limits',
+        );
+      for (const allocation of p.quote.allocations) {
+        const source = loan.locks.find(
+          (lock) => lock.leg.leg_id === allocation.leg_id,
+        );
+        if (
+          !source?.accepted ||
+          source.purpose.kind !== 'collateral' ||
+          source.leg.asset_id !== allocation.asset_id ||
+          BigInt(allocation.input_atomic) >
+            BigInt(source.locked_atomic) - BigInt(source.reserved_atomic)
+        )
+          throw new KansoError(
+            'INVALID_INPUT',
+            'The reviewed collateral is no longer available',
+          );
+      }
+    }
     if (p.kind === 'setup') {
       if (p.offer.borrower !== owner)
         throw new KansoError('FORBIDDEN', 'Offer owner mismatch');
