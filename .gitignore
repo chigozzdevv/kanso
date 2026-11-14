@@ -16,5 +16,6 @@ contracts/starknet/.snfoundry_cache/
 
 client/.next/
 client/out/
+.firebase/
 client/next-env.d.ts
 *.tsbuildinfo
